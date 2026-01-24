@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Tangled Graph Explorer{% endblock %}
+
+{% block content %}
+<div class="index-page">
+    <section class="welcome">
+        <h2>Welcome to Tangled Graph Explorer</h2>
+        <p>Visualize and explore graph structures from various data sources.</p>
+    </section>
+    
+    <section class="workspaces">
+        <h3>Workspaces</h3>
+        {% if workspaces %}
+        <ul class="workspace-list">
+            {% for ws_id, ws in workspaces.items() %}
+            <li>
+                <a href="{{ url_for('main.workspace', workspace_id=ws_id) }}">
+                    Workspace {{ ws_id[:8] }}...
+                    {% if ws.graph %}
+                    ({{ ws.graph.nodes | length }} nodes)
+                    {% else %}
+                    (empty)
+                    {% endif %}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No workspaces yet. <a href="{{ url_for('main.new_workspace') }}">Create one</a>.</p>
+        {% endif %}
+        
+        <a href="{{ url_for('main.new_workspace') }}" class="btn btn-primary">New Workspace</a>
+    </section>
+    
+    <section class="plugins">
+        <h3>Available Plugins</h3>
+        
+        <div class="plugin-category">
+            <h4>Data Sources</h4>
+            {% if data_sources %}
+            <ul>
+                {% for name, plugin in data_sources.items() %}
+                <li>
+                    <strong>{{ plugin.name }}</strong>
+                    <p>{{ plugin.description }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No data source plugins installed.</p>
+            {% endif %}
+        </div>
+        
+        <div class="plugin-category">
+            <h4>Visualizers</h4>
+            {% if visualizers %}
+            <ul>
+                {% for name, plugin in visualizers.items() %}
+                <li>
+                    <strong>{{ plugin.name }}</strong>
+                    <p>{{ plugin.description }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p>No visualizer plugins installed.</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+{% endblock %}
