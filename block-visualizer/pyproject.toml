@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tangled-block-visualizer"
+version = "0.1.0"
+description = "Block visualizer plugin for Tangled - displays nodes as rectangles with all attributes"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "tangled-api",
+    "jinja2>=3.0",
+]
+
+[project.entry-points."tangled.visualizer"]
+block = "tangled_block_visualizer:BlockVisualizer"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
