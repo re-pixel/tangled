@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tangled-simple-visualizer"
+version = "0.1.0"
+description = "Simple visualizer plugin for Tangled - displays nodes as circles with minimal info"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "tangled-api",
+    "jinja2>=3.0",
+]
+
+[project.entry-points."tangled.visualizer"]
+simple = "tangled_simple_visualizer:SimpleVisualizer"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]

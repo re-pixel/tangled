@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Workspace - Tangled Graph Explorer{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/workspace.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="workspace-page" data-workspace-id="{{ workspace.id }}">
+    
+    <!-- Control Panel -->
+    <aside class="control-panel">
+        <section class="data-source-section">
+            <h3>Load Data</h3>
+            <form id="load-data-form">
+                <select id="data-source-select" name="plugin">
+                    <option value="">Select data source...</option>
+                    <!-- Populated via JS -->
+                </select>
+                <div id="plugin-params">
+                    <!-- Dynamic parameters based on selected plugin -->
+                </div>
+                <button type="submit" class="btn">Load</button>
+            </form>
+        </section>
+        
+        <section class="visualizer-section">
+            <h3>Visualizer</h3>
+            <select id="visualizer-select">
+                {% for name, plugin in visualizers.items() %}
+                <option value="{{ name }}">{{ plugin.name }}</option>
+                {% endfor %}
+            </select>
+        </section>
+        
+        <section class="search-section">
+            <h3>Search</h3>
+            <form id="search-form">
+                <input type="text" id="search-input" placeholder="Search nodes...">
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </section>
+        
+        <section class="filter-section">
+            <h3>Filter</h3>
+            <form id="filter-form">
+                <input type="text" id="filter-input" placeholder="e.g., age > 25">
+                <button type="submit" class="btn">Filter</button>
+            </form>
+            <button id="reset-btn" class="btn btn-secondary">Reset</button>
+        </section>
+    </aside>
+    
+    <!-- Main Content Area -->
+    <div class="main-content">
+        
+        <!-- Top Row: Tree View + Main View -->
+        <div class="top-row">
+            
+            <!-- Tree View -->
+            <section class="tree-view">
+                <h3>Tree View</h3>
+                <div id="tree-container">
+                    <!-- Tree structure rendered here -->
+                    <p class="placeholder">Load data to see tree view</p>
+                </div>
+            </section>
+            
+            <!-- Main View -->
+            <section class="main-view">
+                <h3>Main View</h3>
+                <div id="main-graph-container">
+                    <!-- Graph visualization rendered here -->
+                    <p class="placeholder">Load data to visualize graph</p>
+                </div>
+            </section>
+            
+        </div>
+        
+        <!-- Bottom Row: Bird View + CLI -->
+        <div class="bottom-row">
+            
+            <!-- Bird View -->
+            <section class="bird-view">
+                <h3>Bird View</h3>
+                <div id="bird-container">
+                    <!-- Minimap rendered here -->
+                    <div id="viewport-rect"></div>
+                </div>
+            </section>
+            
+            <!-- CLI Terminal -->
+            <section class="cli-section">
+                <h3>CLI</h3>
+                <div id="cli-container">
+                    <div id="cli-output"></div>
+                    <form id="cli-form">
+                        <span class="prompt">&gt;</span>
+                        <input type="text" id="cli-input" placeholder="Enter command...">
+                    </form>
+                </div>
+            </section>
+            
+        </div>
+        
+    </div>
+    
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/graph.js') }}"></script>
+<script src="{{ url_for('static', filename='js/treeview.js') }}"></script>
+<script src="{{ url_for('static', filename='js/birdview.js') }}"></script>
+<script src="{{ url_for('static', filename='js/workspace.js') }}"></script>
+{% endblock %}
