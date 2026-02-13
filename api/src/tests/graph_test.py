@@ -1,7 +1,7 @@
 """
 Unit tests for Graph data model.
 
-Run with: python -m pytest test_graph.py -v
+Run with: python -m pytest graph_test.py -v
 """
 
 import pytest
