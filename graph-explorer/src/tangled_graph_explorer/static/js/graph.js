@@ -90,15 +90,16 @@ class GraphRenderer {
             .force('charge', d3.forceManyBody().strength(-300))
             .force('center', d3.forceCenter(width / 2, height / 2));
         
-        // Draw edges
+        // Draw edges (arrows only for directed graphs)
+        const isDirected = data.directed !== false;
         const edges = this.mainGroup.append('g')
             .attr('class', 'edges')
             .selectAll('line')
             .data(data.edges)
             .enter()
             .append('line')
-            .attr('class', d => `edge ${d.directed ? 'directed' : ''}`)
-            .attr('marker-end', d => d.directed ? 'url(#arrowhead)' : null);
+            .attr('class', d => `edge ${isDirected ? 'directed' : ''}`)
+            .attr('marker-end', d => isDirected ? 'url(#arrowhead)' : null);
         
         // Draw nodes
         const nodes = this.mainGroup.append('g')

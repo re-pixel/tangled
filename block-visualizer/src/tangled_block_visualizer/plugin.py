@@ -32,7 +32,6 @@ GRAPH_DATA_TEMPLATE = """
             "id": "{{ edge.id }}",
             "source": "{{ edge.source }}",
             "target": "{{ edge.target }}",
-            "directed": {{ edge.directed | lower }},
             "attributes": [
                 {% for attr in edge.attributes %}
                 {"name": "{{ attr.name }}", "value": "{{ attr.value }}"}{% if not loop.last %},{% endif %}
@@ -113,7 +112,6 @@ class BlockVisualizer(VisualizerPlugin):
                 "id": edge_id,
                 "source": edge.source_id,
                 "target": edge.target_id,
-                "directed": "true" if edge.directed else "false",
                 "attributes": edge_attrs,
             })
         

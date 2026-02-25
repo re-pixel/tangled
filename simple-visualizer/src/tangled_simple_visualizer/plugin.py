@@ -26,8 +26,7 @@ GRAPH_DATA_TEMPLATE = """
         {
             "id": "{{ edge.id }}",
             "source": "{{ edge.source }}",
-            "target": "{{ edge.target }}",
-            "directed": {{ edge.directed | lower }}
+            "target": "{{ edge.target }}"
         }{% if not loop.last %},{% endif %}
         {% endfor %}
     ]
@@ -67,7 +66,7 @@ class SimpleVisualizer(VisualizerPlugin):
         """
         # TODO: Implement rendering
         # 1. Extract node data (id, label from first attribute or id)
-        # 2. Extract edge data (source, target, directed)
+        # 2. Extract edge data (source, target)
         # 3. Render template with graph data
         
         template = Template(GRAPH_DATA_TEMPLATE)
@@ -87,7 +86,6 @@ class SimpleVisualizer(VisualizerPlugin):
                 "id": edge_id,
                 "source": edge.source_id,
                 "target": edge.target_id,
-                "directed": "true" if edge.directed else "false",
             })
         
         return template.render(

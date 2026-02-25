@@ -41,8 +41,8 @@ class TreeView {
             if (source) {
                 source.children.push(edge.target);
             }
-            // For undirected edges, add reverse connection too
-            if (!edge.directed) {
+            // For undirected graphs, add reverse connection for tree traversal
+            if (data.directed === false) {
                 const target = this.adjacencyMap.get(edge.target);
                 if (target) {
                     target.children.push(edge.source);

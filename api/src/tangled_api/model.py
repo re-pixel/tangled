@@ -138,7 +138,6 @@ class Edge:
         source_id: ID of the source node
         target_id: ID of the target node
         attributes: Dictionary of attribute name -> value pairs
-        directed: Whether this edge is directed (default: True)
     """
     id: str
     source_id: str
