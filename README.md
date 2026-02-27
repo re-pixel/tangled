@@ -20,7 +20,11 @@ tangled/
 │   └── src/tangled_block_visualizer/
 ├── graph-explorer/           # Flask web application
 │   └── src/tangled_graph_explorer/
-├── install.sh                # Installation script
+├── install.sh                # Installation script (Linux/macOS)
+├── install.ps1               # Installation script (Windows)
+├── reinstall.sh              # Reinstall all components (Linux/macOS)
+├── reinstall.ps1             # Reinstall all components (Windows)
+├── PLUGIN_DEVELOPMENT.md     # Guide for adding plugins
 └── README.md                 # This file
 ```
 
@@ -43,33 +47,48 @@ tangled/
 ## Requirements
 
 - Python 3.10+
-- pip
 
 ## Installation
 
-### Quick Start
+### Linux / macOS
+
+In terminal:
 
 ```bash
-# Clone the repository
-git clone <repo-url>
+git clone https://github.com/re-pixel/tangled.git
 cd tangled
 
-# Run the install script
 ./install.sh
-
-# Start the application
+source venv/bin/activate
 tangled
-# or: flask --app tangled_graph_explorer run --debug
 ```
+
+Open http://localhost:5000 in your browser.
+
+### Windows
+
+In PowerShell:
+
+```powershell
+git clone https://github.com/re-pixel/tangled.git
+cd tangled
+
+.\install.ps1
+.\venv\Scripts\Activate.ps1
+tangled
+```
+
+If script execution is disabled, run once: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+Open http://localhost:5000 in your browser.
 
 ### Manual Installation
 
-```bash
-# Create and activate virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+If you prefer not to use the install script (any platform):
 
-# Install components in dependency order
+```bash
+python -m venv venv
+source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
 pip install -e ./api
 pip install -e ./platform
 pip install -e ./json-datasource
@@ -77,8 +96,6 @@ pip install -e ./xml-datasource
 pip install -e ./simple-visualizer
 pip install -e ./block-visualizer
 pip install -e ./graph-explorer
-
-# Run the application
 tangled
 ```
 
@@ -92,10 +109,22 @@ When you modify a component, reinstall it:
 pip install -e ./platform  # or whichever component you changed
 ```
 
-Or use the reinstall script:
+Or use the reinstall script (with venv activated, or from project root):
+
+### Linux / macOS
+
+In terminal:
 
 ```bash
 ./reinstall.sh
+```
+
+### Windows
+
+In PowerShell:
+
+```powershell
+.\reinstall.ps1
 ```
 
 ### Adding a New Plugin
