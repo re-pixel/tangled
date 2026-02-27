@@ -4,6 +4,11 @@
 
 $ErrorActionPreference = "Stop"
 
+if (-not (Test-Path ".\api")) {
+    Write-Host "Error: Run this script from the repository root (the folder containing api, platform, etc.)." -ForegroundColor Red
+    exit 1
+}
+
 Write-Host "========================================="
 Write-Host "Tangled Graph Explorer - Installation"
 Write-Host "========================================="
@@ -43,7 +48,7 @@ Write-Host "Python $pythonVersion detected" -ForegroundColor Green
 Write-Host ""
 
 # Check if venv and ensurepip are available
-& $Py $PyArgs -c "import venv, ensurepip" 2>&1 | Out-Null
+& $Py $PyArgs -c "import venv, ensurepip" 2>$null
 if ($LASTEXITCODE -ne 0) {
     Write-Host "Error: venv/ensurepip is not available." -ForegroundColor Red
     Write-Host "Reinstall Python from https://www.python.org/downloads/ and run the installer again."
@@ -70,21 +75,36 @@ if ($LASTEXITCODE -ne 0) { exit 1 }
 Write-Host "pip upgraded" -ForegroundColor Green
 Write-Host ""
 
+# Discover components: direct subdirs with pyproject.toml, order api → platform → others (sorted) → graph-explorer
+$middle = Get-ChildItem -Directory | Where-Object {
+    $_.Name -notin @("api", "platform", "graph-explorer", "venv") -and
+    (Test-Path (Join-Path $_.FullName "pyproject.toml"))
+} | Select-Object -ExpandProperty Name | Sort-Object
+$componentDirs = @("api", "platform") + [array]$middle
+if (Test-Path ".\graph-explorer\pyproject.toml") { $componentDirs += "graph-explorer" }
+$componentPaths = $componentDirs | ForEach-Object { ".\$_" }
+
+# Get package name from pyproject.toml (fallback: tangled-<dirname>)
+function Get-PackageName($dir) {
+    $pyproject = Join-Path $dir "pyproject.toml"
+    if (-not (Test-Path $pyproject)) { return "tangled-$dir" }
+    $content = Get-Content $pyproject -Raw -ErrorAction SilentlyContinue
+    if ($content -match 'name\s*=\s*"([^"]+)"') { return $Matches[1] }
+    if ($content -match "name\s*=\s*'([^']+)'") { return $Matches[1] }
+    return "tangled-$dir"
+}
+
 Write-Host "Installing components..."
-$components = @(
-    @{ n = "1/7"; name = "tangled-api"; path = ".\api" },
-    @{ n = "2/7"; name = "tangled-platform"; path = ".\platform" },
-    @{ n = "3/7"; name = "tangled-json-datasource"; path = ".\json-datasource" },
-    @{ n = "4/7"; name = "tangled-xml-datasource"; path = ".\xml-datasource" },
-    @{ n = "5/7"; name = "tangled-simple-visualizer"; path = ".\simple-visualizer" },
-    @{ n = "6/7"; name = "tangled-block-visualizer"; path = ".\block-visualizer" },
-    @{ n = "7/7"; name = "tangled-graph-explorer"; path = ".\graph-explorer" }
-)
-foreach ($c in $components) {
-    Write-Host "  [$($c.n)] Installing $($c.name)..."
-    & $pip install -e $c.path --quiet
+$total = $componentPaths.Count
+$n = 0
+foreach ($path in $componentPaths) {
+    $n++
+    $dirName = Split-Path -Leaf $path
+    $pkg = Get-PackageName $dirName
+    Write-Host "  [$n/$total] Installing $pkg..."
+    & $pip install -e $path --quiet
     if ($LASTEXITCODE -ne 0) { exit 1 }
-    Write-Host "  $($c.name) installed" -ForegroundColor Green
+    Write-Host "  $pkg installed" -ForegroundColor Green
 }
 
 Write-Host ""
