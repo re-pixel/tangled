@@ -20,6 +20,13 @@ fi
 
 echo "✓ Python $PYTHON_VERSION detected"
 
+# Check if venv module is available
+if ! python3 -c "import venv, ensurepip" 2>/dev/null; then
+    echo "Error: python3-venv is not installed."
+    echo "Run: sudo apt install python3.${PYTHON_VERSION#*.}-venv"
+    exit 1
+fi
+
 # Create virtual environment if it doesn't exist
 if [ ! -d "venv" ]; then
     echo ""
