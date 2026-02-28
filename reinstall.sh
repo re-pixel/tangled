@@ -5,6 +5,11 @@
 
 set -e
 
+if [ ! -d "api" ]; then
+    echo "Error: Run this script from the repository root."
+    exit 1
+fi
+
 echo "Reinstalling all Tangled components..."
 
 # Activate virtual environment
