@@ -223,7 +223,14 @@ class TestGraph:
         graph.remove_edge("e1")
         
         assert len(graph.edges) == 0
-    
+
+    def test_remove_node_accepts_int_id(self):
+        """Node IDs are stored as str; int should be normalized for lookup."""
+        graph = Graph()
+        graph.add_node(Node("1"))
+        graph.remove_node(1)
+        assert graph.get_node("1") is None
+
     def test_get_successors(self):
         graph = Graph(directed=True)
         n1 = Node(id="n1")
@@ -320,7 +327,17 @@ class TestGraph:
 
         assert graph.get_node("n1").get_attribute_value("value") == 100
         assert subgraph.get_node("n1").get_attribute_value("value") == 999
-    
+
+    def test_create_subgraph_handles_duplicate_ids(self):
+        """Duplicate node IDs in the list should not raise."""
+        graph = Graph()
+        graph.add_node(Node("n1"))
+        graph.add_node(Node("n2"))
+        graph.add_edge(Edge("e1", "n1", "n2"))
+        subgraph = graph.create_subgraph(["n1", "n1", "n2"])
+        assert len(subgraph) == 2
+        assert len(subgraph.edges) == 1
+
     def test_has_cycle_directed_acyclic(self):
         graph = Graph(directed=True)
         

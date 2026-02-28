@@ -58,7 +58,7 @@ class Node:
     
     Attributes:
         id: Unique identifier for the node
-        attributes: Dictionary of attribute name -> value pairs
+        attributes: Dictionary of attribute name -> Attribute objects (key, value, type)
     """
     id: str
     attributes: Dict[str, Attribute] = field(default_factory=dict)
@@ -294,6 +294,7 @@ class Graph:
         Remove node from graph.
         Raises exception if node has edges.
         """
+        node_id = str(node_id)
         if node_id not in self._nodes:
             raise ValueError(f"Node {node_id} not found")
         
@@ -404,6 +405,7 @@ class Graph:
 
     def get_edges_for_node(self, node_id: Union[str, int]) -> List[Edge]:
         """ Get all edges connected to node """
+        node_id = str(node_id)
         return [
             e for e in self._edges.values()
             if e.source_id == node_id or e.target_id == node_id
@@ -505,7 +507,7 @@ class Graph:
         """
         subgraph = Graph(directed=self.directed)
         
-        for node_id in node_ids:
+        for node_id in dict.fromkeys(node_ids):
             if node_id in self._nodes:
                 node = self._nodes[node_id]
                 new_node = Node(id=node.id)
