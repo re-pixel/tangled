@@ -82,15 +82,15 @@ class BlockVisualizer(VisualizerPlugin):
             label = node_id
             if node.attributes:
                 first_attr = next(iter(node.attributes.values()))
-                label = str(first_attr)
+                label = str(first_attr.value)
             
             # Collect all attributes with type info
             attributes = []
-            for attr_name, attr_value in node.attributes.items():
+            for attr_name, attr in node.attributes.items():
                 attributes.append({
                     "name": attr_name,
-                    "value": str(attr_value),
-                    "type": type(attr_value).__name__,
+                    "value": str(attr.value),
+                    "type": attr.type.value,
                 })
             
             nodes.append({
@@ -102,10 +102,10 @@ class BlockVisualizer(VisualizerPlugin):
         edges = []
         for edge_id, edge in graph.edges.items():
             edge_attrs = []
-            for attr_name, attr_value in edge.attributes.items():
+            for attr_name, attr in edge.attributes.items():
                 edge_attrs.append({
                     "name": attr_name,
-                    "value": str(attr_value),
+                    "value": str(attr.value),
                 })
             
             edges.append({

@@ -18,9 +18,11 @@ pip install -e /path/to/api
 ## Usage
 
 ```python
-from tangled_api.model import Graph, Node, Edge
-from tangled_api.plugins import DataSourcePlugin, VisualizerPlugin
+from tangled_api import Graph, Node, Edge
+from tangled_api import DataSourcePlugin, VisualizerPlugin
 ```
+
+Attributes use typed values (`int`, `str`, `float`, `date`). Use `node.set_attribute(key, value)` for auto-detection, or `node.set_attribute(key, value, "integer")` for explicit type when needed.
 
 ## For Plugin Developers
 

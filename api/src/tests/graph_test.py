@@ -44,7 +44,20 @@ class TestNode:
         attr = node.get_attribute("score")
         if (attr is not None):
             assert attr.type == AttributeValue.INTEGER
-    
+
+    def test_set_attribute_explicit_type_via_string(self):
+        """Test that set_attribute accepts type as string (public API, no AttributeValue import)."""
+        node = Node(id="n1")
+        node.set_attribute("score", 100, "integer")
+        data = node.to_dict()
+        assert data["attributes"]["score"]["type"] == "integer"
+        assert data["attributes"]["score"]["value"] == 100
+
+    def test_set_attribute_invalid_string_type_raises(self):
+        node = Node(id="n1")
+        with pytest.raises(ValueError, match="Unknown attribute type"):
+            node.set_attribute("x", 1, "invalid_type")
+
     def test_node_serialization(self):
         node = Node(id="n1")
         node.set_attribute("name", "Alice")

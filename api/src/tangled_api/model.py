@@ -18,6 +18,20 @@ class AttributeValue(Enum):
     FLOAT = "float"
     DATE = "date"
 
+
+def _resolve_attr_type(attr_type: Union[AttributeValue, str, None]) -> Optional[AttributeValue]:
+    """Resolve attr_type to AttributeValue. Accepts enum or string ('integer', 'string', 'float', 'date')."""
+    if attr_type is None:
+        return None
+    if isinstance(attr_type, AttributeValue):
+        return attr_type
+    if isinstance(attr_type, str):
+        try:
+            return AttributeValue(attr_type.lower())
+        except ValueError:
+            raise ValueError(f"Unknown attribute type: {attr_type!r}. Use 'integer', 'string', 'float', or 'date'.")
+    return None
+
 @dataclass
 class Attribute:
     """ Single attribute with type information """
@@ -54,12 +68,13 @@ class Node:
         attr = self.attributes.get(key)
         return attr.value if attr else None
 
-    def set_attribute(self, key: str, value: Any, attr_type: Optional[AttributeValue] = None):
-        if attr_type is None:
-            attr_type = self._detect_type(value)
-
-        if attr_type is None:
+    def set_attribute(self, key: str, value: Any, attr_type: Optional[Union[AttributeValue, str]] = None):
+        resolved = _resolve_attr_type(attr_type)
+        if resolved is None:
+            resolved = self._detect_type(value)
+        if resolved is None:
             raise ValueError("Unsupported attribute type")
+        attr_type = resolved
 
         if attr_type == AttributeValue.INTEGER and not isinstance(value, int):
             raise TypeError("Value must be int")
@@ -151,13 +166,14 @@ class Edge:
         attr = self.attributes.get(key)
         return attr.value if attr else None
     
-    def set_attribute(self, key: str, value: Any, attr_type: Optional[AttributeValue] = None):
+    def set_attribute(self, key: str, value: Any, attr_type: Optional[Union[AttributeValue, str]] = None):
         """ Set edge attribute with type detection """
-        if attr_type is None:
-            attr_type = Node._detect_type(value)
-        
-        if attr_type is None:
+        resolved = _resolve_attr_type(attr_type)
+        if resolved is None:
+            resolved = Node._detect_type(value)
+        if resolved is None:
             raise ValueError("Unsupported attribute type")
+        attr_type = resolved
         
         if attr_type == AttributeValue.INTEGER and not isinstance(value, int):
             raise TypeError("Value must be int")

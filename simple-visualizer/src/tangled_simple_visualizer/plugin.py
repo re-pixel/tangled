@@ -77,7 +77,7 @@ class SimpleVisualizer(VisualizerPlugin):
             label = node_id
             if node.attributes:
                 first_attr = next(iter(node.attributes.values()))
-                label = str(first_attr)
+                label = str(first_attr.value)
             nodes.append({"id": node_id, "label": label})
         
         edges = []
