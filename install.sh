@@ -20,6 +20,25 @@ fi
 
 echo "✓ Python $PYTHON_VERSION detected"
 
+# Check if venv module is available
+if ! python3 -c "import venv, ensurepip" 2>/dev/null; then
+    echo "Error: Python venv/ensurepip modules are not available."
+    if command -v apt-get >/dev/null 2>&1 || [ -f /etc/debian_version ]; then
+        echo "On Debian/Ubuntu run: sudo apt install python3.${PYTHON_VERSION#*.}-venv"
+    elif [ -f /etc/redhat-release ] && command -v dnf >/dev/null 2>&1; then
+        echo "On Fedora/RHEL run: sudo dnf install python3-virtualenv"
+    elif [ -f /etc/arch-release ]; then
+        echo "On Arch Linux run: sudo pacman -S python-venv"
+    elif command -v zypper >/dev/null 2>&1; then
+        echo "On openSUSE run: sudo zypper install python3-venv"
+    elif [ "$(uname -s)" = "Darwin" ]; then
+        echo "On macOS run: brew install python"
+    else
+        echo "Install the venv package for your Python version using your system package manager."
+    fi
+    exit 1
+fi
+
 # Create virtual environment if it doesn't exist
 if [ ! -d "venv" ]; then
     echo ""
@@ -40,37 +59,37 @@ echo "Upgrading pip..."
 pip install --upgrade pip --quiet
 echo "✓ pip upgraded"
 
+# Discover components: direct subdirs with pyproject.toml, order api → platform → others (sorted) → graph-explorer
+COMPONENTS="api platform"
+MIDDLE=$(for d in */; do
+  d="${d%/}"
+  [ "$d" = "api" ] || [ "$d" = "platform" ] || [ "$d" = "graph-explorer" ] || [ "$d" = "venv" ] && continue
+  [ -f "$d/pyproject.toml" ] && echo "$d"
+done | sort)
+[ -f "graph-explorer/pyproject.toml" ] && COMPONENTS="$COMPONENTS $MIDDLE graph-explorer" || COMPONENTS="$COMPONENTS $MIDDLE"
+COMPONENTS=$(echo $COMPONENTS | xargs)
+
+# Get package name from pyproject.toml (fallback: tangled-<dirname>)
+get_pkg_name() {
+  local f="$1/pyproject.toml" pkg
+  pkg=$(sed -n 's/^name[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$f" 2>/dev/null)
+  [ -z "$pkg" ] && pkg=$(sed -n "s/^name[[:space:]]*=[[:space:]]*'\([^']*\)'.*/\1/p" "$f" 2>/dev/null)
+  [ -z "$pkg" ] && pkg="tangled-$1"
+  echo "$pkg"
+}
+
 # Install components in dependency order
 echo ""
 echo "Installing components..."
-
-echo "  [1/7] Installing tangled-api..."
-pip install -e ./api --quiet
-echo "  ✓ tangled-api installed"
-
-echo "  [2/7] Installing tangled-platform..."
-pip install -e ./platform --quiet
-echo "  ✓ tangled-platform installed"
-
-echo "  [3/7] Installing tangled-json-datasource..."
-pip install -e ./json-datasource --quiet
-echo "  ✓ tangled-json-datasource installed"
-
-echo "  [4/7] Installing tangled-xml-datasource..."
-pip install -e ./xml-datasource --quiet
-echo "  ✓ tangled-xml-datasource installed"
-
-echo "  [5/7] Installing tangled-simple-visualizer..."
-pip install -e ./simple-visualizer --quiet
-echo "  ✓ tangled-simple-visualizer installed"
-
-echo "  [6/7] Installing tangled-block-visualizer..."
-pip install -e ./block-visualizer --quiet
-echo "  ✓ tangled-block-visualizer installed"
-
-echo "  [7/7] Installing tangled-graph-explorer..."
-pip install -e ./graph-explorer --quiet
-echo "  ✓ tangled-graph-explorer installed"
+n=0
+total=$(echo $COMPONENTS | wc -w)
+for dir in $COMPONENTS; do
+  n=$((n + 1))
+  pkg=$(get_pkg_name "$dir")
+  echo "  [$n/$total] Installing $pkg..."
+  pip install -e "./$dir" --quiet
+  echo "  ✓ $pkg installed"
+done
 
 echo ""
 echo "========================================="

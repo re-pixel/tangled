@@ -156,7 +156,7 @@ Once your code is written, you must install the plugin in "editable" mode so the
 
 1.  **Activate your environment**:
     ```bash
-    source venv/bin/activate
+    source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
     ```
 
 2.  **Install your plugin**:
