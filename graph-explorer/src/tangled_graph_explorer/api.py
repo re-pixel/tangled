@@ -210,13 +210,13 @@ def get_graph_data(workspace_id: str):
         return jsonify({"error": "Workspace not found"}), 404
     
     if ws.graph is None:
-        return jsonify({"nodes": [], "edges": []})
+        return jsonify({"nodes": [], "edges": [], "directed": True})
     
     nodes = []
     for node_id, node in ws.graph.nodes.items():
         nodes.append({
             "id": node_id,
-            "attributes": {k: str(v) for k, v in node.attributes.items()},
+            "attributes": {k: str(v.value) for k, v in node.attributes.items()},
         })
     
     edges = []
@@ -225,8 +225,11 @@ def get_graph_data(workspace_id: str):
             "id": edge_id,
             "source": edge.source_id,
             "target": edge.target_id,
-            "directed": edge.directed,
-            "attributes": {k: str(v) for k, v in edge.attributes.items()},
+            "attributes": {k: str(v.value) for k, v in edge.attributes.items()},
         })
     
-    return jsonify({"nodes": nodes, "edges": edges})
+    return jsonify({
+        "nodes": nodes,
+        "edges": edges,
+        "directed": ws.graph.directed,
+    })

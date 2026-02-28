@@ -312,11 +312,9 @@ class GraphRenderer {
 
         nodeSelection.attr("transform", (d) => `translate(${d.x},${d.y})`);
 
-        // ✅ Osvežavaj bird view tokom simulacije
         if (this.onSimulationTick) this.onSimulationTick(data);
       })
       .on("end", () => {
-        // ✅ Finalni render kad simulacija završi
         if (this.onSimulationTick) this.onSimulationTick(data);
       });
   }
