@@ -55,7 +55,7 @@ class SimpleVisualizer(VisualizerPlugin):
                 "directed": edge.directed
             })
 
-        directed = any(edge["directed"] for edge in edges)
+        directed = graph.directed
 
         return self.template.render(
             name=id(graph),
