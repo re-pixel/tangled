@@ -22,8 +22,20 @@ echo "✓ Python $PYTHON_VERSION detected"
 
 # Check if venv module is available
 if ! python3 -c "import venv, ensurepip" 2>/dev/null; then
-    echo "Error: python3-venv is not installed."
-    echo "Run: sudo apt install python3.${PYTHON_VERSION#*.}-venv"
+    echo "Error: Python venv/ensurepip modules are not available."
+    if command -v apt-get >/dev/null 2>&1 || [ -f /etc/debian_version ]; then
+        echo "On Debian/Ubuntu run: sudo apt install python3.${PYTHON_VERSION#*.}-venv"
+    elif [ -f /etc/redhat-release ] && command -v dnf >/dev/null 2>&1; then
+        echo "On Fedora/RHEL run: sudo dnf install python3-virtualenv"
+    elif [ -f /etc/arch-release ]; then
+        echo "On Arch Linux run: sudo pacman -S python-venv"
+    elif command -v zypper >/dev/null 2>&1; then
+        echo "On openSUSE run: sudo zypper install python3-venv"
+    elif [ "$(uname -s)" = "Darwin" ]; then
+        echo "On macOS run: brew install python"
+    else
+        echo "Install the venv package for your Python version using your system package manager."
+    fi
     exit 1
 fi
 
