@@ -292,6 +292,33 @@ class GraphRenderer {
 
         nodeSelection.attr("transform", (d) => `translate(${d.x},${d.y})`);
       });
+    this.simulation = d3
+      .forceSimulation(data.nodes)
+      .force(
+        "link",
+        d3
+          .forceLink(data.edges)
+          .id((d) => d.id)
+          .distance(150),
+      )
+      .force("charge", d3.forceManyBody().strength(-500))
+      .force("center", d3.forceCenter(w / 2, h / 2))
+      .on("tick", () => {
+        linkSelection
+          .attr("x1", (d) => d.source.x)
+          .attr("y1", (d) => d.source.y)
+          .attr("x2", (d) => d.target.x)
+          .attr("y2", (d) => d.target.y);
+
+        nodeSelection.attr("transform", (d) => `translate(${d.x},${d.y})`);
+
+        // ✅ Osvežavaj bird view tokom simulacije
+        if (this.onSimulationTick) this.onSimulationTick(data);
+      })
+      .on("end", () => {
+        // ✅ Finalni render kad simulacija završi
+        if (this.onSimulationTick) this.onSimulationTick(data);
+      });
   }
 }
 

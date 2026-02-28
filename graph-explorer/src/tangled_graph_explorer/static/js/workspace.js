@@ -99,6 +99,9 @@ class WorkspaceController {
         container.clientHeight,
       );
     };
+    this.graphRenderer.onSimulationTick = (data) => {
+      this.birdView.render(data);
+    };
   }
 
   /**
@@ -230,6 +233,8 @@ class WorkspaceController {
         } else {
           console.log("NO NODES");
         }
+
+        this.birdView.render(this.graphData);
       }, 50);
     } catch (error) {
       console.error("Failed to refresh visualization:", error);
