@@ -1,0 +1,90 @@
+<style>
+  .node {
+    cursor: pointer;
+  }
+
+  .link {
+    stroke: #1a699e82;
+    stroke-width: 1.5px;
+  }
+
+  #svg-{{name}} {
+      width: 100%;
+      height: 100%;
+  }
+</style>
+<script></script>
+<svg id="svg-{{name}}"></svg>
+<script>
+  const nodes = {{ nodes | tojson }};
+  const links = {{ edges | tojson }};
+  function render() {
+    function getNodeId(nodeName){
+        return nodeName.split(":")[1];
+    }
+    function createNodeId(id){
+        return `ID:${id}`;
+    }
+
+    d3.select('#svg-{{name}}').attr("zoom", true).append('defs')
+      .append('marker')
+      .attr("id", "arrowhead")
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 44)
+      .attr("refY", 0)
+      .attr("markerWidth", 9)
+      .attr("markerHeight", 9)
+      .attr("orient", "auto")
+      .append("path")
+      .attr("d", "M0,-5 L10,0 L0,5")
+      .attr("fill", "#1a699e82");
+
+      var g = d3.select('#svg-{{name}}').append('g');
+
+      const link = g.selectAll(".link")
+          .data(links)
+          .enter()
+          .append("path")
+          .attr("class", "link")
+          .attr("enabled", true)
+          {% if directed %}
+          .attr("marker-end", "url(#arrowhead)")
+          {% endif %}
+          .style("fill", "none")
+          .style("stroke", "#1a699e82")
+          .style("stroke-width", "1.5px");
+
+
+      const node = g.selectAll(".node")
+          .data(nodes)
+          .enter()
+          .append("g")
+          .attr("class", "node")
+          .attr("enabled", true)
+          .attr("drag", true)
+          .attr("click-focus", true)
+          .attr("tooltip", true)
+          .attr("id", d => d.id);
+
+      const radius=34;
+      const textSize=14;
+      d3.selectAll('.node').append('circle')
+          .attr('r', radius+textSize)
+          .style('fill', 'white')
+          .style('stroke', '#04446fff')
+          .style('stroke-width', '1.5px')
+          .each(function(d) {
+              d3.select("g[id=\""+d.id+"\"]")
+              .append('text')
+              .attr('x', 0)
+              .attr('y', textSize / 3)
+              .attr('text-anchor', 'middle')
+              .attr('font-size',textSize)
+              .attr('font-family','TimesNewRomance')
+              .attr('font-weight', 'bold')
+              .attr('fill','#1a699e')
+              .text(d.id);
+          });
+  }
+  render();
+</script>
