@@ -87,7 +87,7 @@ Open http://localhost:5000 in your browser.
 If you prefer not to use the install script (any platform):
 
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
 pip install -e ./api
 pip install -e ./platform
