@@ -303,6 +303,23 @@ class TestGraph:
         assert len(subgraph.edges) == 2
         assert "n0" not in subgraph.get_node_ids()
         assert "n1" in subgraph.get_node_ids()
+
+    def test_create_subgraph_deep_copy(self):
+        """Mutating subgraph node attributes does not affect original graph."""
+        graph = Graph()
+        n1 = Node("n1")
+        n1.set_attribute("value", 100)
+        n2 = Node("n2")
+        n2.set_attribute("value", 200)
+        graph.add_node(n1)
+        graph.add_node(n2)
+        graph.add_edge(Edge("e1", "n1", "n2"))
+
+        subgraph = graph.create_subgraph(["n1", "n2"])
+        subgraph.get_node("n1").set_attribute("value", 999)
+
+        assert graph.get_node("n1").get_attribute_value("value") == 100
+        assert subgraph.get_node("n1").get_attribute_value("value") == 999
     
     def test_has_cycle_directed_acyclic(self):
         graph = Graph(directed=True)
@@ -405,6 +422,56 @@ class TestGraph:
         cloned = clone.get_node("n1")
         if (cloned is not None):
             assert cloned.get_attribute_value("value") == 100
+
+
+class TestGraphFilter:
+    """Test filter_by_query method."""
+
+    def test_filter_by_query_basic(self):
+        graph = Graph()
+        for i, age in enumerate([20, 25, 30, 35]):
+            n = Node(id=f"n{i}")
+            n.set_attribute("age", age)
+            n.set_attribute("name", f"Person{i}")
+            graph.add_node(n)
+        graph.add_edge(Edge("e1", "n0", "n1"))
+        graph.add_edge(Edge("e2", "n1", "n2"))
+        graph.add_edge(Edge("e3", "n2", "n3"))
+
+        filtered = graph.filter_by_query("age > 25")
+        assert len(filtered) == 2
+        assert "n2" in filtered.get_node_ids()
+        assert "n3" in filtered.get_node_ids()
+        assert "n0" not in filtered.get_node_ids()
+        assert "n1" not in filtered.get_node_ids()
+        assert len(filtered.edges) == 1
+
+    def test_filter_by_query_wrong_type_raises(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("age", 25)
+        graph.add_node(n)
+
+        with pytest.raises(ValueError, match="not a valid integer"):
+            graph.filter_by_query("age > abc")
+
+    def test_filter_by_query_invalid_format_raises(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("age", 25)
+        graph.add_node(n)
+
+        with pytest.raises(ValueError, match="Invalid filter format"):
+            graph.filter_by_query("invalid query without operator")
+
+    def test_filter_by_query_unknown_attribute_raises(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("age", 25)
+        graph.add_node(n)
+
+        with pytest.raises(ValueError, match="not found in graph"):
+            graph.filter_by_query("nonexistent > 5")
 
 
 if __name__ == "__main__":

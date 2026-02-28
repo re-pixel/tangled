@@ -4,6 +4,8 @@ Graph data model supporting directed/undirected and cyclic/acyclic graphs.
 Attribute values can be: int, str, float, date (not stored as strings).
 """
 
+import copy
+import re
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from datetime import date
@@ -462,7 +464,6 @@ class Graph:
     
     def clone(self) -> 'Graph':
         """ Create a deep copy of the graph """
-        import copy
         return copy.deepcopy(self)
     
     def to_dict(self) -> Dict[str, Any]:
@@ -508,7 +509,7 @@ class Graph:
             if node_id in self._nodes:
                 node = self._nodes[node_id]
                 new_node = Node(id=node.id)
-                new_node.attributes = dict(node.attributes)
+                new_node.attributes = copy.deepcopy(node.attributes)
                 subgraph.add_node(new_node)
         
         for edge in self._edges.values():
@@ -518,7 +519,89 @@ class Graph:
                     source_id=edge.source_id,
                     target_id=edge.target_id
                 )
-                new_edge.attributes = dict(edge.attributes)
+                new_edge.attributes = copy.deepcopy(edge.attributes)
                 subgraph.add_edge(new_edge)
         
         return subgraph
+
+    def filter_by_query(self, query: str) -> 'Graph':
+        """
+        Filter graph by attribute query. Returns subgraph of nodes matching the filter.
+        
+        Format: <attribute> <comparator> <value>
+        Comparators: ==, !=, >, >=, <, <=
+        
+        Raises ValueError if query format is invalid or value has wrong type for the attribute.
+        """
+        query = query.strip()
+        if not query:
+            raise ValueError("Filter query cannot be empty")
+        
+        match = re.match(r'(\w+)\s*(==|!=|>=|<=|>|<)\s*(.+)', query)
+        if not match:
+            raise ValueError(
+                "Invalid filter format. Use: <attribute> <op> <value> "
+                "(e.g. age > 25). Operators: ==, !=, >, >=, <, <="
+            )
+        
+        attr_name, op, value_str = match.groups()
+        attr_name = attr_name.strip()
+        value_str = value_str.strip()
+        
+        # Find expected type from first node that has this attribute
+        expected_type = None
+        for node in self._nodes.values():
+            attr = node.get_attribute(attr_name)
+            if attr is not None:
+                expected_type = attr.type
+                break
+        
+        if expected_type is None:
+            raise ValueError(f"Attribute '{attr_name}' not found in graph")
+        
+        # Convert value string to expected type
+        try:
+            converted = self._parse_filter_value(value_str, expected_type)
+        except (ValueError, TypeError) as e:
+            raise ValueError(
+                f"Value {value_str!r} is not a valid {expected_type.value} for attribute '{attr_name}'"
+            ) from e
+        
+        # Collect matching node IDs
+        matching_ids = []
+        for node_id, node in self._nodes.items():
+            attr = node.get_attribute(attr_name)
+            if attr is None:
+                continue
+            if self._compare(attr.value, op, converted):
+                matching_ids.append(node_id)
+        
+        return self.create_subgraph(matching_ids)
+
+    def _parse_filter_value(self, value_str: str, expected_type: AttributeValue) -> Any:
+        """Parse value string to expected type. Raises ValueError on failure."""
+        if expected_type == AttributeValue.INTEGER:
+            return int(value_str)
+        if expected_type == AttributeValue.FLOAT:
+            return float(value_str)
+        if expected_type == AttributeValue.STRING:
+            return value_str
+        if expected_type == AttributeValue.DATE:
+            return date.fromisoformat(value_str)
+        raise ValueError(f"Unknown type: {expected_type}")
+
+    def _compare(self, attr_value: Any, op: str, filter_value: Any) -> bool:
+        """Compare attribute value with filter value using the given operator."""
+        if op == "==":
+            return attr_value == filter_value
+        if op == "!=":
+            return attr_value != filter_value
+        if op == ">":
+            return attr_value > filter_value
+        if op == ">=":
+            return attr_value >= filter_value
+        if op == "<":
+            return attr_value < filter_value
+        if op == "<=":
+            return attr_value <= filter_value
+        return False
