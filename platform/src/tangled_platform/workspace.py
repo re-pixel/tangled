@@ -59,14 +59,13 @@ class Workspace:
         
         Args:
             query: Filter query string
+            
+        Raises:
+            ValueError: If no graph loaded, invalid format, or value has wrong type
         """
-        # TODO: Implement filter logic
-        # - Parse query
-        # - Validate attribute types
-        # - Generate subgraph
-        # - Update _current_graph
-        # - Record in _operation_history
-        pass
+        if self._current_graph is None:
+            raise ValueError("No graph loaded")
+        self._current_graph = self._current_graph.filter_by_query(query)
     
     def search(self, query: str) -> None:
         """
