@@ -16,6 +16,7 @@
 <script></script>
 <svg id="svg-{{name}}"></svg>
 <script>
+  (function () {
   const nodes = {{ nodes | tojson }};
   const links = {{ edges | tojson }};
   function render() {
@@ -87,4 +88,5 @@
           });
   }
   render();
+  })();
 </script>
