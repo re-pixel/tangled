@@ -1,0 +1,16 @@
+{
+  "@id": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc",
+  "name": "I'm parent",
+  "children": [
+    {
+      "@id": "6616c598-0a0a-8263-7a56-fb0c0e16225a",
+      "name": "I'm first child",
+      "parent": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc"
+    },
+    {
+      "@id": "940e60e4-9497-7c0d-3467-297ff8bb9ef2",
+      "name": "I'm second child",
+      "parent": "28dddab1-4aa7-6e2b-b0b2-7ed9096aa9bc"
+    }
+  ]
+}

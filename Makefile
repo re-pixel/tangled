@@ -24,8 +24,8 @@ run:
 	$(VENV) tangled --port=$(PORT)
 
 test:
-	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" && \
-	$(VENV) pytest api/src/tests/ -v
+	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" -e "./json-datasource[dev]" && \
+	$(VENV) pytest api/src/tests/ json-datasource/tests/ -v
 
 lint:
 	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" && \

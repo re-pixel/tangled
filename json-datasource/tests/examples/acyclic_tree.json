@@ -1,0 +1,22 @@
+{
+  "id": "id1",
+  "first": "John",
+  "last": "Doe",
+  "years": 53,
+  "children": [
+    {
+      "id": "id2",
+      "first": "Mike",
+      "last": "Doe",
+      "years": 25,
+      "children": []
+    },
+    {
+      "id": "id3",
+      "first": "Lucy",
+      "last": "Doe",
+      "years": 15,
+      "children": []
+    }
+  ]
+}
