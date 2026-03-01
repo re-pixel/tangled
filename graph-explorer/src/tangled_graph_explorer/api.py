@@ -214,18 +214,27 @@ def get_graph_data(workspace_id: str):
     
     nodes = []
     for node_id, node in ws.graph.nodes.items():
-        nodes.append({
-            "id": node_id,
-            "attributes": {k: str(v) for k, v in node.attributes.items()},
-        })
-    
+        attrs = {}
+        for k, attr in node.attributes.items():
+            value = attr.value
+            if hasattr(value, "isoformat"):
+                value = value.isoformat()
+            attrs[k] = {"value": str(value), "type": attr.type.value}
+        nodes.append({"id": node_id, "attributes": attrs})
+
     edges = []
     for edge_id, edge in ws.graph.edges.items():
+        attrs = {}
+        for k, attr in edge.attributes.items():
+            value = attr.value
+            if hasattr(value, "isoformat"):
+                value = value.isoformat()
+            attrs[k] = {"value": str(value), "type": attr.type.value}
         edges.append({
             "id": edge_id,
             "source": edge.source_id,
             "target": edge.target_id,
-            "attributes": {k: str(v) for k, v in edge.attributes.items()},
+            "attributes": attrs,
         })
     
     return jsonify({
