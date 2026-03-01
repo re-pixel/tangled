@@ -24,6 +24,7 @@ tangled/
 ├── install.ps1               # Installation script (Windows)
 ├── reinstall.sh              # Reinstall all components (Linux/macOS)
 ├── reinstall.ps1             # Reinstall all components (Windows)
+├── Makefile                  # Convenience targets for install, run, test, lint
 ├── PLUGIN_DEVELOPMENT.md     # Guide for adding plugins
 └── README.md                 # This file
 ```
@@ -63,6 +64,8 @@ source venv/bin/activate
 tangled
 ```
 
+Or using Make: `make install` then `make run`.
+
 Open http://localhost:5000 in your browser.
 
 ### Windows
@@ -101,6 +104,29 @@ tangled
 
 ## Development
 
+### Makefile (Linux / macOS)
+
+A Makefile provides convenient targets for common tasks. Run `make help` to list all options.
+
+| Target | Description |
+|--------|--------------|
+| `make install` | Create venv and install all packages |
+| `make run` | Start the Flask app (default: http://localhost:5000) |
+| `make test` | Run pytest |
+| `make lint` | Run mypy on api and platform |
+| `make reinstall` | Reinstall all packages (then starts server) |
+| `make clean` | Remove venv and build artifacts |
+
+**Examples:**
+
+```bash
+make install          # First-time setup
+make run              # Start app on port 5000
+make run PORT=8080    # Start app on port 8080
+make test             # Run tests
+make lint             # Type-check code
+```
+
 ### Reinstalling After Changes
 
 When you modify a component, reinstall it:
@@ -111,17 +137,15 @@ pip install -e ./platform  # or whichever component you changed
 
 Or use the reinstall script (with venv activated, or from project root):
 
-### Linux / macOS
-
-In terminal:
+**Linux / macOS:**
 
 ```bash
 ./reinstall.sh
+# or
+make reinstall
 ```
 
-### Windows
-
-In PowerShell:
+**Windows (PowerShell):**
 
 ```powershell
 .\reinstall.ps1
@@ -136,6 +160,14 @@ In PowerShell:
 5. Install with `pip install -e ./csv-datasource`
 
 ### Running Tests
+
+**Using Make (Linux / macOS):**
+
+```bash
+make test
+```
+
+**Manual:**
 
 ```bash
 # Install dev dependencies
