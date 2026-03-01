@@ -47,3 +47,21 @@ Use `@id` attributes to create references:
   }
 }
 ```
+
+## Example Data
+
+Fixture files for testing and demo (per specification: minimum 200 nodes):
+
+| File | Description |
+|------|-------------|
+| `tests/examples/acyclic_tree.json` | Acyclic tree (Doe family from spec) |
+| `tests/examples/cyclic.json` | Cyclic graph with @id and parent references |
+| `tests/examples/large_demo.json` | 211-node tree for demo (≥200 nodes) |
+
+## Testing
+
+```bash
+pytest json-datasource/tests/ -v
+```
+
+Or from project root: `make test` (runs api + json-datasource tests).
