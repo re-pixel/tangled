@@ -27,29 +27,29 @@ class Workspace:
         self._operation_history: List[Dict[str, Any]] = []
         self._data_source_name: Optional[str] = None
 
-        # g = Graph(directed=True)
-        # nodes = [
-        #     Node(id="n1", attributes={"name": "Alice", "age": 30, "city": "Sarajevo"}),
-        #     Node(id="n2", attributes={"name": "Bob",   "age": 25, "city": "Beograd"}),
-        #     Node(id="n3", attributes={"name": "Carol", "age": 35, "city": "Zagreb"}),
-        #     Node(id="n4", attributes={"name": "David", "age": 28, "city": "Sarajevo"}),
-        #     Node(id="n5", attributes={"name": "Eva",   "age": 22, "city": "Beograd"}),
-        # ]
-        # for node in nodes:
-        #     g._nodes[node.id] = node
-        # edges = [
-        #     Edge(id="e1", source_id="n1", target_id="n2", attributes={"relation": "knows", "since": 2020}),
-        #     Edge(id="e2", source_id="n2", target_id="n3", attributes={"relation": "knows", "since": 2019}),
-        #     Edge(id="e3", source_id="n3", target_id="n4", attributes={"relation": "knows", "since": 2021}),
-        #     Edge(id="e4", source_id="n4", target_id="n5", attributes={"relation": "knows", "since": 2022}),
-        #     Edge(id="e5", source_id="n1", target_id="n5", attributes={"relation": "knows", "since": 2018}),
-        #     Edge(id="e6", source_id="n5", target_id="n2", attributes={"relation": "knows", "since": 2023}),
-        # ]
-        # for edge in edges:
-        #     g._edges[edge.id] = edge
+        g = Graph(directed=True)
+        nodes = [
+            Node(id="n1", attributes={"name": "Alice", "age": 30, "city": "Sarajevo"}),
+            Node(id="n2", attributes={"name": "Bob",   "age": 25, "city": "Beograd"}),
+            Node(id="n3", attributes={"name": "Carol", "age": 35, "city": "Zagreb"}),
+            Node(id="n4", attributes={"name": "David", "age": 28, "city": "Sarajevo"}),
+            Node(id="n5", attributes={"name": "Eva",   "age": 22, "city": "Beograd"}),
+        ]
+        for node in nodes:
+            g._nodes[node.id] = node
+        edges = [
+            Edge(id="e1", source_id="n1", target_id="n2", attributes={"relation": "knows", "since": 2020}),
+            Edge(id="e2", source_id="n2", target_id="n3", attributes={"relation": "knows", "since": 2019}),
+            Edge(id="e3", source_id="n3", target_id="n4", attributes={"relation": "knows", "since": 2021}),
+            Edge(id="e4", source_id="n4", target_id="n5", attributes={"relation": "knows", "since": 2022}),
+            Edge(id="e5", source_id="n1", target_id="n5", attributes={"relation": "knows", "since": 2018}),
+            Edge(id="e6", source_id="n5", target_id="n2", attributes={"relation": "knows", "since": 2023}),
+        ]
+        for edge in edges:
+            g._edges[edge.id] = edge    
 
-        # self._original_graph = g
-        # self._current_graph = g
+        self._original_graph = g
+        self._current_graph = g
 
     @property
     def graph(self) -> Optional[Graph]:

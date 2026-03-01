@@ -109,8 +109,8 @@ class GraphRenderer {
       .data(data.edges)
       .enter()
       .append("line")
-      .attr("class", (d) => `edge ${d.directed ? "directed" : ""}`)
-      .attr("marker-end", (d) => (d.directed ? "url(#arrowhead)" : null));
+      .attr("class", (d) => `edge ${data.directed ? "directed" : ""}`)
+      .attr("marker-end", (d) => (data.directed ? "url(#arrowhead)" : null));
 
     // Draw nodes
     const nodes = this.mainGroup
@@ -253,7 +253,7 @@ class GraphRenderer {
       .attr("class", "link")
       .style("stroke", "#1a699e82")
       .style("stroke-width", "1.5px")
-      .attr("marker-end", (d) => (d.directed ? "url(#arrowhead)" : null));
+      .attr("marker-end", (d) => (data.directed ? "url(#arrowhead)" : null));
 
     const nodeSelection = this.mainGroup
       .selectAll(".node")

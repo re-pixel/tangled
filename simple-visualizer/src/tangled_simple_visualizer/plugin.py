@@ -52,7 +52,6 @@ class SimpleVisualizer(VisualizerPlugin):
                 "id": edge_id,
                 "source": edge.source_id,
                 "target": edge.target_id,
-                "directed": edge.directed
             })
 
         directed = graph.directed
