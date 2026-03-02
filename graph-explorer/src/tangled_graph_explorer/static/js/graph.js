@@ -155,7 +155,7 @@ class GraphRenderer {
           })
           .on("start", (event) => {
             if (!event.subject) return;
-            if (!event.active) this.simulation.alphaTarget(0.05).restart();
+            if (!event.active) this.simulation.alphaTarget(0.35).restart();
             event.subject.fx = event.subject.x;
             event.subject.fy = event.subject.y;
           })
