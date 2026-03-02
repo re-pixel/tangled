@@ -21,6 +21,7 @@ class GraphRenderer {
     this.onNodeSelect = null;
     this.onViewportChange = null;
     this.onSimulationTick = null;
+    this._hasZoomedToFit = false;
   }
 
   attach(svgId, data) {
@@ -41,13 +42,15 @@ class GraphRenderer {
       return;
     }
 
+    this._hasZoomedToFit = false;
     const nodeById = new Map(data.nodes.map((n) => [n.id, n]));
 
+    // Place nodes in a circle initially, centered at origin
     data.nodes.forEach((node, i) => {
       const angle = (i / data.nodes.length) * 2 * Math.PI;
       const r = Math.min(w, h) * 0.3;
-      node.x = w / 2 + r * Math.cos(angle);
-      node.y = h / 2 + r * Math.sin(angle);
+      node.x = r * Math.cos(angle);
+      node.y = r * Math.sin(angle);
     });
 
     if (linkSelector) {
@@ -85,19 +88,20 @@ class GraphRenderer {
       .attr("marker-end", data.directed ? "url(#arrowhead-platform)" : null);
 
     const nodeBounds = this._measureNodeBounds(svgEl, nodeSelector, data.nodes);
+    this._lastNodeBounds = nodeBounds;
     const nodeRadius = this._detectNodeRadius(svgEl, nodeSelector);
 
     let currentTransform = d3.zoomIdentity;
 
+    // 150px screen-space buffer prevents pop-in at edges
     const getVisibleWorldRect = (t) => {
       const { k, x: tx, y: ty } = t;
-      const bufX = w / k;
-      const bufY = h / k;
+      const buf = 150 / k;
       return {
-        left: (0 - tx) / k - bufX,
-        right: (w - tx) / k + bufX,
-        top: (0 - ty) / k - bufY,
-        bottom: (h - ty) / k + bufY,
+        left: (0 - tx) / k - buf,
+        right: (w - tx) / k + buf,
+        top: (0 - ty) / k - buf,
+        bottom: (h - ty) / k + buf,
       };
     };
 
@@ -113,7 +117,7 @@ class GraphRenderer {
           node.x <= rect.right &&
           node.y >= rect.top &&
           node.y <= rect.bottom;
-        this.style.visibility = visible ? "" : "hidden";
+        this.style.visibility = visible ? "visible" : "hidden";
       });
 
       linkSelection.each(function (d) {
@@ -127,12 +131,13 @@ class GraphRenderer {
           d.target.x <= rect.right &&
           d.target.y >= rect.top &&
           d.target.y <= rect.bottom;
-        this.style.visibility = srcVisible || tgtVisible ? "" : "hidden";
+        this.style.visibility = srcVisible || tgtVisible ? "visible" : "hidden";
       });
     };
 
     const nodeDomElements = this.mainGroup.selectAll(nodeSelector);
 
+    // Hide everything initially; culling will reveal what's in view
     nodeDomElements.each(function () {
       this.style.visibility = "hidden";
     });
@@ -150,24 +155,31 @@ class GraphRenderer {
           })
           .on("start", (event) => {
             if (!event.subject) return;
-            if (!event.active) this.simulation.alphaTarget(0.3).restart();
+            if (!event.active) this.simulation.alphaTarget(0.05).restart();
             event.subject.fx = event.subject.x;
             event.subject.fy = event.subject.y;
           })
           .on("drag", (event) => {
             if (!event.subject) return;
+            // Clamp to current visible world rect so nodes can't be dragged off screen
             const bound = nodeBounds.get(event.subject.id) || {
               hw: nodeRadius,
               hh: nodeRadius,
             };
-            const { minX, maxX, minY, maxY } = GraphRenderer._worldBounds(
-              w,
-              h,
-              currentTransform,
-              bound,
+            const { k, x: tx, y: ty } = currentTransform;
+            const pad = 10;
+            const worldLeft = (0 - tx) / k + (bound.hw + pad) / k;
+            const worldRight = (w - tx) / k - (bound.hw + pad) / k;
+            const worldTop = (0 - ty) / k + (bound.hh + pad) / k;
+            const worldBottom = (h - ty) / k - (bound.hh + pad) / k;
+            event.subject.fx = Math.max(
+              worldLeft,
+              Math.min(worldRight, event.x),
             );
-            event.subject.fx = Math.max(minX, Math.min(maxX, event.x));
-            event.subject.fy = Math.max(minY, Math.min(maxY, event.y));
+            event.subject.fy = Math.max(
+              worldTop,
+              Math.min(worldBottom, event.y),
+            );
           })
           .on("end", (event) => {
             if (!event.subject) return;
@@ -191,7 +203,7 @@ class GraphRenderer {
 
     this.zoom = d3
       .zoom()
-      .scaleExtent([0.1, 4])
+      .scaleExtent([0.05, 4])
       .on("zoom", (event) => {
         currentTransform = event.transform;
         this.mainGroup.attr("transform", currentTransform);
@@ -203,41 +215,27 @@ class GraphRenderer {
     this.simulation = d3
       .forceSimulation(data.nodes)
       .alphaDecay(0.04)
-      .velocityDecay(0.55)
+      .velocityDecay(0.85)
       .force(
         "link",
         d3
           .forceLink(data.edges)
           .id((d) => d.id)
-          .distance(250)
-          .strength(0.3),
+          .distance(220)
+          .strength(0.6),
       )
-      .force("charge", d3.forceManyBody().strength(-400).distanceMax(600))
+      .force("charge", d3.forceManyBody().strength(-200).distanceMax(400))
       .force(
         "collide",
         d3
           .forceCollide()
-          .radius(nodeRadius + 20)
-          .strength(0.8)
-          .iterations(3),
+          .radius(nodeRadius + 15)
+          .strength(0.7)
+          .iterations(2),
       )
-      .force("center", d3.forceCenter(w / 2, h / 2).strength(0.05))
+      .force("x", d3.forceX(0).strength(0.03))
+      .force("y", d3.forceY(0).strength(0.03))
       .on("tick", () => {
-        data.nodes.forEach((node) => {
-          const bound = nodeBounds.get(node.id) || {
-            hw: nodeRadius,
-            hh: nodeRadius,
-          };
-          const { minX, maxX, minY, maxY } = GraphRenderer._worldBounds(
-            w,
-            h,
-            currentTransform,
-            bound,
-          );
-          node.x = Math.max(minX, Math.min(maxX, node.x));
-          node.y = Math.max(minY, Math.min(maxY, node.y));
-        });
-
         linkSelection.each(function (d) {
           const sx = d.source.x,
             sy = d.source.y;
@@ -277,28 +275,79 @@ class GraphRenderer {
         if (this.onSimulationTick) this.onSimulationTick(data);
       })
       .on("end", () => {
+        if (!this._hasZoomedToFit) {
+          this._hasZoomedToFit = true;
+          this._zoomToFit(w, h, data.nodes);
+        }
         if (this.onSimulationTick) this.onSimulationTick(data);
       });
+
+    const initTransform = d3.zoomIdentity.translate(w / 2, h / 2);
+    this.svg.call(this.zoom.transform, initTransform);
+
+    setTimeout(() => applyCulling(currentTransform), 100);
   }
 
-  static _worldBounds(svgW, svgH, t, bound) {
-    const padding = 10;
-    const { k, x: tx, y: ty } = t;
+  // Zoom and pan so all nodes fit in the viewport
+  _zoomToFit(w, h, nodes) {
+    if (!nodes.length) return;
 
-    const worldLeft = (0 - tx) / k;
-    const worldRight = (svgW - tx) / k;
-    const worldTop = (0 - ty) / k;
-    const worldBottom = (svgH - ty) / k;
+    const svgEl = this.svg.node();
+    let minX = Infinity,
+      maxX = -Infinity;
+    let minY = Infinity,
+      maxY = -Infinity;
 
-    const hwWorld = (bound.hw + padding) / k;
-    const hhWorld = (bound.hh + padding) / k;
+    nodes.forEach((n) => {
+      if (!isFinite(n.x) || !isFinite(n.y)) return;
 
-    return {
-      minX: worldLeft + hwWorld,
-      maxX: worldRight - hwWorld,
-      minY: worldTop + hhWorld,
-      maxY: worldBottom - hhWorld,
-    };
+      let hw = 100,
+        hh = 40;
+      const el = svgEl.querySelector(`[id="${n.id}"]`);
+      if (el) {
+        const rect = el.querySelector("rect");
+        if (rect) {
+          const rw = parseFloat(rect.getAttribute("width") || 0);
+          const rh = parseFloat(rect.getAttribute("height") || 0);
+          if (rw > 0 && rh > 0) {
+            hw = rw / 2;
+            hh = rh / 2;
+          }
+        }
+      }
+
+      minX = Math.min(minX, n.x - hw);
+      maxX = Math.max(maxX, n.x + hw);
+      minY = Math.min(minY, n.y - hh);
+      maxY = Math.max(maxY, n.y + hh);
+    });
+
+    const padding = 80;
+    const graphW = maxX - minX + padding * 2;
+    const graphH = maxY - minY + padding * 2;
+
+    const k = Math.min(w / graphW, h / graphH, 1);
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    const tx = w / 2 - k * centerX;
+    const ty = h / 2 - k * centerY;
+
+    this.svg
+      .transition()
+      .duration(600)
+      .call(this.zoom.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
+  }
+
+  static _boxEdgePoint(fx, fy, tx, ty, box) {
+    if (!box) return { x: fx, y: fy };
+    const { hw, hh } = box;
+    const dx = tx - fx,
+      dy = ty - fy;
+    if (dx === 0 && dy === 0) return { x: fx, y: fy };
+    const scaleX = dx !== 0 ? hw / Math.abs(dx) : Infinity;
+    const scaleY = dy !== 0 ? hh / Math.abs(dy) : Infinity;
+    const scale = Math.min(scaleX, scaleY);
+    return { x: fx + dx * scale, y: fy + dy * scale };
   }
 
   _measureNodeBounds(svgEl, nodeSelector, nodes) {
@@ -315,7 +364,6 @@ class GraphRenderer {
             return;
           }
         }
-        // Circle fallback
         const circle = el.querySelector("circle");
         if (circle) {
           const r = parseFloat(circle.getAttribute("r") || 20);
@@ -327,18 +375,6 @@ class GraphRenderer {
       bounds.set(node.id, { hw: fallback, hh: fallback });
     });
     return bounds;
-  }
-
-  static _boxEdgePoint(fx, fy, tx, ty, box) {
-    if (!box) return { x: fx, y: fy };
-    const { hw, hh } = box;
-    const dx = tx - fx,
-      dy = ty - fy;
-    if (dx === 0 && dy === 0) return { x: fx, y: fy };
-    const scaleX = dx !== 0 ? hw / Math.abs(dx) : Infinity;
-    const scaleY = dy !== 0 ? hh / Math.abs(dy) : Infinity;
-    const scale = Math.min(scaleX, scaleY);
-    return { x: fx + dx * scale, y: fy + dy * scale };
   }
 
   _detectNodeRadius(svgEl, nodeSelector) {
@@ -406,6 +442,7 @@ class GraphRenderer {
     console.log("Node:", node);
   }
   _hideTooltip() {}
+
   getTransform() {
     return d3.zoomTransform(this.svg.node());
   }
