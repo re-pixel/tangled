@@ -5,31 +5,25 @@ All plugins must implement these interfaces to integrate with the platform.
 """
 
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Type
 
 from tangled_api.model import Graph
 
 
+@dataclass
 class PluginParameter:
     """
     Describes a required input parameter for a plugin.
-    
+
     Used by the platform to dynamically build UI for plugin configuration.
     """
-    
-    def __init__(
-        self,
-        name: str,
-        param_type: Type,
-        description: str = "",
-        required: bool = True,
-        default: Any = None,
-    ):
-        self.name = name
-        self.param_type = param_type
-        self.description = description
-        self.required = required
-        self.default = default
+
+    name: str
+    param_type: Type
+    description: str = ""
+    required: bool = True
+    default: Any = None
 
 
 class DataSourcePlugin(ABC):
