@@ -18,6 +18,7 @@ dependencies = [
     "flask>=3.0",
     "tangled-platform",
     "tangled-json-datasource",
+    "tangled-yaml-datasource",
     "tangled-xml-datasource",
     "tangled-simple-visualizer",
     "tangled-block-visualizer",
