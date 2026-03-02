@@ -24,8 +24,8 @@ run:
 	$(VENV) tangled --port=$(PORT)
 
 test:
-	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" -e "./json-datasource[dev]" && \
-	$(VENV) pytest api/src/tests/ json-datasource/tests/ -v
+	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" -e "./json-datasource[dev]" -e "./yaml-datasource[dev]" && \
+	$(VENV) pytest api/src/tests/ json-datasource/tests/ yaml-datasource/tests/ -v
 
 lint:
 	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" && \
@@ -36,7 +36,7 @@ reinstall:
 
 clean:
 	rm -rf venv .pytest_cache
-	@for dir in api platform json-datasource xml-datasource simple-visualizer block-visualizer graph-explorer; do \
+	@for dir in api platform json-datasource yaml-datasource xml-datasource simple-visualizer block-visualizer graph-explorer; do \
 		find $$dir -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true; \
 		find $$dir -type d -name "*.egg-info" -exec rm -rf {} + 2>/dev/null || true; \
 		find $$dir -type d -name "build" -exec rm -rf {} + 2>/dev/null || true; \
