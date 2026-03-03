@@ -70,6 +70,16 @@
       return HEADER_H + Math.max(1, getAttrs(d).length) * ROW_H + 4;
     }
 
+    function measureText(svg, text, fontSize) {
+      const tmp = svg.append('text')
+        .attr('font-size', fontSize || FONT_SIZE)
+        .attr('font-family', 'Arial, sans-serif')
+        .text(text);
+      const w = tmp.node().getComputedTextLength();
+      tmp.remove();
+      return w;
+    }
+
     function render() {
 
       const svg = d3.select('#svg-{{name}}').attr('zoom', true);
@@ -89,7 +99,7 @@
         .attr('class', 'block-node')
         .attr('id', d => d.id);
 
-      /* Header text */
+      /* Header text – appended first so we can measure it */
       node.append('text')
         .attr('class', 'header-text')
         .attr('text-anchor', 'middle')
@@ -102,17 +112,23 @@
       node.each(function (d) {
 
         const grp = d3.select(this);
-
         const attrs = getAttrs(d);
 
         const textEl = this.querySelector('.header-text');
         const textW = textEl ? textEl.getComputedTextLength() : 100;
 
-        const nw = Math.max(160, textW + PAD_X * 2);
+        let maxAttrW = 0;
+        attrs.forEach(attr => {
+          const valW = measureText(svg, String(attr.value), FONT_SIZE);
+          const rowW = PAD_X + KEY_W + 8 + valW + PAD_X;
+          if (rowW > maxAttrW) maxAttrW = rowW;
+        });
+
+        const nw = Math.max(160, textW + PAD_X * 2, maxAttrW);
         const nh = nodeHeight(d);
         const topY = -nh / 2;
 
-        /* Node border */
+        /* Node border (full rounded rect, white fill) */
         grp.insert('rect', '.header-text')
           .attr('class', 'node-border')
           .attr('x', -nw / 2)
@@ -122,7 +138,17 @@
           .attr('rx', 4)
           .attr('ry', 4);
 
-        /* Header background */
+        /* Clip path to flatten the bottom edge of the header rect */
+        const clipId = `clip-header-${d.id}`;
+        grp.append('clipPath')
+          .attr('id', clipId)
+          .append('rect')
+          .attr('x', -nw / 2)
+          .attr('y', topY)
+          .attr('width', nw)
+          .attr('height', HEADER_H);
+
+        /* Header background – clipped so only top corners are rounded */
         grp.insert('rect', '.header-text')
           .attr('class', 'header-bg')
           .attr('x', -nw / 2)
@@ -130,15 +156,8 @@
           .attr('width', nw)
           .attr('height', HEADER_H)
           .attr('rx', 4)
-          .attr('ry', 4);
-
-        /* Header patch */
-        grp.insert('rect', '.header-text')
-          .attr('class', 'header-bg')
-          .attr('x', -nw / 2)
-          .attr('y', topY + HEADER_H - 6)
-          .attr('width', nw)
-          .attr('height', 6);
+          .attr('ry', 4)
+          .attr('clip-path', `url(#${clipId})`);
 
         /* Header text position */
         grp.select('.header-text')
