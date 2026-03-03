@@ -91,19 +91,27 @@ class GraphRenderer {
     this._lastNodeBounds = nodeBounds;
     const nodeRadius = this._detectNodeRadius(svgEl, nodeSelector);
 
+    const FALLBACK_HW = nodeRadius;
+    const FALLBACK_HH = nodeRadius;
+
     let currentTransform = d3.zoomIdentity;
 
-    // 150px screen-space buffer prevents pop-in at edges
+    // Returns the visible rectangle in world-space coordinates
     const getVisibleWorldRect = (t) => {
       const { k, x: tx, y: ty } = t;
-      const buf = 150 / k;
       return {
-        left: (0 - tx) / k - buf,
-        right: (w - tx) / k + buf,
-        top: (0 - ty) / k - buf,
-        bottom: (h - ty) / k + buf,
+        left: (0 - tx) / k,
+        right: (w - tx) / k,
+        top: (0 - ty) / k,
+        bottom: (h - ty) / k,
       };
     };
+
+    const boxOverlapsRect = (cx, cy, hw, hh, rect) =>
+      cx + hw >= rect.left &&
+      cx - hw <= rect.right &&
+      cy + hh >= rect.top &&
+      cy - hh <= rect.bottom;
 
     const applyCulling = (t) => {
       const rect = getVisibleWorldRect(t);
@@ -112,25 +120,35 @@ class GraphRenderer {
         const id = d3.select(this).attr("id");
         const node = nodeById.get(id);
         if (!node) return;
-        const visible =
-          node.x >= rect.left &&
-          node.x <= rect.right &&
-          node.y >= rect.top &&
-          node.y <= rect.bottom;
-        this.style.visibility = visible ? "visible" : "hidden";
+
+        const b = nodeBounds.get(id);
+        const hw = b ? b.hw : FALLBACK_HW;
+        const hh = b ? b.hh : FALLBACK_HH;
+
+        this.style.visibility = boxOverlapsRect(node.x, node.y, hw, hh, rect)
+          ? "visible"
+          : "hidden";
       });
 
       linkSelection.each(function (d) {
-        const srcVisible =
-          d.source.x >= rect.left &&
-          d.source.x <= rect.right &&
-          d.source.y >= rect.top &&
-          d.source.y <= rect.bottom;
-        const tgtVisible =
-          d.target.x >= rect.left &&
-          d.target.x <= rect.right &&
-          d.target.y >= rect.top &&
-          d.target.y <= rect.bottom;
+        const sb = nodeBounds.get(d.source.id);
+        const tb = nodeBounds.get(d.target.id);
+
+        const srcVisible = boxOverlapsRect(
+          d.source.x,
+          d.source.y,
+          sb ? sb.hw : FALLBACK_HW,
+          sb ? sb.hh : FALLBACK_HH,
+          rect,
+        );
+        const tgtVisible = boxOverlapsRect(
+          d.target.x,
+          d.target.y,
+          tb ? tb.hw : FALLBACK_HW,
+          tb ? tb.hh : FALLBACK_HH,
+          rect,
+        );
+
         this.style.visibility = srcVisible || tgtVisible ? "visible" : "hidden";
       });
     };
