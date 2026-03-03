@@ -122,10 +122,12 @@ class WorkspaceController {
         plugin: pluginId,
         params,
       });
-      result.error
-        ? showNotification(result.error, "error")
-        : (showNotification(`Loaded ${result.node_count} nodes`, "success"),
-          await this._refreshVisualization());
+      if (result.error) {
+        showNotification(result.error, "error");
+      } else {
+        showNotification(`Loaded ${result.node_count} nodes`, "success");
+        await this._refreshVisualization();
+      }
     } catch (e) {
       showNotification("Failed to load data", "error");
       console.error(e);
@@ -145,7 +147,6 @@ class WorkspaceController {
       const mainContainer = document.getElementById("main-graph-container");
       mainContainer.innerHTML = renderResult.html || "";
 
-      // Make graph data available to plugins that want it
       window.__graphData = this.graphData;
 
       mainContainer
@@ -169,6 +170,19 @@ class WorkspaceController {
     }
   }
 
+  async _updateGraph() {
+    try {
+      this.graphData = await api.get(
+        `/api/workspace/${this.workspaceId}/graph`,
+      );
+      window.__graphData = this.graphData;
+      this.graphRenderer.update(this.graphData);
+      this.birdView.render(this.graphData);
+    } catch (e) {
+      console.error("Failed to update graph:", e);
+    }
+  }
+
   async _handleSearch(query) {
     if (!query) return;
     try {
@@ -176,10 +190,12 @@ class WorkspaceController {
         `/api/workspace/${this.workspaceId}/search`,
         { query },
       );
-      result.error
-        ? showNotification(result.error, "error")
-        : (showNotification(`Found ${result.node_count} nodes`, "info"),
-          await this._refreshVisualization());
+      if (result.error) {
+        showNotification(result.error, "error");
+      } else {
+        showNotification(`Found ${result.node_count} nodes`, "info");
+        await this._refreshVisualization();
+      }
     } catch (e) {
       showNotification("Search failed", "error");
     }
@@ -192,10 +208,12 @@ class WorkspaceController {
         `/api/workspace/${this.workspaceId}/filter`,
         { query },
       );
-      result.error
-        ? showNotification(result.error, "error")
-        : (showNotification(`Filtered to ${result.node_count} nodes`, "info"),
-          await this._refreshVisualization());
+      if (result.error) {
+        showNotification(result.error, "error");
+      } else {
+        showNotification(`Filtered to ${result.node_count} nodes`, "info");
+        await this._refreshVisualization();
+      }
     } catch (e) {
       showNotification("Filter failed", "error");
     }
@@ -221,10 +239,21 @@ class WorkspaceController {
       const result = await api.post(`/api/workspace/${this.workspaceId}/cli`, {
         command,
       });
-      output.innerHTML += result.error
-        ? `<div class="cli-error">${result.error}</div>`
-        : `<div class="cli-result">${result.result || "OK"}</div>`;
-      if (!result.error) await this._refreshVisualization();
+
+      if (result.error) {
+        output.innerHTML += `<div class="cli-error">${result.error}</div>`;
+      } else {
+        output.innerHTML += `<div class="cli-result">${result.result || "OK"}</div>`;
+
+        if (result.changed) {
+          const structuralRe = /^(filter|search)\b/i;
+          if (structuralRe.test(command.trim())) {
+            await this._refreshVisualization();
+          } else {
+            await this._updateGraph();
+          }
+        }
+      }
     } catch (e) {
       output.innerHTML += `<div class="cli-error">Command failed</div>`;
     }
