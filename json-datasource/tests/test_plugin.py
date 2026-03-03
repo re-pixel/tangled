@@ -24,7 +24,7 @@ class TestJsonDataSourceLoad:
             base_path=str(EXAMPLES_DIR),
             id_attribute="id",
         )
-        assert len(graph.nodes) == 3
+        assert len(graph.nodes) == 4
         assert len(graph.edges) == 2
 
         n1 = graph.get_node("id1")
