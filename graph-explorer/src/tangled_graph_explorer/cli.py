@@ -480,6 +480,7 @@ class CLI:
                 attrs = getattr(node, "attributes", {})
                 attr_str = "  ".join(
                     f"{k}={v.value}" for k, v in attrs.items()
+                    if v.value is not None and str(v.value).strip() != ""
                 ) if attrs else "(no attributes)"
                 lines.append(f"{nid}  {attr_str}")
             return CLIResult.ok("\n".join(lines))
@@ -492,6 +493,7 @@ class CLI:
                 attrs = getattr(edge, "attributes", {})
                 attr_str = "  ".join(
                     f"{k}={v.value}" for k, v in attrs.items()
+                    if v.value is not None and str(v.value).strip() != ""
                 ) if attrs else "(no attributes)"
                 lines.append(f"{eid}  {edge.source_id} → {edge.target_id}  {attr_str}")
             return CLIResult.ok("\n".join(lines))

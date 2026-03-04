@@ -129,38 +129,42 @@ class GraphRenderer {
       }
     });
     this._placeNewNodes(data.nodes);
-
     this._nodeById = new Map(data.nodes.map((n) => [n.id, n]));
 
     const svgEl = this.svg.node();
     const currentIds = new Set(data.nodes.map((n) => n.id));
+
     this._nodeDomElements.each(function () {
       const id = d3.select(this).attr("id");
       if (!currentIds.has(id)) {
         d3.select(this).transition().duration(200).style("opacity", 0).remove();
       }
     });
-    const existingDomIds = new Set();
-    this._nodeDomElements.each(function () {
-      existingDomIds.add(d3.select(this).attr("id"));
-    });
+
     data.nodes.forEach((n) => {
-      if (!existingDomIds.has(n.id)) {
-        this._createFallbackNodeDom(n);
+      const existing = svgEl.querySelector(
+        `${this._nodeSelector}[id="${n.id}"]`,
+      );
+      if (existing) {
+        const attrs = Object.entries(n.attributes || {})
+          .map(([k, v]) => ({
+            name: k,
+            value: typeof v === "object" ? v.value : v,
+          }))
+          .filter((a) => a.value != null && String(a.value).trim() !== "");
+
+        const valTexts = existing.querySelectorAll("text:not(.attr-name)");
+        const keyTexts = existing.querySelectorAll("text.attr-name");
+
+        attrs.forEach((attr, i) => {
+          if (keyTexts[i]) keyTexts[i].textContent = attr.name;
+          if (valTexts[i + 1]) valTexts[i + 1].textContent = String(attr.value);
+        });
       } else {
-        const el = this.svg
-          .node()
-          .querySelector(
-            `${this._nodeSelector}[id="${n.id}"][data-fallback="1"]`,
-          );
-        if (el) {
-          const transform = el.getAttribute("transform");
-          el.remove();
-          const newEl = this._createFallbackNodeDom(n);
-          if (transform) newEl.setAttribute("transform", transform);
-        }
+        this._createFallbackNodeDom(n);
       }
     });
+
     this._nodeBounds = this._measureNodeBounds(
       svgEl,
       this._nodeSelector,
@@ -280,10 +284,12 @@ class GraphRenderer {
       ? node.attributes.filter(
           (a) => a.value != null && String(a.value).trim() !== "",
         )
-      : Object.entries(node.attributes || {}).map(([k, v]) => ({
-          name: k,
-          value: typeof v === "object" ? v.value : v,
-        }));
+      : Object.entries(node.attributes || {})
+          .map(([k, v]) => ({
+            name: k,
+            value: typeof v === "object" ? v.value : v,
+          }))
+          .filter((a) => a.value != null && String(a.value).trim() !== "");
 
     const label = String(node.id);
     const nw = Math.max(160, label.length * 8 + PAD_X * 2);
