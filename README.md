@@ -12,8 +12,12 @@ tangled/
 │   └── src/tangled_platform/ # Plugin discovery, workspaces, CLI
 ├── json-datasource/          # JSON data source plugin
 │   └── src/tangled_json_datasource/
+├── yaml-datasource/          # YAML data source plugin
+│   └── src/tangled_yaml_datasource/
 ├── xml-datasource/           # XML data source plugin
 │   └── src/tangled_xml_datasource/
+├── kuzu-datasource/          # Kuzu graph database data source plugin
+│   └── src/tangled_kuzu_datasource/
 ├── simple-visualizer/        # Simple circle-based visualizer
 │   └── src/tangled_simple_visualizer/
 ├── block-visualizer/         # Block/rectangle visualizer with attributes
@@ -31,7 +35,7 @@ tangled/
 
 ## Features
 
-- **Multiple Data Sources**: Load graphs from JSON, XML (extensible via plugins)
+- **Multiple Data Sources**: Load graphs from JSON, YAML, XML, and Kuzu databases (extensible via plugins)
 - **Multiple Visualizers**: Simple and Block views (extensible via plugins)
 - **Three View Modes**: Main View, Tree View, Bird View (synchronized)
 - **Search & Filter**: Query-based graph filtering
@@ -95,7 +99,9 @@ source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
 pip install -e ./api
 pip install -e ./platform
 pip install -e ./json-datasource
+pip install -e ./yaml-datasource
 pip install -e ./xml-datasource
+pip install -e ./kuzu-datasource
 pip install -e ./simple-visualizer
 pip install -e ./block-visualizer
 pip install -e ./graph-explorer

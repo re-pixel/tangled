@@ -20,6 +20,7 @@ dependencies = [
     "tangled-json-datasource",
     "tangled-yaml-datasource",
     "tangled-xml-datasource",
+    "tangled-kuzu-datasource",
     "tangled-simple-visualizer",
     "tangled-block-visualizer",
 ]
