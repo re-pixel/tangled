@@ -18,9 +18,9 @@ Supported commands:
     search '<term>'            e.g.  search 'Name=Tom'
     reset                      remove all filters and searches
     clear                      clear all views
-    show nodes                 list all node ids
-    show edges                 list all edge ids
-    help                       print this help text
+    show nodes                 list all nodes
+    show edges                 list all edges
+    help                       print help text
 """
 
 from __future__ import annotations
@@ -32,7 +32,7 @@ from typing import Any
 
 
 class CLIError(Exception):
-    """Raised for user-facing errors (bad syntax, missing node, etc.)."""
+    """Raised for user-facing errors (bad syntax, missing node, etc.)"""
 
 
 @dataclass
@@ -53,7 +53,7 @@ _PROP_RE = re.compile(r"^([\w\-]+)=(.*)$")
 
 
 def _parse_properties(tokens: list[str]) -> dict[str, str]:
-    """Parse a list of ``key=value`` strings into a dict."""
+    """Parse a list of ``key=value`` strings into a dict"""
     props: dict[str, str] = {}
     for tok in tokens:
         m = _PROP_RE.match(tok)
@@ -65,10 +65,10 @@ def _parse_properties(tokens: list[str]) -> dict[str, str]:
 
 def _consume_flag(tokens: list[str], flag: str) -> tuple[str | None, list[str]]:
     """
-    Pull the value of *flag* out of *tokens*.
+    Pull the value of *flag* out of *tokens*
 
-    Supports both ``--flag=value`` and ``--flag value`` forms.
-    Returns (value_or_None, remaining_tokens).
+    Supports both ``--flag=value`` and ``--flag value`` forms
+    Returns (value_or_None, remaining_tokens)
     """
     remaining = []
     value = None
@@ -89,9 +89,9 @@ def _consume_flag(tokens: list[str], flag: str) -> tuple[str | None, list[str]]:
 
 def _consume_all_flag(tokens: list[str], flag: str) -> tuple[list[str], list[str]]:
     """
-    Like _consume_flag but collects *all* occurrences of *flag*.
+    Like _consume_flag but collects *all* occurrences of *flag*
 
-    Returns (list_of_values, remaining_tokens).
+    Returns (list_of_values, remaining_tokens)
     """
     values: list[str] = []
     remaining: list[str] = []
@@ -110,7 +110,7 @@ def _consume_all_flag(tokens: list[str], flag: str) -> tuple[list[str], list[str
     return values, remaining
 
 def _coerce_value(value: str, attr_type):
-    """Cast a raw string to the Python type expected by *attr_type*."""
+    """Cast a raw string to the Python type expected by *attr_type*"""
     from tangled_api.model.attribute import AttributeValue
     from datetime import date
 
@@ -134,9 +134,9 @@ def _coerce_value(value: str, attr_type):
 
 def _guess_attr_type(value: str):
     """
-    Infer the AttributeValue type from a raw string.
+    Infer the AttributeValue type from a raw string
 
-    Priority: integer → float → date → string.
+    Priority: integer → float → date → string
     """
     from tangled_api.model.attribute import AttributeValue
     from datetime import date
@@ -164,11 +164,11 @@ def _guess_attr_type(value: str):
 
 def _set_attributes(entity, props: dict[str, str], graph) -> None:
     """
-    Write *props* onto a node or edge.
+    Write *props* onto a node or edge
 
     If the attribute already exists, its declared type is preserved and the
     new string value is coerced accordingly.  For new attributes the type is
-    inferred via _guess_attr_type.
+    inferred via _guess_attr_type
     """
     from tangled_api.model.attribute import Attribute
 
@@ -185,7 +185,7 @@ def _set_attributes(entity, props: dict[str, str], graph) -> None:
 class CLI:
     """
     Stateless command executor.  Instantiate once per workspace and call
-    ``execute(command_string)`` for each user input.
+    ``execute(command_string)`` for each user input
     """
 
     def __init__(self, workspace):
@@ -193,9 +193,9 @@ class CLI:
         Parameters
         ----------
         workspace:
-            The Workspace object whose ``.graph`` will be mutated.
+            The Workspace object whose ``.graph`` will be mutated
             The workspace must also expose ``.filter(query)`` and
-            ``.search(query)`` methods (already present in the backend).
+            ``.search(query)`` methods (already present in the backend)
         """
         self.workspace = workspace
         if not hasattr(self.workspace, '_cli_cleared'):
@@ -210,7 +210,7 @@ class CLI:
         self.workspace._cli_cleared = value
 
     def execute(self, command: str) -> CLIResult:
-        """Parse *command* and dispatch to the correct handler."""
+        """Parse *command* and dispatch to the correct handler"""
         command = command.strip()
         if not command:
             return CLIResult.ok("")
