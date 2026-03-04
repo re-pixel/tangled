@@ -229,6 +229,8 @@ class YamlDataSource(DataSourcePlugin):
             node = Node(id=node_id)
 
             for key, value in obj.items():
+                if key == id_attribute:
+                    continue
                 if value is None:
                     continue
                 if isinstance(value, dict):

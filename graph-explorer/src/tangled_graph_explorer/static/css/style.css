@@ -195,3 +195,21 @@ select:focus {
   text-align: center;
   padding: 2rem;
 }
+
+.workspace-page ~ * .app-footer,
+body:has(.workspace-page) .app-footer {
+  display: none;
+}
+
+body:has(.workspace-page) .app-main {
+  padding: 0.5rem 0.75rem;
+  min-height: unset;
+}
+
+body:has(.workspace-page) .app-header {
+  padding: 0.5rem 1rem;
+}
+
+body:has(.workspace-page) .app-header h1 {
+  font-size: 1.1rem;
+}

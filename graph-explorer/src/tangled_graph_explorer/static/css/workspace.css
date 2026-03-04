@@ -4,32 +4,47 @@
 
 .workspace-page {
   display: flex;
-  gap: 1rem;
-  height: calc(100vh - 140px);
+  gap: 0.75rem;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+  position: relative;
 }
 
 /* Control Panel (Left Sidebar) */
 .control-panel {
-  width: 280px;
+  width: 240px;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
+  overflow-y: auto;
 }
 
 .control-panel section {
   background-color: var(--surface-color);
-  padding: 1rem;
-  border-radius: 8px;
+  padding: 0.75rem;
+  border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .control-panel h3 {
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--secondary-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.control-panel input,
+.control-panel select {
+  margin-bottom: 0.4rem;
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.control-panel .btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.85rem;
 }
 
 /* Main Content Area */
@@ -37,60 +52,65 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.75rem;
   min-width: 0;
+  overflow: hidden;
 }
 
 .top-row {
-  flex: 2;
+  flex: 1;
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
   min-height: 0;
+  overflow: hidden;
 }
 
 .bottom-row {
-  flex: 1;
+  height: 200px;
+  flex-shrink: 0;
   display: flex;
-  gap: 1rem;
-  min-height: 200px;
+  gap: 0.75rem;
 }
 
 /* Tree View */
 .tree-view {
-  width: 300px;
+  width: 260px;
   flex-shrink: 0;
   background-color: var(--surface-color);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .tree-view h3 {
-  padding: 1rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--secondary-color);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 #tree-container {
   flex: 1;
   overflow: auto;
-  padding: 0.5rem;
+  padding: 0.4rem;
 }
 
-/* Tree node styles */
 .tree-node {
-  padding: 0.25rem 0;
+  padding: 0.2rem 0;
 }
 
 .tree-node-header {
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.2rem 0.25rem;
   border-radius: 4px;
+  font-size: 0.85rem;
 }
 
 .tree-node-header:hover {
@@ -102,10 +122,11 @@
 }
 
 .tree-toggle {
-  width: 20px;
+  width: 16px;
   text-align: center;
   font-family: monospace;
   color: var(--secondary-color);
+  font-size: 0.8rem;
 }
 
 .tree-label {
@@ -113,7 +134,7 @@
 }
 
 .tree-children {
-  margin-left: 20px;
+  margin-left: 16px;
   display: none;
 }
 
@@ -125,19 +146,22 @@
 .main-view {
   flex: 1;
   background-color: var(--surface-color);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   min-width: 0;
+  overflow: hidden;
 }
 
 .main-view h3 {
-  padding: 1rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--secondary-color);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 #main-graph-container {
@@ -153,27 +177,31 @@
 
 /* Bird View */
 .bird-view {
-  width: 300px;
+  width: 470px;
   flex-shrink: 0;
   background-color: var(--surface-color);
-  border-radius: 8px;
+  border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .bird-view h3 {
-  padding: 0.75rem 1rem;
+  padding: 0.6rem 0.75rem;
   border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   color: var(--secondary-color);
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
 }
 
 #bird-container {
   flex: 1;
   position: relative;
   background-color: #f0f0f0;
+  overflow: hidden;
 }
 
 #viewport-rect {
@@ -183,63 +211,126 @@
   pointer-events: none;
 }
 
-/* CLI Section */
+/* ─── CLI Drawer ──────────────────────────────────────────────────────────── */
+
 .cli-section {
-  flex: 1;
-  background-color: var(--surface-color);
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: calc(240px + 0.75rem + 260px + 0.75rem + 220px + 0.75rem + 0.75rem);
+  right: 0;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  min-width: 0;
+  background-color: #1a1a2e;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.35);
+  border-radius: 10px 10px 0 0;
+  height: 205px;
 }
 
 .cli-section h3 {
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--border-color);
-  font-size: 0.9rem;
-  color: var(--secondary-color);
+  padding: 0 1rem;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #7ec8e3;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid #2a2a4a;
+}
+
+.cli-section h3::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 10px;
+  width: 36px;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
 }
 
 #cli-container {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #1e1e1e;
-  color: #d4d4d4;
-  font-family: "Consolas", "Monaco", monospace;
-  font-size: 0.9rem;
-  border-radius: 0 0 8px 8px;
+  font-family: "Consolas", "Monaco", "Courier New", monospace;
+  font-size: 0.82rem;
+  color: #e0e0e0;
+  overflow: hidden;
+  min-height: 0;
 }
 
 #cli-output {
   flex: 1;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   overflow-y: auto;
+  overflow-x: hidden;
   white-space: pre-wrap;
+  word-break: break-all;
+  scrollbar-width: thin;
+  scrollbar-color: #333 transparent;
+}
+
+#cli-output::-webkit-scrollbar {
+  width: 4px;
+}
+
+#cli-output::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 2px;
+}
+
+.cli-command {
+  color: #7ec8e3;
+  margin: 0.1rem 0;
+}
+
+.cli-result {
+  color: #a8d8a8;
+  margin: 0.1rem 0;
+}
+
+.cli-error {
+  color: #f28b82;
+  margin: 0.1rem 0;
 }
 
 #cli-form {
   display: flex;
   align-items: center;
-  padding: 0.5rem;
-  border-top: 1px solid #333;
+  padding: 0.4rem 1rem;
+  border-top: 1px solid #2a2a4a;
+  flex-shrink: 0;
 }
 
 #cli-form .prompt {
   color: #4ec9b0;
   margin-right: 0.5rem;
+  font-weight: bold;
+  font-family: "Consolas", "Monaco", monospace;
+  user-select: none;
 }
 
 #cli-input {
   flex: 1;
   background: transparent;
   border: none;
-  color: #d4d4d4;
+  color: #e0e0e0;
   font-family: inherit;
   font-size: inherit;
   outline: none;
+  padding: 0;
+  margin: 0;
+}
+
+#cli-input::placeholder {
+  color: #444;
 }
 
 /* Graph visualization styles */
@@ -280,7 +371,6 @@
   marker-end: url(#arrowhead);
 }
 
-/* Block visualizer specific */
 .block-visualizer .node rect {
   fill: var(--surface-color);
   stroke: var(--primary-color);
