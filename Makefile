@@ -18,7 +18,7 @@ help:
 	@echo "  PORT=5000     - Port for 'make run' (default: 5000)"
 
 install:
-	./install.sh
+	./scripts/install.sh
 
 run:
 	$(VENV) tangled --port=$(PORT)
@@ -32,7 +32,7 @@ lint:
 	$(VENV) mypy api/src/tangled_api platform/src/tangled_platform
 
 reinstall:
-	./reinstall.sh
+	./scripts/reinstall.sh
 
 clean:
 	rm -rf venv .pytest_cache

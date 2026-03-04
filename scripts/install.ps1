@@ -1,6 +1,6 @@
 # Tangled Graph Explorer - Installation Script (Windows)
 # This script sets up the complete development environment.
-# Run in PowerShell: .\install.ps1
+# Run from repo root: .\scripts\install.ps1  or  make install
 
 $ErrorActionPreference = "Stop"
 
