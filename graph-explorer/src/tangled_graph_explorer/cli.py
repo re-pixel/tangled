@@ -197,6 +197,16 @@ class CLI:
             ``.search(query)`` methods (already present in the backend).
         """
         self.workspace = workspace
+        if not hasattr(self.workspace, '_cli_cleared'):
+            self.workspace._cli_cleared = False
+
+    @property
+    def _cleared(self) -> bool:
+        return getattr(self.workspace, '_cli_cleared', False)
+
+    @_cleared.setter
+    def _cleared(self, value: bool):
+        self.workspace._cli_cleared = value
 
     def execute(self, command: str) -> CLIResult:
         """Parse *command* and dispatch to the correct handler."""
@@ -214,6 +224,12 @@ class CLI:
 
         verb = tokens[0].lower()
         rest = tokens[1:]
+
+        if self._cleared and verb not in ("help", "show", "clear"):
+            return CLIResult.err(
+                f"Graph is cleared. Only 'help', 'show', and 'clear' are available. "
+                f"Load data to perform graph operations."
+            )
 
         try:
             if verb == "help":
@@ -241,13 +257,15 @@ class CLI:
         except Exception as exc:
             return CLIResult.err(f"Internal error: {exc}")
 
+    def _clear(self) -> CLIResult:
+        self._cleared = True
+        return CLIResult.ok("Views cleared", changed=True)
+
     def _create(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: create node|edge ...")
-
         kind = tokens[0].lower()
         rest = tokens[1:]
-
         if kind == "node":
             return self._create_node(rest)
         elif kind == "edge":
@@ -258,6 +276,7 @@ class CLI:
     def _create_node(self, tokens: list[str]) -> CLIResult:
         from tangled_api.model import Node
 
+        self._cleared = False
         node_id, tokens = _consume_flag(tokens, "--id")
         if node_id is None:
             raise CLIError("create node requires --id=<id>")
@@ -268,7 +287,6 @@ class CLI:
                 prop_tokens.append(tok[2:])
 
         props = _parse_properties(prop_tokens)
-
         graph = self.workspace.graph
         if node_id in graph.nodes:
             raise CLIError(f"Node '{node_id}' already exists")
@@ -281,12 +299,12 @@ class CLI:
     def _create_edge(self, tokens: list[str]) -> CLIResult:
         from tangled_api.model import Edge
 
+        self._cleared = False
         edge_id, tokens = _consume_flag(tokens, "--id")
         if edge_id is None:
             raise CLIError("create edge requires --id=<id>")
 
         prop_tokens, positional = _consume_all_flag(tokens, "--property")
-
         clean_positional = []
         for tok in positional:
             if tok.startswith("--") and "=" in tok:
@@ -302,8 +320,8 @@ class CLI:
 
         source_id, target_id = clean_positional[0], clean_positional[1]
         props = _parse_properties(prop_tokens)
-
         graph = self.workspace.graph
+
         if source_id not in graph.nodes:
             raise CLIError(f"Source node '{source_id}' does not exist")
         if target_id not in graph.nodes:
@@ -321,10 +339,8 @@ class CLI:
     def _edit(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: edit node|edge --id=<id> --property key=value ...")
-
         kind = tokens[0].lower()
         rest = tokens[1:]
-
         if kind == "node":
             return self._edit_node(rest)
         elif kind == "edge":
@@ -343,15 +359,12 @@ class CLI:
 
         props = _parse_properties(prop_tokens)
         graph = self.workspace.graph
-
         if node_id not in graph.nodes:
             raise CLIError(f"Node '{node_id}' does not exist")
 
         _set_attributes(graph.nodes[node_id], props, graph)
         changed_keys = ", ".join(props.keys())
-        return CLIResult.ok(
-            f"Updated node '{node_id}': {changed_keys}", changed=True
-        )
+        return CLIResult.ok(f"Updated node '{node_id}': {changed_keys}", changed=True)
 
     def _edit_edge(self, tokens: list[str]) -> CLIResult:
         edge_id, tokens = _consume_flag(tokens, "--id")
@@ -364,23 +377,18 @@ class CLI:
 
         props = _parse_properties(prop_tokens)
         graph = self.workspace.graph
-
         if edge_id not in graph.edges:
             raise CLIError(f"Edge '{edge_id}' does not exist")
 
         _set_attributes(graph.edges[edge_id], props, graph)
         changed_keys = ", ".join(props.keys())
-        return CLIResult.ok(
-            f"Updated edge '{edge_id}': {changed_keys}", changed=True
-        )
+        return CLIResult.ok(f"Updated edge '{edge_id}': {changed_keys}", changed=True)
 
     def _delete(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: delete node|edge --id=<id>")
-
         kind = tokens[0].lower()
         rest = tokens[1:]
-
         if kind == "node":
             return self._delete_node(rest)
         elif kind == "edge":
@@ -427,6 +435,7 @@ class CLI:
     def _filter(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: filter '<expression>'  e.g.  filter 'Age>30'")
+        self._cleared = False
         query = " ".join(tokens)
         self.workspace.filter(query)
         node_count = len(self.workspace.graph.nodes)
@@ -435,24 +444,23 @@ class CLI:
     def _search(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: search '<term>'  e.g.  search 'Name=Tom'")
+        self._cleared = False
         query = " ".join(tokens)
         self.workspace.search(query)
         node_count = len(self.workspace.graph.nodes)
         return CLIResult.ok(f"Search done - {node_count} node(s) matched", changed=True)
 
-    def _clear(self) -> CLIResult:
-        graph = self.workspace.graph
-        # Remove edges first, then nodes
-        for eid in list(graph.edges.keys()):
-            graph.remove_edge(eid)
-        for nid in list(graph.nodes.keys()):
-            graph.remove_node(nid)
-        return CLIResult.ok("Graph cleared", changed=True)
-
     def _show(self, tokens: list[str]) -> CLIResult:
         if not tokens:
             raise CLIError("Usage: show nodes|edges")
         kind = tokens[0].lower()
+
+        if kind not in ("nodes", "edges"):
+            raise CLIError(f"Unknown entity '{kind}'. Use 'nodes' or 'edges'.")
+
+        if self._cleared:
+            return CLIResult.ok("(no nodes)" if kind == "nodes" else "(no edges)")
+
         graph = self.workspace.graph
 
         if kind == "nodes":
@@ -467,7 +475,7 @@ class CLI:
                 lines.append(f"{nid}  {attr_str}")
             return CLIResult.ok("\n".join(lines))
 
-        elif kind == "edges":
+        else:
             if not graph.edges:
                 return CLIResult.ok("(no edges)")
             lines = []
@@ -478,6 +486,3 @@ class CLI:
                 ) if attrs else "(no attributes)"
                 lines.append(f"{eid}  {edge.source_id} → {edge.target_id}  {attr_str}")
             return CLIResult.ok("\n".join(lines))
-
-        else:
-            raise CLIError(f"Unknown entity '{kind}'. Use 'nodes' or 'edges'.")

@@ -75,6 +75,7 @@ def load_data(workspace_id: str):
     
     try:
         ws.load_data(plugin, **params)
+        ws._cli_cleared = False 
         return jsonify({"success": True, "node_count": len(ws.graph.nodes)})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -166,6 +167,7 @@ def reset_graph(workspace_id: str):
         return jsonify({"error": "Workspace not found"}), 404
     
     ws.reset()
+    ws._cli_cleared = False
     return jsonify({"success": True})
 
 

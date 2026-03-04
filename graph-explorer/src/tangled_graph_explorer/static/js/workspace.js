@@ -11,6 +11,7 @@ class WorkspaceController {
     this.treeView = new TreeView("tree-container");
     this.birdView = new BirdView("bird-container");
     this.graphData = null;
+    this._isCleared = false;
 
     this._setupEventHandlers();
     this._setupViewSynchronization();
@@ -108,6 +109,7 @@ class WorkspaceController {
   }
 
   async _handleLoadData() {
+    this._isCleared = false;
     const pluginId = document.getElementById("data-source-select").value;
     if (!pluginId) {
       showNotification("Please select a data source", "error");
@@ -220,6 +222,7 @@ class WorkspaceController {
   }
 
   async _handleReset() {
+    this._isCleared = false;
     try {
       await api.post(`/api/workspace/${this.workspaceId}/reset`);
       document.getElementById("search-input").value = "";
@@ -246,11 +249,18 @@ class WorkspaceController {
         output.innerHTML += `<div class="cli-result">${result.result || "OK"}</div>`;
 
         if (result.changed) {
+          const clearRe = /^clear\b/i;
           const structuralRe = /^(filter|search)\b/i;
-          if (structuralRe.test(command.trim())) {
+
+          if (clearRe.test(command.trim())) {
+            this._clearViews();
+          } else if (structuralRe.test(command.trim())) {
+            this._isCleared = false;
             await this._refreshVisualization();
           } else {
-            await this._updateGraph();
+            if (!this._isCleared) {
+              await this._updateGraph();
+            }
           }
         }
       }
@@ -258,6 +268,15 @@ class WorkspaceController {
       output.innerHTML += `<div class="cli-error">Command failed</div>`;
     }
     output.scrollTop = output.scrollHeight;
+  }
+
+  _clearViews() {
+    document.getElementById("main-graph-container").innerHTML = "";
+    this.birdView.clear();
+    this.treeView.clear?.();
+    this.graphData = null;
+    window.__graphData = null;
+    this._isCleared = true;
   }
 }
 
