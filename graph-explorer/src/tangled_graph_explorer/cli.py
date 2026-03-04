@@ -16,7 +16,8 @@ Supported commands:
   Graph-level:
     filter '<expression>'      e.g.  filter 'Age>30 && Height>=150'
     search '<term>'            e.g.  search 'Name=Tom'
-    clear                      remove all nodes and edges
+    reset                      remove all filters and searches
+    clear                      clear all views
     show nodes                 list all node ids
     show edges                 list all edge ids
     help                       print this help text
@@ -244,6 +245,8 @@ class CLI:
                 return self._filter(rest)
             elif verb == "search":
                 return self._search(rest)
+            elif verb == "reset":
+                return self._reset();
             elif verb == "clear":
                 return self._clear()
             elif verb == "show":
@@ -256,6 +259,12 @@ class CLI:
             return CLIResult.err(str(exc))
         except Exception as exc:
             return CLIResult.err(f"Internal error: {exc}")
+        
+    def _reset(self) -> CLIResult:
+        self.workspace.reset()
+        self._cleared = False
+        node_count = len(self.workspace.graph.nodes)
+        return CLIResult.ok(f"Reset to original graph - {node_count} node(s)", changed=True)
 
     def _clear(self) -> CLIResult:
         self._cleared = True

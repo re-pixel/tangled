@@ -250,7 +250,7 @@ class WorkspaceController {
 
         if (result.changed) {
           const clearRe = /^clear\b/i;
-          const structuralRe = /^(filter|search)\b/i;
+          const structuralRe = /^(filter|search|reset)\b/i;
 
           if (clearRe.test(command.trim())) {
             this._clearViews();
