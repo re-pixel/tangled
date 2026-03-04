@@ -5,6 +5,11 @@
 
 set -e  # Exit on error
 
+if [ ! -d "api" ]; then
+    echo "Error: Run this script from the repository root (e.g. ./scripts/install.sh or make install)."
+    exit 1
+fi
+
 echo "========================================="
 echo "Tangled Graph Explorer - Installation"
 echo "========================================="

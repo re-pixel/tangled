@@ -24,11 +24,12 @@ tangled/
 │   └── src/tangled_block_visualizer/
 ├── graph-explorer/           # Flask web application
 │   └── src/tangled_graph_explorer/
-├── install.sh                # Installation script (Linux/macOS)
-├── install.ps1               # Installation script (Windows)
-├── reinstall.sh              # Reinstall all components (Linux/macOS)
-├── reinstall.ps1             # Reinstall all components (Windows)
-├── Makefile                  # Convenience targets for install, run, test, lint
+├── scripts/                  # Install and reinstall scripts
+│   ├── install.sh            # Installation (Linux/macOS)
+│   ├── install.ps1           # Installation (Windows)
+│   ├── reinstall.sh          # Reinstall all components (Linux/macOS)
+│   └── reinstall.ps1         # Reinstall all components (Windows)
+├── Makefile                  # Convenience targets for install, run, test, lint (Linux/macOS)
 ├── PLUGIN_DEVELOPMENT.md     # Guide for adding plugins
 └── README.md                 # This file
 ```
@@ -57,30 +58,27 @@ tangled/
 
 ### Linux / macOS
 
-In terminal:
+In terminal (from repository root):
 
 ```bash
 git clone https://github.com/re-pixel/tangled.git
 cd tangled
 
-./install.sh
-source venv/bin/activate
-tangled
+make install
+make run
 ```
-
-Or using Make: `make install` then `make run`.
 
 Open http://localhost:5000 in your browser.
 
 ### Windows
 
-In PowerShell:
+In PowerShell (from repository root):
 
 ```powershell
 git clone https://github.com/re-pixel/tangled.git
 cd tangled
 
-.\install.ps1
+.\scripts\install.ps1
 .\venv\Scripts\Activate.ps1
 tangled
 ```
@@ -112,11 +110,11 @@ tangled
 
 ### Makefile (Linux / macOS)
 
-A Makefile provides convenient targets for common tasks. Run `make help` to list all options.
+The Makefile provides convenient targets for common tasks. Run `make help` to list all options.
 
 | Target | Description |
 |--------|--------------|
-| `make install` | Create venv and install all packages |
+| `make install` | Create venv and install all packages (runs scripts/install.sh) |
 | `make run` | Start the Flask app (default: http://localhost:5000) |
 | `make test` | Run pytest |
 | `make lint` | Run mypy on api and platform |
@@ -141,21 +139,11 @@ When you modify a component, reinstall it:
 pip install -e ./platform  # or whichever component you changed
 ```
 
-Or use the reinstall script (with venv activated, or from project root):
+Or use the reinstall script (run from project root):
 
-**Linux / macOS:**
+**Linux / macOS:** `make reinstall`
 
-```bash
-./reinstall.sh
-# or
-make reinstall
-```
-
-**Windows (PowerShell):**
-
-```powershell
-.\reinstall.ps1
-```
+**Windows (PowerShell):** `.\scripts\reinstall.ps1`
 
 ### Adding a New Plugin
 

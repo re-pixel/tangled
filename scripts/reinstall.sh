@@ -14,7 +14,7 @@ echo "Reinstalling all Tangled components..."
 
 # Activate virtual environment
 if [ ! -d "venv" ]; then
-    echo "Error: Virtual environment not found. Run install.sh first."
+    echo "Error: Virtual environment not found. Run scripts/install.sh or make install first."
     exit 1
 fi
 
