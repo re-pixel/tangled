@@ -142,7 +142,9 @@ class XmlDataSource(DataSourcePlugin):
 
     def _build_graph(self, root: ET.Element, ref_attr: str) -> Graph:
         """Build graph from parsed XML element tree."""
-        graph = Graph(directed=True)
+        directed_str = root.get("directed", "true").lower()
+        directed = directed_str not in ("false", "0", "no")
+        graph = Graph(directed=directed)
 
         parent_map: Dict[ET.Element, ET.Element] = {}
         all_elements: List[ET.Element] = []
@@ -159,7 +161,7 @@ class XmlDataSource(DataSourcePlugin):
             node = Node(id=nid)
 
             for attr_name, attr_val in elem.attrib.items():
-                if attr_name in (ref_attr, "id"):
+                if attr_name in (ref_attr, "id", "directed"):
                     continue
                 parsed = _try_parse_value(attr_name, attr_val)
                 if parsed is not None:

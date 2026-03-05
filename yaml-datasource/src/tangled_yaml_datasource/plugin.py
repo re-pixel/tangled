@@ -203,7 +203,14 @@ class YamlDataSource(DataSourcePlugin):
 
     def _build_graph(self, data: Any, id_attribute: str) -> Graph:
         """Build graph from parsed YAML using three-pass approach."""
-        graph = Graph(directed=True)
+        directed = True
+        if isinstance(data, dict):
+            val = data.get("directed", True)
+            if isinstance(val, bool):
+                directed = val
+            elif isinstance(val, str):
+                directed = val.lower() not in ("false", "0", "no")
+        graph = Graph(directed=directed)
 
         # Pass 1: Collect objects and assign node IDs
         objects = _collect_from_root(data)
@@ -230,6 +237,8 @@ class YamlDataSource(DataSourcePlugin):
 
             for key, value in obj.items():
                 if key == id_attribute:
+                    continue
+                if key == "directed":
                     continue
                 if value is None:
                     continue
@@ -262,6 +271,8 @@ class YamlDataSource(DataSourcePlugin):
 
             for key, value in obj.items():
                 if value is None:
+                    continue
+                if key == "directed":
                     continue
 
                 if isinstance(value, dict):

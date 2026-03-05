@@ -1,4 +1,4 @@
-<com.example.Persons>
+<com.example.Persons directed="false">
     <Person>
         <name>Alice</name>
         <address>

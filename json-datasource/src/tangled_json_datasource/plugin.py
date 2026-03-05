@@ -197,7 +197,12 @@ class JsonDataSource(DataSourcePlugin):
 
     def _build_graph(self, data: Any, id_attribute: str) -> Graph:
         """Build graph from parsed JSON using three-pass approach."""
-        graph = Graph(directed=True)
+        directed = True
+        if isinstance(data, dict):
+            val = data.get("directed", True)
+            directed = val if isinstance(val, bool) else val.lower() not in ("false", "0", "no")
+            data = data.get("nodes", [])
+        graph = Graph(directed=directed)
 
         # Pass 1: Collect objects and assign node IDs
         objects = _collect_from_root(data)
