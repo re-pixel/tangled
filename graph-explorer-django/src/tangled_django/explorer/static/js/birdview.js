@@ -19,6 +19,9 @@ class BirdView {
     // Main view dimensions for viewport calculation
     this.mainViewWidth = 0;
     this.mainViewHeight = 0;
+
+    this.onNodeSelect = null;
+    this.selectedNodeId = null;
   }
 
   /**
@@ -126,7 +129,16 @@ class BirdView {
       .attr("cx", (d) => d.x || 0)
       .attr("cy", (d) => d.y || 0)
       .attr("r", 4 / this.scale)
-      .attr("fill", "#4a90d9");
+      .attr("fill", (d) =>
+        d.id === this.selectedNodeId ? "#ff69b4" : "#4a90d9",
+      ) // ← roze za selektovan
+      .attr("cursor", "pointer")
+      .on("click", (event, d) => {
+        event.preventDefault();
+        this.selectedNodeId = d.id;
+        this._highlightNode(d.id);
+        if (this.onNodeSelect) this.onNodeSelect(d);
+      });
   }
 
   /**
@@ -155,6 +167,18 @@ class BirdView {
       .attr("y", rectY)
       .attr("width", rectWidth)
       .attr("height", rectHeight);
+  }
+
+  selectNodeById(nodeId) {
+    this.selectedNodeId = nodeId;
+    this._highlightNode(nodeId);
+  }
+
+  _highlightNode(nodeId) {
+    if (!this.mainGroup) return;
+    this.mainGroup
+      .selectAll("circle")
+      .attr("fill", (d) => (d.id === nodeId ? "#ff69b4" : "#4a90d9"));
   }
 }
 

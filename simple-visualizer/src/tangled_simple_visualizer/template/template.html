@@ -71,6 +71,7 @@
       const textSize=14;
       d3.selectAll('.node').append('circle')
           .attr('r', radius+textSize)
+          .attr('class', 'node-border')
           .style('fill', 'white')
           .style('stroke', '#04446fff')
           .style('stroke-width', '1.5px')
