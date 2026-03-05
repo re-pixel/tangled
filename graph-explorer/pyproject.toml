@@ -16,7 +16,7 @@ classifiers = [
 ]
 dependencies = [
     "flask>=3.0",
-    "tangled-platform",
+    "tangled-web",
     "tangled-json-datasource",
     "tangled-yaml-datasource",
     "tangled-xml-datasource",
@@ -32,7 +32,7 @@ dev = [
 ]
 
 [project.scripts]
-tangled = "tangled_graph_explorer.cli:main"
+tangled = "tangled_graph_explorer.__main__:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

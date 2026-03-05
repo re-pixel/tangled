@@ -1,262 +1,110 @@
 """
 REST API endpoints for graph operations.
 
-All graph manipulation (search, filter, CRUD, CLI) happens through these endpoints.
-Frontend JavaScript calls these APIs and updates the views accordingly.
+Thin Flask wrappers around tangled_web.services.
 """
 
 from flask import Blueprint, request, jsonify, current_app
+from tangled_web import services
+from tangled_web.services import WorkspaceNotFound
 
 api_bp = Blueprint("api", __name__)
 
 
+def _platform():
+    return current_app.config["PLATFORM"]
+
+
+def _handle_not_found(func):
+    """Decorator that converts WorkspaceNotFound into a 404 JSON response."""
+    from functools import wraps
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except WorkspaceNotFound:
+            return jsonify({"error": "Workspace not found"}), 404
+
+    return wrapper
+
+
 @api_bp.route("/plugins/datasources", methods=["GET"])
 def list_data_sources():
-    """List all available data source plugins."""
-    platform = current_app.config["PLATFORM"]
-    sources = []
-    for name, plugin in platform.data_sources.items():
-        sources.append({
-            "id": name,
-            "name": plugin.name,
-            "description": plugin.description,
-            "parameters": [
-                {
-                    "name": p.name,
-                    "type": p.param_type.__name__,
-                    "description": p.description,
-                    "required": p.required,
-                    "default": p.default,
-                }
-                for p in plugin.parameters
-            ],
-        })
-    return jsonify(sources)
+    data, status = services.list_data_sources(_platform())
+    return jsonify(data), status
 
 
 @api_bp.route("/plugins/visualizers", methods=["GET"])
 def list_visualizers():
-    """List all available visualizer plugins."""
-    platform = current_app.config["PLATFORM"]
-    visualizers = []
-    for name, plugin in platform.visualizers.items():
-        visualizers.append({
-            "id": name,
-            "name": plugin.name,
-            "description": plugin.description,
-        })
-    return jsonify(visualizers)
+    data, status = services.list_visualizers(_platform())
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/load", methods=["POST"])
+@_handle_not_found
 def load_data(workspace_id: str):
-    """
-    Load data into a workspace using a data source plugin.
-    
-    Request body:
-    {
-        "plugin": "json",
-        "params": {"file_path": "/path/to/file.json"}
-    }
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    data = request.get_json()
-    plugin_name = data.get("plugin")
-    params = data.get("params", {})
-    
-    plugin = platform.get_data_source(plugin_name)
-    if plugin is None:
-        return jsonify({"error": f"Plugin '{plugin_name}' not found"}), 404
-    
-    try:
-        ws.load_data(plugin, **params)
-        ws._cli_cleared = False 
-        return jsonify({"success": True, "node_count": len(ws.graph.nodes)})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+    body = request.get_json()
+    data, status = services.load_data(
+        _platform(), workspace_id,
+        plugin_name=body.get("plugin"),
+        params=body.get("params", {}),
+    )
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/render", methods=["GET"])
+@_handle_not_found
 def render_graph(workspace_id: str):
-    """
-    Render the current graph using a visualizer plugin.
-    
-    Query params:
-    - visualizer: Plugin name (default: "simple")
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    visualizer_name = request.args.get("visualizer", "simple")
-    visualizer = platform.get_visualizer(visualizer_name)
-    
-    if visualizer is None:
-        return jsonify({"error": f"Visualizer '{visualizer_name}' not found"}), 404
-    
-    html = ws.render(visualizer)
-    return jsonify({"html": html})
+    data, status = services.render_graph(
+        _platform(), workspace_id,
+        visualizer_name=request.args.get("visualizer", "simple"),
+    )
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/filter", methods=["POST"])
+@_handle_not_found
 def filter_graph(workspace_id: str):
-    """
-    Apply a filter to the current graph.
-    
-    Request body:
-    {
-        "query": "age > 25"
-    }
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    data = request.get_json()
-    query = data.get("query", "")
-    
-    try:
-        ws.filter(query)
-        return jsonify({"success": True, "node_count": len(ws.graph.nodes)})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+    body = request.get_json()
+    data, status = services.filter_graph(
+        _platform(), workspace_id,
+        query=body.get("query", ""),
+    )
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/search", methods=["POST"])
+@_handle_not_found
 def search_graph(workspace_id: str):
-    """
-    Apply a search to the current graph.
-    
-    Request body:
-    {
-        "query": "John"
-    }
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    data = request.get_json()
-    query = data.get("query", "")
-    
-    try:
-        ws.search(query)
-        return jsonify({"success": True, "node_count": len(ws.graph.nodes)})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 400
+    body = request.get_json()
+    data, status = services.search_graph(
+        _platform(), workspace_id,
+        query=body.get("query", ""),
+    )
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/reset", methods=["POST"])
+@_handle_not_found
 def reset_graph(workspace_id: str):
-    """Reset workspace to original graph (clear all filters/searches)."""
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    ws.reset()
-    ws._cli_cleared = False
-    return jsonify({"success": True})
+    data, status = services.reset_graph(_platform(), workspace_id)
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/cli", methods=["POST"])
+@_handle_not_found
 def execute_cli(workspace_id: str):
-    """
-    Execute a CLI command on the workspace graph.
-
-    Request body:
-    {
-        "command": "create node --id=1 --property Name=Alice"
-    }
-
-    Response (success):
-    {
-        "result": "Created node '1'",
-        "changed": true
-    }
-
-    Response (error):
-    {
-        "error": "Node '1' already exists"
-    }
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-
-    data = request.get_json()
-    command = data.get("command", "").strip()
-
-    if not command:
-        return jsonify({"error": "No command provided"}), 400
-
-    from tangled_graph_explorer.cli import CLI
-    cli = CLI(ws)
-    result = cli.execute(command)
-
-    if result.error:
-        return jsonify({"error": result.error}), 400
-
-    return jsonify({"result": result.output, "changed": result.changed})
+    body = request.get_json()
+    data, status = services.execute_cli(
+        _platform(), workspace_id,
+        command=body.get("command", "").strip(),
+    )
+    return jsonify(data), status
 
 
 @api_bp.route("/workspace/<workspace_id>/graph", methods=["GET"])
+@_handle_not_found
 def get_graph_data(workspace_id: str):
-    """
-    Get raw graph data for Tree View and other uses.
-    
-    Returns nodes and edges as JSON.
-    """
-    platform = current_app.config["PLATFORM"]
-    ws = platform.get_workspace(workspace_id)
-    
-    if ws is None:
-        return jsonify({"error": "Workspace not found"}), 404
-    
-    if ws.graph is None:
-        return jsonify({"nodes": [], "edges": [], "directed": True})
-    
-    nodes = []
-    for node_id, node in ws.graph.nodes.items():
-        attrs = {}
-        for k, attr in node.attributes.items():
-            value = attr.value
-            if hasattr(value, "isoformat"):
-                value = value.isoformat()
-            attrs[k] = {"value": str(value), "type": attr.type.value}
-        nodes.append({"id": node_id, "attributes": attrs})
-
-    edges = []
-    for edge_id, edge in ws.graph.edges.items():
-        attrs = {}
-        for k, attr in edge.attributes.items():
-            value = attr.value
-            if hasattr(value, "isoformat"):
-                value = value.isoformat()
-            attrs[k] = {"value": str(value), "type": attr.type.value}
-        edges.append({
-            "id": edge_id,
-            "source": edge.source_id,
-            "target": edge.target_id,
-            "attributes": attrs,
-        })
-    
-    return jsonify({
-        "nodes": nodes,
-        "edges": edges,
-        "directed": ws.graph.directed,
-    })
+    data, status = services.get_graph_data(_platform(), workspace_id)
+    return jsonify(data), status

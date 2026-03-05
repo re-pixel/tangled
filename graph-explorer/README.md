@@ -36,9 +36,9 @@ graph-explorer/
 ├── src/
 │   └── tangled_graph_explorer/
 │       ├── __init__.py          # Flask app factory
+│       ├── __main__.py          # CLI entry point (tangled command)
 │       ├── routes.py            # View routes
-│       ├── api.py               # REST API endpoints
-│       ├── cli.py               # CLI entry point
+│       ├── api.py               # REST API endpoints (delegates to tangled-web)
 │       ├── templates/           # Jinja2 templates
 │       │   ├── base.html
 │       │   ├── index.html
