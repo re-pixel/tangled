@@ -265,7 +265,7 @@ class GraphRenderer {
       .on("click.platform", (event) => {
         const id = d3.select(event.currentTarget).attr("id");
         const node = this._nodeById.get(id);
-        if (node) this._selectNode(node);
+        if (node) this.selectNodeById(node.id);
       })
       .on("mouseover.platform", (event) => {
         const id = d3.select(event.currentTarget).attr("id");
@@ -661,13 +661,48 @@ class GraphRenderer {
   }
 
   _selectNode(node) {
+    if (this.selectedNode) {
+      const prevEl = this.svg
+        ?.node()
+        .querySelector(
+          `${this._nodeSelector}[id="${this.selectedNode.id}"] .node-border`,
+        );
+      if (prevEl) prevEl.style.stroke = "#3a7bc8";
+    }
+
     this.selectedNode = node;
+
+    const el = this.svg
+      ?.node()
+      .querySelector(`${this._nodeSelector}[id="${node.id}"] .node-border`);
+    if (el) el.style.stroke = "#ff69b4";
+
     if (this.onNodeSelect) this.onNodeSelect(node);
   }
 
   selectNodeById(nodeId) {
     const node = this.simulation?.nodes().find((n) => n.id === nodeId);
-    if (node) this._selectNode(node);
+    if (node) {
+      this._selectNode(node);
+      this._zoomToNode(node);
+    }
+  }
+
+  _zoomToNode(node) {
+    if (!this.svg || !this.zoom) return;
+    if (!isFinite(node.x) || !isFinite(node.y)) return;
+
+    const scale = 1.5;
+    const tx = this._w / 2 - node.x * scale;
+    const ty = this._h / 2 - node.y * scale;
+
+    this.svg
+      .transition()
+      .duration(500)
+      .call(
+        this.zoom.transform,
+        d3.zoomIdentity.translate(tx, ty).scale(scale),
+      );
   }
 
   _showTooltip(event, node) {

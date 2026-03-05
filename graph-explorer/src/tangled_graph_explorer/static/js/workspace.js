@@ -19,6 +19,7 @@ class WorkspaceController {
     this._setupEventHandlers();
     this._setupViewSynchronization();
     this._loadDataSources();
+    this._isCleared = false;
   }
 
   /**
@@ -68,11 +69,38 @@ class WorkspaceController {
 
     // CLI form
     const cliForm = document.getElementById("cli-form");
+    const cliInput = document.getElementById("cli-input");
+    this._cliHistory = [];
+    this._cliHistoryIndex = -1;
+
+    cliInput?.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (this._cliHistoryIndex < this._cliHistory.length - 1) {
+          this._cliHistoryIndex++;
+          cliInput.value = this._cliHistory[this._cliHistoryIndex];
+        }
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (this._cliHistoryIndex > 0) {
+          this._cliHistoryIndex--;
+          cliInput.value = this._cliHistory[this._cliHistoryIndex];
+        } else {
+          this._cliHistoryIndex = -1;
+          cliInput.value = "";
+        }
+      }
+    });
+
     cliForm?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const command = document.getElementById("cli-input").value;
+      const command = cliInput.value;
+      if (command) {
+        this._cliHistory.unshift(command);
+        this._cliHistoryIndex = -1;
+      }
       this._handleCliCommand(command);
-      document.getElementById("cli-input").value = "";
+      cliInput.value = "";
     });
   }
 
@@ -83,11 +111,17 @@ class WorkspaceController {
     // Sync node selection across views
     this.graphRenderer.onNodeSelect = (node) => {
       this.treeView.selectNodeById(node.id);
-      // Bird view doesn't need selection sync
+      this.birdView.selectNodeById(node.id);
     };
 
     this.treeView.onNodeSelect = (node) => {
       this.graphRenderer.selectNodeById(node.id);
+      this.birdView.selectNodeById(node.id);
+    };
+
+    this.birdView.onNodeSelect = (node) => {
+      this.graphRenderer.selectNodeById(node.id);
+      this.treeView.selectNodeById(node.id);
     };
 
     // Sync viewport changes to bird view
@@ -247,22 +281,33 @@ class WorkspaceController {
    */
   async _handleSearch(query) {
     if (!query) return;
-
     try {
       const result = await api.post(
         `/api/workspace/${this.workspaceId}/search`,
         { query },
       );
-
       if (result.error) {
         showNotification(result.error, "error");
       } else {
         showNotification(`Found ${result.node_count} nodes`, "info");
-        await this._refreshVisualization();
+        await this._refreshData();
       }
     } catch (error) {
       showNotification("Search failed", "error");
-      console.error(error);
+    }
+  }
+
+  async _refreshData() {
+    try {
+      const graphData = await api.get(
+        `/api/workspace/${this.workspaceId}/graph`,
+      );
+      this.graphData = graphData;
+      this.graphRenderer.update(graphData);
+      this.birdView.render(graphData);
+      this.treeView.render(graphData);
+    } catch (error) {
+      console.error("Failed to refresh data:", error);
     }
   }
 
@@ -282,7 +327,7 @@ class WorkspaceController {
         showNotification(result.error, "error");
       } else {
         showNotification(`Filtered to ${result.node_count} nodes`, "info");
-        await this._refreshVisualization();
+        await this._refreshData();
       }
     } catch (error) {
       showNotification("Filter failed", "error");
@@ -298,7 +343,7 @@ class WorkspaceController {
       await api.post(`/api/workspace/${this.workspaceId}/reset`);
       document.getElementById("search-input").value = "";
       document.getElementById("filter-input").value = "";
-      await this._refreshVisualization();
+      await this._refreshData();
       showNotification("Reset to original graph", "info");
     } catch (error) {
       showNotification("Reset failed", "error");
@@ -324,14 +369,45 @@ class WorkspaceController {
         output.innerHTML += `<div class="cli-error">${result.error}</div>`;
       } else {
         output.innerHTML += `<div class="cli-result">${result.result || "OK"}</div>`;
-        await this._refreshVisualization();
+
+        if (result.changed) {
+          const clearRe = /^clear\b/i;
+          const structuralRe = /^(filter|search|reset)\b/i;
+
+          if (clearRe.test(command.trim())) {
+            this._clearViews();
+          } else if (structuralRe.test(command.trim())) {
+            this._isCleared = false;
+            await this._refreshVisualization();
+          } else {
+            if (!this._isCleared) {
+              await this._refreshData();
+            }
+          }
+        }
       }
     } catch (error) {
       output.innerHTML += `<div class="cli-error">Command failed</div>`;
     }
 
-    // Scroll to bottom
     output.scrollTop = output.scrollHeight;
+  }
+
+  _clearViews() {
+    this._isCleared = true;
+    this.graphData = null;
+    const mainContainer = document.getElementById("main-graph-container");
+    mainContainer.innerHTML =
+      '<p class="placeholder">Load data to visualize graph</p>';
+    this.birdView.init();
+    this.treeView.clear?.();
+
+    const dataSourceSelect = document.getElementById("data-source-select");
+    if (dataSourceSelect) dataSourceSelect.value = "";
+    document.getElementById("plugin-params").innerHTML = "";
+
+    document.getElementById("search-input").value = "";
+    document.getElementById("filter-input").value = "";
   }
 }
 
