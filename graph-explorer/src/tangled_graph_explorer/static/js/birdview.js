@@ -156,19 +156,6 @@ class BirdView {
       .attr("width", rectWidth)
       .attr("height", rectHeight);
   }
-
-  /**
-   * Clear the minimap
-   */
-  clear() {
-    if (!this.svg) return;
-    this.mainGroup?.selectAll("*").remove();
-    this.viewportRect
-      ?.attr("x", 0)
-      .attr("y", 0)
-      .attr("width", 0)
-      .attr("height", 0);
-  }
 }
 
 // Export for use in workspace.js
