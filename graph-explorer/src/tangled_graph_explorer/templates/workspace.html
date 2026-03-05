@@ -1,142 +1,192 @@
-{% extends "base.html" %} {% block title %}Workspace - Tangled Graph Explorer{%
-endblock %} {% block head %}
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/workspace.css') }}"
-/>
-{% endblock %} {% block content %}
-<div class="workspace-page" data-workspace-id="{{ workspace.id }}">
-  <!-- Control Panel -->
-  <aside class="control-panel">
-    <section class="data-source-section">
-      <h3>Load Data</h3>
-      <form id="load-data-form">
-        <select id="data-source-select" name="plugin">
-          <option value="">Select data source...</option>
-        </select>
-        <div id="plugin-params"></div>
-        <button type="submit" class="btn">Load</button>
-      </form>
-    </section>
+{% extends "base.html" %}
 
-    <section class="visualizer-section">
-      <h3>Visualizer</h3>
-      <select id="visualizer-select">
-        {% for name, plugin in visualizers.items() %}
-        <option value="{{ name }}">{{ plugin.name }}</option>
-        {% endfor %}
-      </select>
-    </section>
+{% block title %}Workspace — Tangled Graph Explorer{% endblock %}
 
-    <section class="search-section">
-      <h3>Search</h3>
-      <form id="search-form">
-        <input type="text" id="search-input" placeholder="Search nodes..." />
-        <button type="submit" class="btn">Search</button>
-      </form>
-    </section>
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/workspace.css') }}">
+{% endblock %}
 
-    <section class="filter-section">
-      <h3>Filter</h3>
-      <form id="filter-form">
-        <input type="text" id="filter-input" placeholder="e.g., age > 25" />
-        <button type="submit" class="btn">Filter</button>
-      </form>
-      <button id="reset-btn" class="btn btn-secondary">Reset</button>
-    </section>
-  </aside>
+{% block content %}
+<div class="workspace-page animate-fade-in-scale" data-workspace-id="{{ workspace.id }}">
 
-  <!-- Main Content Area -->
-  <div class="main-content">
-    <!-- Top Row: Tree View + Main View -->
-    <div class="top-row">
-      <section class="tree-view">
-        <h3>Tree View</h3>
+    <!-- ── Mobile Sidebar Toggle ── -->
+    <button class="sidebar-toggle glass" id="sidebar-toggle" aria-label="Toggle controls">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ── Control Panel (Left Sidebar) ── -->
+    <aside class="control-panel" id="control-panel">
+        <!-- Load Data -->
+        <section class="glass animate-fade-in-up stagger-1">
+            <h3>Load Data</h3>
+            <form id="load-data-form" class="space-y-2.5">
+                <select id="data-source-select" name="plugin" class="glass-select">
+                    <option value="">Select data source...</option>
+                </select>
+                <div id="plugin-params" class="space-y-2"></div>
+                <button type="submit" class="btn-glow w-full text-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Load
+                </button>
+            </form>
+        </section>
+
+        <!-- Visualizer -->
+        <section class="glass animate-fade-in-up stagger-2">
+            <h3>Visualizer</h3>
+            <select id="visualizer-select" class="glass-select">
+                {% for name, plugin in visualizers.items() %}
+                <option value="{{ name }}">{{ plugin.name }}</option>
+                {% endfor %}
+            </select>
+        </section>
+
+        <!-- Search -->
+        <section class="glass animate-fade-in-up stagger-3">
+            <h3>Search</h3>
+            <form id="search-form" class="space-y-2">
+                <input type="text" id="search-input" placeholder="Search nodes..." class="glass-input">
+                <button type="submit" class="btn-glass w-full text-sm">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    Search
+                </button>
+            </form>
+        </section>
+
+        <!-- Filter -->
+        <section class="glass animate-fade-in-up stagger-4">
+            <h3>Filter</h3>
+            <form id="filter-form" class="space-y-2">
+                <input type="text" id="filter-input" placeholder="e.g., age > 25" class="glass-input">
+                <div class="flex gap-2">
+                    <button type="submit" class="btn-glass flex-1 text-sm">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        </svg>
+                        Filter
+                    </button>
+                    <button type="button" id="reset-btn" class="btn-ghost flex-1 text-sm">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                            <polyline points="1 4 1 10 7 10"/>
+                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                        </svg>
+                        Reset
+                    </button>
+                </div>
+            </form>
+        </section>
+    </aside>
+
+    <!-- ── Tree View ── -->
+    <section class="tree-view glass animate-fade-in-up stagger-2">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <path d="M3 3v18h18"/>
+                    <path d="M7 16l4-8 4 4 6-10"/>
+                </svg>
+                Tree View
+            </span>
+        </h3>
         <div id="tree-container">
-          <p class="placeholder">Load data to see tree view</p>
+            <p class="placeholder">Load data to see tree view</p>
         </div>
-      </section>
+    </section>
 
-      <section class="main-view">
-        <h3>Main View</h3>
+    <!-- ── Main View ── -->
+    <section class="main-view glass animate-fade-in-up stagger-1">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <circle cx="12" cy="12" r="3"/>
+                    <circle cx="5" cy="6" r="2"/>
+                    <circle cx="19" cy="6" r="2"/>
+                    <line x1="7" y1="7" x2="10" y2="10"/>
+                    <line x1="17" y1="7" x2="14" y2="10"/>
+                </svg>
+                Main View
+            </span>
+        </h3>
         <div id="main-graph-container">
-          <p class="placeholder">Load data to visualize graph</p>
+            <p class="placeholder">Load data to visualize graph</p>
         </div>
-      </section>
-    </div>
+    </section>
 
-    <!-- Bottom Row: Bird View only -->
-    <div class="bottom-row">
-      <section class="bird-view">
-        <h3>Bird View</h3>
+    <!-- ── Bird View ── -->
+    <section class="bird-view glass animate-fade-in-up stagger-3">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <rect x="2" y="2" width="20" height="20" rx="2"/>
+                    <rect x="7" y="7" width="10" height="10" rx="1"/>
+                </svg>
+                Bird View
+            </span>
+        </h3>
         <div id="bird-container">
-          <div id="viewport-rect"></div>
+            <div id="viewport-rect"></div>
         </div>
-      </section>
-    </div>
-  </div>
+    </section>
+
+    <!-- ── CLI Terminal ── -->
+    <section class="cli-section glass-dark animate-fade-in-up stagger-4">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                </svg>
+                CLI
+            </span>
+        </h3>
+        <div id="cli-container">
+            <div id="cli-output"></div>
+            <form id="cli-form">
+                <span class="prompt">&gt;</span>
+                <input type="text" id="cli-input" placeholder="Enter command...">
+            </form>
+        </div>
+    </section>
+
 </div>
 
-<section class="cli-section" id="cli-section">
-  <h3>CLI</h3>
-  <div id="cli-container">
-    <div id="cli-output"></div>
-    <form id="cli-form">
-      <span class="prompt">&gt;</span>
-      <input
-        type="text"
-        id="cli-input"
-        placeholder="Type a command... (help for usage)"
-        autocomplete="off"
-      />
-    </form>
-  </div>
-</section>
-
+<!-- Mobile sidebar script -->
 <script>
-  (function () {
-    const input = document.getElementById("cli-input");
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('sidebar-toggle');
+    const close = document.getElementById('sidebar-close');
+    const overlay = document.getElementById('sidebar-overlay');
+    const panel = document.getElementById('control-panel');
 
-    const history = [];
-    let historyIndex = -1;
-    let draft = "";
+    function openSidebar() {
+        panel?.classList.add('open');
+        overlay?.classList.add('open');
+    }
+    function closeSidebar() {
+        panel?.classList.remove('open');
+        overlay?.classList.remove('open');
+    }
 
-    input.addEventListener("keydown", (e) => {
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
-        if (history.length === 0) return;
-        if (historyIndex === -1) draft = input.value;
-        historyIndex = Math.min(historyIndex + 1, history.length - 1);
-        input.value = history[historyIndex];
-        setTimeout(
-          () => input.setSelectionRange(input.value.length, input.value.length),
-          0,
-        );
-      } else if (e.key === "ArrowDown") {
-        e.preventDefault();
-        if (historyIndex === -1) return;
-        historyIndex -= 1;
-        input.value = historyIndex === -1 ? draft : history[historyIndex];
-        setTimeout(
-          () => input.setSelectionRange(input.value.length, input.value.length),
-          0,
-        );
-      }
-    });
-
-    document.getElementById("cli-form").addEventListener("submit", () => {
-      const cmd = input.value.trim();
-      if (cmd) {
-        if (history[0] !== cmd) history.unshift(cmd);
-        if (history.length > 200) history.pop();
-      }
-      historyIndex = -1;
-      draft = "";
-    });
-  })();
+    toggle?.addEventListener('click', openSidebar);
+    close?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+});
 </script>
+{% endblock %}
 
-{% endblock %} {% block scripts %}
+{% block scripts %}
 <script src="{{ url_for('static', filename='js/graph.js') }}"></script>
 <script src="{{ url_for('static', filename='js/treeview.js') }}"></script>
 <script src="{{ url_for('static', filename='js/birdview.js') }}"></script>
