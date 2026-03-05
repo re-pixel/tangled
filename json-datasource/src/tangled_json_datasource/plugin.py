@@ -54,7 +54,7 @@ def _to_attribute_value(key: str, value: Any) -> Optional[Any]:
         return parsed if parsed is not None else value
     if isinstance(value, list):
         if not value:
-            return ""
+            return None
         if all(isinstance(v, (int, float, str, bool)) or v is None for v in value):
             parts = []
             for v in value:
@@ -223,6 +223,8 @@ class JsonDataSource(DataSourcePlugin):
             node = Node(id=node_id)
 
             for key, value in obj.items():
+                if key == id_attribute:
+                    continue
                 if value is None:
                     continue
                 if isinstance(value, dict):

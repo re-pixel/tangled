@@ -16,26 +16,16 @@ Flask web application for interactive graph visualization.
 
 From the repository root, install all components and activate the venv:
 
-**Linux / macOS:**
-```bash
-./install.sh
-source venv/bin/activate
-```
+**Linux / macOS:** `make install`
 
-**Windows (PowerShell):**
-```powershell
-.\install.ps1
-.\venv\Scripts\Activate.ps1
-```
+**Windows (PowerShell):** 
+`.\scripts\install.ps1` then `.\venv\Scripts\Activate.ps1`
 
 **Or install manually** (any platform): create venv, activate it, then `pip install -e ./api` (and the rest; see main [README](../README.md)).
 
 ## Running the Application
 
-```bash
-tangled
-# Or: flask --app tangled_graph_explorer run --debug
-```
+`tangled` or `flask --app tangled_graph_explorer run --debug`
 
 Then open http://localhost:5000 in your browser.
 

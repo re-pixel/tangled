@@ -1,0 +1,221 @@
+<style>
+  .block-node {
+    cursor: pointer;
+  }
+
+  #svg-{{name}} {
+    width: 100%;
+    height: 100%;
+  }
+
+  .block-visualizer text {
+    font-family: Arial, sans-serif !important;
+    font-size: 11px !important;
+  }
+
+  /* Header background */
+  .block-visualizer .header-bg {
+    fill: #3a7bc8 !important;
+  }
+
+  /* Node border */
+  .block-visualizer .node-border {
+    fill: white;
+    stroke: #3a7bc8;
+    stroke-width: 1.5px;
+  }
+
+  /* Attribute names */
+  .block-visualizer .attr-name {
+    fill: #3a7bc8;
+    font-weight: 600;
+  }
+
+  /* Links */
+  .plugin-link {
+    stroke: #3a7bc8;
+    stroke-width: 1.5px;
+  }
+</style>
+
+<svg
+  id="svg-{{name}}"
+  class="block-visualizer"
+  data-node-selector=".block-node"
+  data-link-selector=".plugin-link"
+></svg>
+
+<script>
+  (function () {
+
+    const nodes = {{ nodes | tojson }};
+    const links = {{ edges | tojson }};
+
+    const HEADER_H = 28;
+    const ROW_H = 20;
+    const PAD_X = 14;
+    const KEY_W = 80;
+    const FONT_SIZE = 11;
+    const BLUE = '#3a7bc8';
+
+    function getAttrs(d) {
+      return (d.attributes || []).filter(a =>
+        a.value !== null &&
+        a.value !== undefined &&
+        String(a.value).trim() !== ''
+      );
+    }
+
+    function nodeHeight(d) {
+      return HEADER_H + Math.max(1, getAttrs(d).length) * ROW_H + 4;
+    }
+
+    function measureText(svg, text, fontSize) {
+      const tmp = svg.append('text')
+        .attr('font-size', fontSize || FONT_SIZE)
+        .attr('font-family', 'Arial, sans-serif')
+        .text(text);
+      const w = tmp.node().getComputedTextLength();
+      tmp.remove();
+      return w;
+    }
+
+    function render() {
+
+      const svg = d3.select('#svg-{{name}}').attr('zoom', true);
+      const g = svg.append('g');
+
+      /* Links */
+      g.selectAll('.plugin-link')
+        .data(links)
+        .enter()
+        .append('line')
+        .attr('class', 'plugin-link');
+
+      const node = g.selectAll('.block-node')
+        .data(nodes)
+        .enter()
+        .append('g')
+        .attr('class', 'block-node')
+        .attr('id', d => d.id);
+
+      /* Header text – appended first so we can measure it */
+      node.append('text')
+        .attr('class', 'header-text')
+        .attr('text-anchor', 'middle')
+        .attr('dominant-baseline', 'middle')
+        .attr('font-size', 13)
+        .attr('font-weight', 'bold')
+        .attr('fill', '#ffffff')
+        .text(d => d.id);
+
+      node.each(function (d) {
+
+        const grp = d3.select(this);
+        const attrs = getAttrs(d);
+
+        const textEl = this.querySelector('.header-text');
+        const textW = textEl ? textEl.getComputedTextLength() : 100;
+
+        let maxAttrW = 0;
+        attrs.forEach(attr => {
+          const valW = measureText(svg, String(attr.value), FONT_SIZE);
+          const rowW = PAD_X + KEY_W + 8 + valW + PAD_X;
+          if (rowW > maxAttrW) maxAttrW = rowW;
+        });
+
+        const nw = Math.max(160, textW + PAD_X * 2, maxAttrW);
+        const nh = nodeHeight(d);
+        const topY = -nh / 2;
+
+        /* Node border (full rounded rect, white fill) */
+        grp.insert('rect', '.header-text')
+          .attr('class', 'node-border')
+          .attr('x', -nw / 2)
+          .attr('y', topY)
+          .attr('width', nw)
+          .attr('height', nh)
+          .attr('rx', 4)
+          .attr('ry', 4);
+
+        /* Clip path to flatten the bottom edge of the header rect */
+        const clipId = `clip-header-${d.id}`;
+        grp.append('clipPath')
+          .attr('id', clipId)
+          .append('rect')
+          .attr('x', -nw / 2)
+          .attr('y', topY)
+          .attr('width', nw)
+          .attr('height', HEADER_H);
+
+        /* Header background – clipped so only top corners are rounded */
+        grp.insert('rect', '.header-text')
+          .attr('class', 'header-bg')
+          .attr('x', -nw / 2)
+          .attr('y', topY)
+          .attr('width', nw)
+          .attr('height', HEADER_H)
+          .attr('rx', 4)
+          .attr('ry', 4)
+          .attr('clip-path', `url(#${clipId})`);
+
+        /* Header text position */
+        grp.select('.header-text')
+          .attr('x', 0)
+          .attr('y', topY + HEADER_H / 2);
+
+        if (attrs.length === 0) {
+
+          grp.append('text')
+            .attr('x', 0)
+            .attr('y', topY + HEADER_H + ROW_H - 5)
+            .attr('text-anchor', 'middle')
+            .attr('fill', '#aaaaaa')
+            .text('(no attributes)');
+
+          return;
+        }
+
+        attrs.forEach((attr, i) => {
+
+          const rowY = topY + HEADER_H + i * ROW_H;
+
+          if (i % 2 === 1) {
+            grp.append('rect')
+              .attr('x', -nw / 2)
+              .attr('y', rowY)
+              .attr('width', nw)
+              .attr('height', ROW_H)
+              .style('fill', '#f5f9ff');
+          }
+
+          if (i > 0) {
+            grp.append('line')
+              .attr('x1', -nw / 2 + 4)
+              .attr('x2', nw / 2 - 4)
+              .attr('y1', rowY)
+              .attr('y2', rowY)
+              .style('stroke', BLUE)
+              .style('stroke-width', '0.5px');
+          }
+
+          grp.append('text')
+            .attr('class', 'attr-name')
+            .attr('x', -nw / 2 + PAD_X)
+            .attr('y', rowY + ROW_H - 6)
+            .text(String(attr.name));
+
+          grp.append('text')
+            .attr('x', -nw / 2 + PAD_X + KEY_W + 8)
+            .attr('y', rowY + ROW_H - 6)
+            .attr('fill', '#333')
+            .text(String(attr.value));
+        });
+
+      });
+    }
+
+    document.fonts.ready.then(() => render());
+
+  })();
+</script>

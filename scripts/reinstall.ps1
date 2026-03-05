@@ -1,6 +1,6 @@
 # Tangled Graph Explorer - Reinstall Script (Windows)
 # Use this to reinstall all components after making changes.
-# Run in PowerShell: .\reinstall.ps1
+# Run from repo root: .\scripts\reinstall.ps1  or  make reinstall
 
 $ErrorActionPreference = "Stop"
 
@@ -13,7 +13,7 @@ Write-Host "Reinstalling all Tangled components..." -ForegroundColor Cyan
 Write-Host ""
 
 if (-not (Test-Path "venv")) {
-    Write-Host "Error: Virtual environment not found. Run install.ps1 first." -ForegroundColor Red
+    Write-Host "Error: Virtual environment not found. Run scripts/install.ps1 or make install first." -ForegroundColor Red
     exit 1
 }
 

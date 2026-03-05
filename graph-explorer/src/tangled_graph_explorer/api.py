@@ -75,6 +75,7 @@ def load_data(workspace_id: str):
     
     try:
         ws.load_data(plugin, **params)
+        ws._cli_cleared = False 
         return jsonify({"success": True, "node_count": len(ws.graph.nodes)})
     except Exception as e:
         return jsonify({"error": str(e)}), 400
@@ -166,6 +167,7 @@ def reset_graph(workspace_id: str):
         return jsonify({"error": "Workspace not found"}), 404
     
     ws.reset()
+    ws._cli_cleared = False
     return jsonify({"success": True})
 
 
@@ -173,27 +175,43 @@ def reset_graph(workspace_id: str):
 def execute_cli(workspace_id: str):
     """
     Execute a CLI command on the workspace graph.
-    
+
     Request body:
     {
         "command": "create node --id=1 --property Name=Alice"
     }
+
+    Response (success):
+    {
+        "result": "Created node '1'",
+        "changed": true
+    }
+
+    Response (error):
+    {
+        "error": "Node '1' already exists"
+    }
     """
     platform = current_app.config["PLATFORM"]
     ws = platform.get_workspace(workspace_id)
-    
+
     if ws is None:
         return jsonify({"error": "Workspace not found"}), 404
-    
+
     data = request.get_json()
-    command = data.get("command", "")
-    
-    # TODO: Implement CLI execution
-    # from tangled_platform.cli import CLI
-    # cli = CLI(ws.graph)
-    # result = cli.execute(command)
-    
-    return jsonify({"error": "CLI not yet implemented"}), 501
+    command = data.get("command", "").strip()
+
+    if not command:
+        return jsonify({"error": "No command provided"}), 400
+
+    from tangled_graph_explorer.cli import CLI
+    cli = CLI(ws)
+    result = cli.execute(command)
+
+    if result.error:
+        return jsonify({"error": result.error}), 400
+
+    return jsonify({"result": result.output, "changed": result.changed})
 
 
 @api_bp.route("/workspace/<workspace_id>/graph", methods=["GET"])
@@ -214,18 +232,27 @@ def get_graph_data(workspace_id: str):
     
     nodes = []
     for node_id, node in ws.graph.nodes.items():
-        nodes.append({
-            "id": node_id,
-            "attributes": {k: str(v) for k, v in node.attributes.items()},
-        })
-    
+        attrs = {}
+        for k, attr in node.attributes.items():
+            value = attr.value
+            if hasattr(value, "isoformat"):
+                value = value.isoformat()
+            attrs[k] = {"value": str(value), "type": attr.type.value}
+        nodes.append({"id": node_id, "attributes": attrs})
+
     edges = []
     for edge_id, edge in ws.graph.edges.items():
+        attrs = {}
+        for k, attr in edge.attributes.items():
+            value = attr.value
+            if hasattr(value, "isoformat"):
+                value = value.isoformat()
+            attrs[k] = {"value": str(value), "type": attr.type.value}
         edges.append({
             "id": edge_id,
             "source": edge.source_id,
             "target": edge.target_id,
-            "attributes": {k: str(v) for k, v in edge.attributes.items()},
+            "attributes": attrs,
         })
     
     return jsonify({

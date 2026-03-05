@@ -3,115 +3,73 @@
  *
  * Coordinates all views (Main, Tree, Bird) and handles user interactions.
  */
-
 class WorkspaceController {
   constructor() {
     this.workspaceId =
       document.querySelector(".workspace-page")?.dataset.workspaceId;
-
-    // Initialize view components
     this.graphRenderer = new GraphRenderer("main-graph-container");
     this.treeView = new TreeView("tree-container");
     this.birdView = new BirdView("bird-container");
-
     this.graphData = null;
+    this._isCleared = false;
 
     this._setupEventHandlers();
     this._setupViewSynchronization();
     this._loadDataSources();
   }
 
-  /**
-   * Setup form and button event handlers
-   */
   _setupEventHandlers() {
-    // Load data form
-    const loadForm = document.getElementById("load-data-form");
-    loadForm?.addEventListener("submit", (e) => {
+    document
+      .getElementById("load-data-form")
+      ?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this._handleLoadData();
+      });
+    document
+      .getElementById("data-source-select")
+      ?.addEventListener("change", (e) => {
+        this._updatePluginParams(e.target.value);
+      });
+    document
+      .getElementById("visualizer-select")
+      ?.addEventListener("change", () => {
+        this._refreshVisualization();
+      });
+    document.getElementById("search-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      this._handleLoadData();
+      this._handleSearch(document.getElementById("search-input").value);
     });
-
-    // Data source selection
-    const dataSourceSelect = document.getElementById("data-source-select");
-    dataSourceSelect?.addEventListener("change", (e) => {
-      this._updatePluginParams(e.target.value);
-    });
-
-    // Visualizer selection
-    const visualizerSelect = document.getElementById("visualizer-select");
-    visualizerSelect?.addEventListener("change", () => {
-      this._refreshVisualization();
-    });
-
-    // Search form
-    const searchForm = document.getElementById("search-form");
-    searchForm?.addEventListener("submit", (e) => {
+    document.getElementById("filter-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const query = document.getElementById("search-input").value;
-      this._handleSearch(query);
+      this._handleFilter(document.getElementById("filter-input").value);
     });
-
-    // Filter form
-    const filterForm = document.getElementById("filter-form");
-    filterForm?.addEventListener("submit", (e) => {
+    document
+      .getElementById("reset-btn")
+      ?.addEventListener("click", () => this._handleReset());
+    document.getElementById("cli-form")?.addEventListener("submit", (e) => {
       e.preventDefault();
-      const query = document.getElementById("filter-input").value;
-      this._handleFilter(query);
-    });
-
-    // Reset button
-    const resetBtn = document.getElementById("reset-btn");
-    resetBtn?.addEventListener("click", () => {
-      this._handleReset();
-    });
-
-    // CLI form
-    const cliForm = document.getElementById("cli-form");
-    cliForm?.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const command = document.getElementById("cli-input").value;
-      this._handleCliCommand(command);
-      document.getElementById("cli-input").value = "";
+      const input = document.getElementById("cli-input");
+      this._handleCliCommand(input.value);
+      input.value = "";
     });
   }
 
-  /**
-   * Setup cross-view synchronization
-   */
   _setupViewSynchronization() {
-    // Sync node selection across views
-    this.graphRenderer.onNodeSelect = (node) => {
+    this.graphRenderer.onNodeSelect = (node) =>
       this.treeView.selectNodeById(node.id);
-      // Bird view doesn't need selection sync
-    };
-
-    this.treeView.onNodeSelect = (node) => {
+    this.treeView.onNodeSelect = (node) =>
       this.graphRenderer.selectNodeById(node.id);
-    };
-
-    // Sync viewport changes to bird view
     this.graphRenderer.onViewportChange = (transform) => {
-      const container = document.getElementById("main-graph-container");
-      this.birdView.updateViewport(
-        transform,
-        container.clientWidth,
-        container.clientHeight,
-      );
+      const c = document.getElementById("main-graph-container");
+      this.birdView.updateViewport(transform, c.clientWidth, c.clientHeight);
     };
-    this.graphRenderer.onSimulationTick = (data) => {
-      this.birdView.render(data);
-    };
+    this.graphRenderer.onSimulationTick = (data) => this.birdView.render(data);
   }
 
-  /**
-   * Load available data sources and populate dropdown
-   */
   async _loadDataSources() {
     try {
       const sources = await api.get("/api/plugins/datasources");
       const select = document.getElementById("data-source-select");
-
       sources.forEach((source) => {
         const option = document.createElement("option");
         option.value = source.id;
@@ -119,31 +77,25 @@ class WorkspaceController {
         option.dataset.params = JSON.stringify(source.parameters);
         select.appendChild(option);
       });
-    } catch (error) {
-      console.error("Failed to load data sources:", error);
+    } catch (e) {
+      console.error("Failed to load data sources:", e);
     }
   }
 
-  /**
-   * Update parameter inputs based on selected plugin
-   */
   _updatePluginParams(pluginId) {
-    const paramsContainer = document.getElementById("plugin-params");
-    paramsContainer.innerHTML = "";
-
+    const container = document.getElementById("plugin-params");
+    container.innerHTML = "";
     if (!pluginId) return;
-
-    const option = document.querySelector(`option[value="${pluginId}"]`);
-    const params = JSON.parse(option.dataset.params || "[]");
-
+    const params = JSON.parse(
+      document.querySelector(`option[value="${pluginId}"]`)?.dataset.params ||
+        "[]",
+    );
     params.forEach((param) => {
       const div = document.createElement("div");
       div.className = "param-input";
-
       const label = document.createElement("label");
       label.textContent = param.name + (param.required ? " *" : "");
       label.title = param.description;
-
       const input = document.createElement("input");
       input.type = "text";
       input.name = param.name;
@@ -151,61 +103,45 @@ class WorkspaceController {
       input.placeholder = param.description;
       if (param.default) input.value = param.default;
       if (param.required) input.required = true;
-
       div.appendChild(label);
       div.appendChild(input);
-      paramsContainer.appendChild(div);
+      container.appendChild(div);
     });
   }
 
-  /**
-   * Handle load data form submission
-   */
   async _handleLoadData() {
-    const select = document.getElementById("data-source-select");
-    const pluginId = select.value;
-
+    this._isCleared = false;
+    const pluginId = document.getElementById("data-source-select").value;
     if (!pluginId) {
       showNotification("Please select a data source", "error");
       return;
     }
-
-    // Collect parameters
     const params = {};
-    document.querySelectorAll("#plugin-params input").forEach((input) => {
-      if (input.value) {
-        params[input.name] = input.value;
-      }
+    document.querySelectorAll("#plugin-params input").forEach((i) => {
+      if (i.value) params[i.name] = i.value;
     });
-
     try {
       const result = await api.post(`/api/workspace/${this.workspaceId}/load`, {
         plugin: pluginId,
-        params: params,
+        params,
       });
-
       if (result.error) {
         showNotification(result.error, "error");
       } else {
         showNotification(`Loaded ${result.node_count} nodes`, "success");
         await this._refreshVisualization();
       }
-    } catch (error) {
+    } catch (e) {
       showNotification("Failed to load data", "error");
-      console.error(error);
+      console.error(e);
     }
   }
 
-  /**
-   * Refresh all visualizations
-   */
   async _refreshVisualization() {
     try {
-      const graphData = await api.get(
+      this.graphData = await api.get(
         `/api/workspace/${this.workspaceId}/graph`,
       );
-      this.graphData = graphData;
-
       const visualizer = document.getElementById("visualizer-select").value;
       const renderResult = await api.get(
         `/api/workspace/${this.workspaceId}/render?visualizer=${visualizer}`,
@@ -214,106 +150,95 @@ class WorkspaceController {
       const mainContainer = document.getElementById("main-graph-container");
       mainContainer.innerHTML = renderResult.html || "";
 
-      mainContainer.querySelectorAll("script").forEach((old) => {
-        const s = document.createElement("script");
-        s.textContent = old.textContent;
-        document.body.appendChild(s);
-        document.body.removeChild(s);
-      });
+      window.__graphData = this.graphData;
+
+      mainContainer
+        .querySelectorAll("script:not([type]), script[type='text/javascript']")
+        .forEach((old) => {
+          const s = document.createElement("script");
+          s.textContent = old.textContent;
+          document.body.appendChild(s);
+          document.body.removeChild(s);
+        });
 
       setTimeout(() => {
-        const existingSvg = mainContainer.querySelector("svg");
-
-        if (graphData.nodes.length > 0) {
-          if (existingSvg) {
-            console.log("calling attach...");
-            this.graphRenderer.attach(existingSvg.id, graphData);
-          } else {
-            console.log("NO SVG FOUND");
-          }
-        } else {
-          console.log("NO NODES");
+        const svgEl = mainContainer.querySelector("svg");
+        if (this.graphData.nodes.length > 0 && svgEl) {
+          this.graphRenderer.attach(svgEl.id, this.graphData);
         }
-
         this.birdView.render(this.graphData);
       }, 50);
-    } catch (error) {
-      console.error("Failed to refresh visualization:", error);
+    } catch (e) {
+      console.error("Failed to refresh visualization:", e);
     }
   }
-  /**
-   * Handle search
-   */
+
+  async _updateGraph() {
+    try {
+      this.graphData = await api.get(
+        `/api/workspace/${this.workspaceId}/graph`,
+      );
+      window.__graphData = this.graphData;
+      this.graphRenderer.update(this.graphData);
+      this.birdView.render(this.graphData);
+    } catch (e) {
+      console.error("Failed to update graph:", e);
+    }
+  }
+
   async _handleSearch(query) {
     if (!query) return;
-
     try {
       const result = await api.post(
         `/api/workspace/${this.workspaceId}/search`,
         { query },
       );
-
       if (result.error) {
         showNotification(result.error, "error");
       } else {
         showNotification(`Found ${result.node_count} nodes`, "info");
         await this._refreshVisualization();
       }
-    } catch (error) {
+    } catch (e) {
       showNotification("Search failed", "error");
-      console.error(error);
     }
   }
 
-  /**
-   * Handle filter
-   */
   async _handleFilter(query) {
     if (!query) return;
-
     try {
       const result = await api.post(
         `/api/workspace/${this.workspaceId}/filter`,
         { query },
       );
-
       if (result.error) {
         showNotification(result.error, "error");
       } else {
         showNotification(`Filtered to ${result.node_count} nodes`, "info");
         await this._refreshVisualization();
       }
-    } catch (error) {
+    } catch (e) {
       showNotification("Filter failed", "error");
-      console.error(error);
     }
   }
 
-  /**
-   * Handle reset
-   */
   async _handleReset() {
+    this._isCleared = false;
     try {
       await api.post(`/api/workspace/${this.workspaceId}/reset`);
       document.getElementById("search-input").value = "";
       document.getElementById("filter-input").value = "";
       await this._refreshVisualization();
       showNotification("Reset to original graph", "info");
-    } catch (error) {
+    } catch (e) {
       showNotification("Reset failed", "error");
-      console.error(error);
     }
   }
 
-  /**
-   * Handle CLI command
-   */
   async _handleCliCommand(command) {
     if (!command) return;
-
     const output = document.getElementById("cli-output");
     output.innerHTML += `<div class="cli-command">&gt; ${command}</div>`;
-
     try {
       const result = await api.post(`/api/workspace/${this.workspaceId}/cli`, {
         command,
@@ -323,20 +248,39 @@ class WorkspaceController {
         output.innerHTML += `<div class="cli-error">${result.error}</div>`;
       } else {
         output.innerHTML += `<div class="cli-result">${result.result || "OK"}</div>`;
-        await this._refreshVisualization();
+
+        if (result.changed) {
+          const clearRe = /^clear\b/i;
+          const structuralRe = /^(filter|search|reset)\b/i;
+
+          if (clearRe.test(command.trim())) {
+            this._clearViews();
+          } else if (structuralRe.test(command.trim())) {
+            this._isCleared = false;
+            await this._refreshVisualization();
+          } else {
+            if (!this._isCleared) {
+              await this._updateGraph();
+            }
+          }
+        }
       }
-    } catch (error) {
+    } catch (e) {
       output.innerHTML += `<div class="cli-error">Command failed</div>`;
     }
-
-    // Scroll to bottom
     output.scrollTop = output.scrollHeight;
+  }
+
+  _clearViews() {
+    document.getElementById("main-graph-container").innerHTML = "";
+    this.birdView.clear();
+    this.treeView.clear?.();
+    this.graphData = null;
+    window.__graphData = null;
+    this._isCleared = true;
   }
 }
 
-// Initialize when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
-  if (document.querySelector(".workspace-page")) {
-    new WorkspaceController();
-  }
+  if (document.querySelector(".workspace-page")) new WorkspaceController();
 });
