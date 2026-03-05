@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tangled-web"
+version = "0.1.0"
+description = "Shared web utilities for Tangled graph visualization (CLI, serializers, services)"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = [
+    "tangled-platform",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
