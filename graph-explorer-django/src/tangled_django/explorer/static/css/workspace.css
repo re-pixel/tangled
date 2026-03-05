@@ -68,7 +68,20 @@
     flex-shrink: 0;
 }
 
-#tree-container { flex: 1; overflow: auto; padding: 0.5rem; }
+#tree-container {
+    flex: 1;
+    overflow: auto;
+    padding: 0.5rem;
+    scroll-behavior: smooth;
+}
+
+.tree-placeholder {
+    color: rgba(27, 42, 92, 0.35);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.82rem;
+    text-align: center;
+    padding: 2rem 1rem;
+}
 
 .tree-node { padding: 1px 0; }
 
@@ -78,7 +91,8 @@
     cursor: pointer;
     padding: 0.3rem 0.5rem;
     border-radius: 8px;
-    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     font-family: 'Quicksand', sans-serif;
     font-size: 0.82rem;
     font-weight: 600;
@@ -87,21 +101,44 @@
 
 .tree-node-header:hover {
     background: rgba(64, 201, 255, 0.1);
+    box-shadow: 0 0 8px rgba(64, 201, 255, 0.08);
 }
 
 .tree-node-header.selected {
     background: rgba(255, 107, 157, 0.12);
-    border: 1px solid rgba(255, 107, 157, 0.3);
+    border-color: rgba(255, 107, 157, 0.3);
+    box-shadow: 0 0 10px rgba(255, 107, 157, 0.1);
 }
 
 .tree-toggle {
-    width: 18px;
-    text-align: center;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: #40C9FF;
     flex-shrink: 0;
     user-select: none;
+    border-radius: 6px;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    margin-right: 4px;
+}
+
+.tree-toggle[data-toggle]:hover {
+    background: rgba(64, 201, 255, 0.15);
+    box-shadow: 0 0 6px rgba(64, 201, 255, 0.2);
+}
+
+.tree-toggle.cyclic {
+    color: #E8960C;
+}
+
+.tree-cycle-icon {
+    font-size: 0.9rem;
+    line-height: 1;
 }
 
 .tree-label {
@@ -111,14 +148,82 @@
     white-space: nowrap;
 }
 
-.tree-children {
-    margin-left: 16px;
-    display: none;
-    border-left: 1px solid rgba(255, 255, 255, 0.15);
-    padding-left: 4px;
+.tree-label-cyclic {
+    color: rgba(27, 42, 92, 0.45);
+    font-style: italic;
 }
 
-.tree-children.expanded { display: block; }
+/* Connector lines */
+.tree-children {
+    margin-left: 10px;
+    padding-left: 12px;
+    position: relative;
+    border-left: 1px solid rgba(64, 201, 255, 0.2);
+}
+
+.tree-children > .tree-node {
+    position: relative;
+}
+
+.tree-children > .tree-node::before {
+    content: '';
+    position: absolute;
+    top: 12px;
+    left: -12px;
+    width: 10px;
+    height: 0;
+    border-top: 1px solid rgba(64, 201, 255, 0.2);
+}
+
+/* Attribute rows */
+.tree-attributes {
+    margin-left: 24px;
+    margin-top: 2px;
+    margin-bottom: 4px;
+    padding: 4px 0;
+    border-left: 1px dashed rgba(64, 201, 255, 0.12);
+    padding-left: 10px;
+}
+
+.tree-attr-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    line-height: 1.6;
+}
+
+.tree-attr-row:nth-child(even) {
+    background: rgba(64, 201, 255, 0.04);
+}
+
+.tree-attr-key {
+    color: rgba(27, 42, 92, 0.5);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.tree-attr-key::after {
+    content: ':';
+}
+
+.tree-attr-value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #1B2A5C;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.attr-type-string { color: #2E8B57; }
+.attr-type-number { color: #4a90d9; }
+.attr-type-boolean { color: #9B59B6; }
+.attr-type-date { color: #E8960C; }
+.attr-type-null { color: rgba(27, 42, 92, 0.3); font-style: italic; }
 
 /* ── Main View ── */
 .main-view {

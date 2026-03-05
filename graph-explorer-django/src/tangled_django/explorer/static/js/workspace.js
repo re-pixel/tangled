@@ -236,6 +236,7 @@ class WorkspaceController {
         }
 
         this.birdView.render(this.graphData);
+        this.treeView.render(this.graphData);
       }, 50);
     } catch (error) {
       console.error("Failed to refresh visualization:", error);
