@@ -1,0 +1,358 @@
+/*
+ * Workspace Page — Bubbly Glassmorphic Layout
+ * Pool blue + Bubblegum pink
+ */
+
+.workspace-page {
+    display: grid;
+    gap: 0.75rem;
+    height: calc(100vh - 3.5rem);
+    grid-template-columns: 260px 280px 1fr;
+    grid-template-rows: 1fr 280px;
+    grid-template-areas:
+        "controls tree main"
+        "controls bird cli";
+}
+
+/* ── Control Panel ── */
+.control-panel {
+    grid-area: controls;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+.control-panel section { border-radius: 16px; padding: 1rem; }
+
+.control-panel h3 {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #40C9FF;
+    margin-bottom: 0.75rem;
+    font-family: 'Quicksand', sans-serif;
+}
+
+.control-panel label {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(27, 42, 92, 0.6);
+    margin-bottom: 0.3rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+}
+
+.param-input { margin-bottom: 0.5rem; }
+
+/* ── Tree View ── */
+.tree-view {
+    grid-area: tree;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tree-view h3 {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #40C9FF;
+    font-family: 'Quicksand', sans-serif;
+    flex-shrink: 0;
+}
+
+#tree-container { flex: 1; overflow: auto; padding: 0.5rem; }
+
+.tree-node { padding: 1px 0; }
+
+.tree-node-header {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.3rem 0.5rem;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1B2A5C;
+}
+
+.tree-node-header:hover {
+    background: rgba(64, 201, 255, 0.1);
+}
+
+.tree-node-header.selected {
+    background: rgba(255, 107, 157, 0.12);
+    border: 1px solid rgba(255, 107, 157, 0.3);
+}
+
+.tree-toggle {
+    width: 18px;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #40C9FF;
+    flex-shrink: 0;
+    user-select: none;
+}
+
+.tree-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tree-children {
+    margin-left: 16px;
+    display: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.15);
+    padding-left: 4px;
+}
+
+.tree-children.expanded { display: block; }
+
+/* ── Main View ── */
+.main-view {
+    grid-area: main;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.main-view h3 {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #40C9FF;
+    font-family: 'Quicksand', sans-serif;
+    flex-shrink: 0;
+}
+
+#main-graph-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+#main-graph-container svg { width: 100%; height: 100%; }
+
+/* ── Bird View ── */
+.bird-view {
+    grid-area: bird;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.bird-view h3 {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #40C9FF;
+    font-family: 'Quicksand', sans-serif;
+    flex-shrink: 0;
+}
+
+#bird-container {
+    flex: 1;
+    position: relative;
+    background: rgba(64, 201, 255, 0.03);
+}
+
+#bird-container svg { width: 100%; height: 100%; }
+
+#viewport-rect {
+    position: absolute;
+    border: 1.5px solid #40C9FF;
+    background-color: rgba(64, 201, 255, 0.06);
+    pointer-events: none;
+    border-radius: 2px;
+}
+
+/* ── CLI Section ── */
+.cli-section {
+    grid-area: cli;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.cli-section h3 {
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(64, 201, 255, 0.7);
+    font-family: 'Quicksand', sans-serif;
+    flex-shrink: 0;
+}
+
+#cli-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: rgba(10, 20, 45, 0.12);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    border-radius: 0 0 16px 16px;
+}
+
+#cli-output {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    color: rgba(15, 30, 60, 0.65);
+    line-height: 1.5;
+}
+
+.cli-command { color: #40C9FF; }
+.cli-result { color: #34B88C; }
+.cli-error { color: #FF6B9D; }
+
+#cli-form {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.8rem;
+    border-top: 1px solid rgba(64, 201, 255, 0.1);
+    gap: 0.4rem;
+}
+
+#cli-form .prompt {
+    color: #FF6B9D;
+    font-weight: 600;
+    user-select: none;
+}
+
+#cli-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #1B2A5C;
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    padding: 0.25rem 0;
+}
+
+#cli-input::placeholder { color: rgba(27, 42, 92, 0.25); }
+
+/* ── Mobile Sidebar ── */
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    z-index: 100;
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #1B2A5C;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(64, 201, 255, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 49;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1200px) {
+    .workspace-page {
+        grid-template-columns: 240px 1fr;
+        grid-template-rows: 1fr 1fr 240px;
+        grid-template-areas:
+            "controls main"
+            "controls tree"
+            "bird     cli";
+    }
+}
+
+@media (max-width: 900px) {
+    .workspace-page {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto 1fr 260px 200px;
+        grid-template-areas:
+            "controls controls"
+            "main     main"
+            "tree     bird"
+            "cli      cli";
+        height: auto;
+        min-height: calc(100vh - 3.5rem);
+    }
+
+    .control-panel {
+        flex-direction: row;
+        flex-wrap: wrap;
+        overflow-y: visible;
+        padding-right: 0;
+    }
+
+    .control-panel section {
+        flex: 1 1 200px;
+        min-width: 180px;
+    }
+
+    .main-view { min-height: 350px; }
+}
+
+@media (max-width: 640px) {
+    .workspace-page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        grid-template-areas:
+            "controls" "main" "tree" "bird" "cli";
+        gap: 0.5rem;
+        padding: 0;
+    }
+
+    .control-panel {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 50;
+        background: rgba(230, 245, 255, 0.96);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 1.5rem;
+        flex-direction: column;
+        overflow-y: auto;
+        gap: 0.75rem;
+    }
+
+    .control-panel.open { display: flex; }
+    .control-panel section { flex: none; min-width: 0; }
+    .sidebar-toggle { display: flex; }
+    .sidebar-overlay.open { display: block; }
+    .main-view { min-height: 300px; }
+    .tree-view, .bird-view { min-height: 200px; }
+    .cli-section { min-height: 180px; }
+}
