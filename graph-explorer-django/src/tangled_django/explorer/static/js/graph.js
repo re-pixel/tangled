@@ -36,6 +36,19 @@ class GraphRenderer {
     this._nodeGroup = null;
     this._linkSelection = null;
     this._nodeDomElements = null;
+
+    this.tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background", "white")
+      .style("border", "1px solid #ccc")
+      .style("padding", "8px")
+      .style("border-radius", "4px")
+      .style("font-size", "12px")
+      .style("pointer-events", "none")
+      .style("z-index", "999999")
+      .style("opacity", 0);
   }
 
   attach(svgId, data) {
@@ -671,9 +684,30 @@ class GraphRenderer {
   }
 
   _showTooltip(event, node) {
-    console.log("Node:", node);
+    let html = `<strong>${node.id}</strong><br/>`;
+
+    if (node.attributes) {
+      Object.entries(node.attributes).forEach(([k, v]) => {
+        const value = typeof v === "object" ? v.value : v;
+        html += `${k}: ${value}<br/>`;
+      });
+    }
+
+    this.tooltip
+      .html(html)
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY + 10 + "px")
+      .transition()
+      .duration(200)
+      .style("opacity", 1);
   }
-  _hideTooltip() {}
+
+  /**
+   * Hide tooltip
+   */
+  _hideTooltip() {
+    this.tooltip.transition().duration(200).style("opacity", 0);
+  }
   getTransform() {
     return d3.zoomTransform(this.svg.node());
   }
