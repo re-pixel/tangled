@@ -147,6 +147,7 @@ class WorkspaceController {
       const input = document.createElement("input");
       input.type = "text";
       input.name = param.name;
+      input.className = "glass-input";
       input.placeholder = param.description;
       if (param.default) input.value = param.default;
       if (param.required) input.required = true;

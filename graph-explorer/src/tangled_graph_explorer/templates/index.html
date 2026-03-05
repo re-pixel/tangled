@@ -1,72 +1,182 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Tangled Graph Explorer{% endblock %}
+{% block title %}Home — Tangled Graph Explorer{% endblock %}
 
 {% block content %}
-<div class="index-page">
-    <section class="welcome">
-        <h2>Welcome to Tangled Graph Explorer</h2>
-        <p>Visualize and explore graph structures from various data sources.</p>
+<div class="max-w-5xl mx-auto py-4 px-2 space-y-6">
+
+    <!-- ── Hero Section ── -->
+    <section class="text-center py-5 animate-fade-in-up">
+        <h2 class="font-brand text-5xl sm:text-6xl font-bold text-navy leading-tight">
+            Graph <span class="text-pool">Explorer</span>
+        </h2>
+        <p class="mt-4 text-base sm:text-lg text-navy-muted max-w-xl mx-auto leading-relaxed font-semibold">
+            Visualize and explore graph structures from various data sources.
+            <br class="hidden sm:block">
+            Connect, query, and discover relationships in your data.
+        </p>
+
+        <!-- Decorative dots -->
+        <div class="flex items-center justify-center gap-2 mt-6">
+            <div class="w-2.5 h-2.5 rounded-full bg-pool shadow-sm" style="box-shadow: 0 0 8px rgba(64,201,255,0.4);"></div>
+            <div class="w-2 h-2 rounded-full bg-bubblegum shadow-sm" style="box-shadow: 0 0 8px rgba(255,107,157,0.4);"></div>
+            <div class="w-3 h-3 rounded-full bg-pool-light shadow-sm" style="box-shadow: 0 0 8px rgba(125,221,255,0.4);"></div>
+            <div class="w-2 h-2 rounded-full bg-bubblegum-light shadow-sm" style="box-shadow: 0 0 8px rgba(255,157,191,0.4);"></div>
+            <div class="w-2.5 h-2.5 rounded-full bg-pool shadow-sm" style="box-shadow: 0 0 8px rgba(64,201,255,0.4);"></div>
+        </div>
     </section>
-    
-    <section class="workspaces">
-        <h3>Workspaces</h3>
+
+    <!-- ── Workspaces ── -->
+    <section class="glass rounded-2xl p-6 sm:p-8 animate-fade-in-up stagger-2">
+        <div class="flex items-center justify-between mb-5">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                     style="background: linear-gradient(135deg, #40C9FF, #7DDDFF); box-shadow: 0 3px 12px rgba(64,201,255,0.3);">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                        <line x1="8" y1="21" x2="16" y2="21"/>
+                        <line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                </div>
+                <h3 class="font-brand text-xl font-bold text-navy">Workspaces</h3>
+            </div>
+            <a href="{{ url_for('main.new_workspace') }}" class="btn-glow text-sm no-underline">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                New Workspace
+            </a>
+        </div>
+
         {% if workspaces %}
-        <ul class="workspace-list">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {% for ws_id, ws in workspaces.items() %}
-            <li>
-                <a href="{{ url_for('main.workspace', workspace_id=ws_id) }}">
-                    Workspace {{ ws_id[:8] }}...
-                    {% if ws.graph %}
-                    ({{ ws.graph.nodes | length }} nodes)
-                    {% else %}
-                    (empty)
-                    {% endif %}
-                </a>
-            </li>
+            <a href="{{ url_for('main.workspace', workspace_id=ws_id) }}"
+               class="glass-light glass-hover rounded-xl p-4 no-underline group block animate-fade-in-up stagger-{{ loop.index }}">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-pool-pale"
+                         style="border: 2px solid rgba(64,201,255,0.3);">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#40C9FF" stroke-width="2" stroke-linecap="round">
+                            <circle cx="12" cy="12" r="3"/>
+                            <circle cx="4" cy="6" r="2"/>
+                            <circle cx="20" cy="6" r="2"/>
+                            <circle cx="4" cy="18" r="2"/>
+                            <circle cx="20" cy="18" r="2"/>
+                            <line x1="6" y1="7" x2="10" y2="10"/>
+                            <line x1="18" y1="7" x2="14" y2="10"/>
+                            <line x1="6" y1="17" x2="10" y2="14"/>
+                            <line x1="18" y1="17" x2="14" y2="14"/>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold text-navy group-hover:text-bubblegum transition-colors truncate">
+                            {{ ws_id[:8] }}...
+                        </div>
+                        <div class="text-xs text-navy-muted font-semibold mt-0.5">
+                            {% if ws.graph %}
+                            {{ ws.graph.nodes | length }} nodes
+                            {% else %}
+                            Empty workspace
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
             {% endfor %}
-        </ul>
+        </div>
         {% else %}
-        <p>No workspaces yet. <a href="{{ url_for('main.new_workspace') }}">Create one</a>.</p>
+        <div class="text-center py-10">
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-pool-pale"
+                 style="border: 2px dashed #40C9FF;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#40C9FF" stroke-width="1.5" stroke-linecap="round">
+                    <rect x="3" y="3" width="18" height="18" rx="3"/>
+                    <line x1="12" y1="8" x2="12" y2="16"/>
+                    <line x1="8" y1="12" x2="16" y2="12"/>
+                </svg>
+            </div>
+            <p class="text-sm text-navy-muted font-bold mb-3">No workspaces yet</p>
+            <a href="{{ url_for('main.new_workspace') }}" class="btn-glow text-sm no-underline inline-flex">
+                Create your first workspace
+            </a>
+        </div>
         {% endif %}
-        
-        <a href="{{ url_for('main.new_workspace') }}" class="btn btn-primary">New Workspace</a>
     </section>
-    
-    <section class="plugins">
-        <h3>Available Plugins</h3>
-        
-        <div class="plugin-category">
-            <h4>Data Sources</h4>
-            {% if data_sources %}
-            <ul>
-                {% for name, plugin in data_sources.items() %}
-                <li>
-                    <strong>{{ plugin.name }}</strong>
-                    <p>{{ plugin.description }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No data source plugins installed.</p>
-            {% endif %}
+
+    <!-- ── Plugins ── -->
+    <section class="glass rounded-2xl p-6 sm:p-8 animate-fade-in-up stagger-4">
+        <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-full flex items-center justify-center"
+                 style="background: linear-gradient(135deg, #FF6B9D, #FF9DBF); box-shadow: 0 3px 12px rgba(255,107,157,0.3);">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                    <path d="M2 17l10 5 10-5"/>
+                    <path d="M2 12l10 5 10-5"/>
+                </svg>
+            </div>
+            <h3 class="font-brand text-xl font-bold text-navy">Available Plugins</h3>
         </div>
-        
-        <div class="plugin-category">
-            <h4>Visualizers</h4>
-            {% if visualizers %}
-            <ul>
-                {% for name, plugin in visualizers.items() %}
-                <li>
-                    <strong>{{ plugin.name }}</strong>
-                    <p>{{ plugin.description }}</p>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p>No visualizer plugins installed.</p>
-            {% endif %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Data Sources -->
+            <div>
+                <h4 class="section-label mb-3 !text-pool !font-bold">Data Sources</h4>
+                {% if data_sources %}
+                <div class="space-y-2">
+                    {% for name, plugin in data_sources.items() %}
+                    <div class="glass-light rounded-xl p-3.5 animate-fade-in-up stagger-{{ loop.index }}">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 bg-pool-pale"
+                                 style="border: 1.5px solid rgba(64,201,255,0.3);">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#40C9FF" stroke-width="2" stroke-linecap="round">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-navy">{{ plugin.name }}</div>
+                                <div class="text-xs text-navy-muted font-semibold mt-0.5">{{ plugin.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-sm text-navy-faint italic font-semibold">No data source plugins installed.</p>
+                {% endif %}
+            </div>
+
+            <!-- Visualizers -->
+            <div>
+                <h4 class="section-label mb-3 !text-bubblegum !font-bold">Visualizers</h4>
+                {% if visualizers %}
+                <div class="space-y-2">
+                    {% for name, plugin in visualizers.items() %}
+                    <div class="glass-light rounded-xl p-3.5 animate-fade-in-up stagger-{{ loop.index }}">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 bg-bubblegum-pale"
+                                 style="border: 1.5px solid rgba(255,107,157,0.3);">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#FF6B9D" stroke-width="2" stroke-linecap="round">
+                                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/>
+                                    <line x1="12" y1="22" x2="12" y2="15.5"/>
+                                    <polyline points="22 8.5 12 15.5 2 8.5"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="text-sm font-bold text-navy">{{ plugin.name }}</div>
+                                <div class="text-xs text-navy-muted font-semibold mt-0.5">{{ plugin.description }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-sm text-navy-faint italic font-semibold">No visualizer plugins installed.</p>
+                {% endif %}
+            </div>
         </div>
     </section>
+
 </div>
 {% endblock %}
