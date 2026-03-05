@@ -21,6 +21,18 @@ class GraphRenderer {
     // Callbacks for view synchronization
     this.onNodeSelect = null;
     this.onViewportChange = null;
+    this.tooltip = d3
+      .select("body")
+      .append("div")
+      .style("position", "absolute")
+      .style("background", "white")
+      .style("border", "1px solid #ccc")
+      .style("padding", "8px")
+      .style("border-radius", "4px")
+      .style("font-size", "12px")
+      .style("pointer-events", "none")
+      .style("z-index", "999999")
+      .style("opacity", 0);
   }
 
   /**
@@ -202,15 +214,29 @@ class GraphRenderer {
    * Show tooltip on hover
    */
   _showTooltip(event, node) {
-    // TODO: Implement tooltip UI
-    console.log("Node:", node);
+    let html = `<strong>${node.id}</strong><br/>`;
+
+    if (node.attributes) {
+      Object.entries(node.attributes).forEach(([k, v]) => {
+        const value = typeof v === "object" ? v.value : v;
+        html += `${k}: ${value}<br/>`;
+      });
+    }
+
+    this.tooltip
+      .html(html)
+      .style("left", event.pageX + 10 + "px")
+      .style("top", event.pageY + 10 + "px")
+      .transition()
+      .duration(200)
+      .style("opacity", 1);
   }
 
   /**
    * Hide tooltip
    */
   _hideTooltip() {
-    // TODO: Implement tooltip UI
+    this.tooltip.transition().duration(200).style("opacity", 0);
   }
 
   /**
