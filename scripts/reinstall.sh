@@ -24,10 +24,13 @@ source venv/bin/activate
 COMPONENTS="api platform"
 MIDDLE=$(for d in */; do
   d="${d%/}"
-  [ "$d" = "api" ] || [ "$d" = "platform" ] || [ "$d" = "graph-explorer" ] || [ "$d" = "venv" ] && continue
+  [ "$d" = "api" ] || [ "$d" = "platform" ] || [ "$d" = "graph-explorer" ] || [ "$d" = "graph-explorer-django" ] || [ "$d" = "venv" ] && continue
   [ -f "$d/pyproject.toml" ] && echo "$d"
 done | sort)
-[ -f "graph-explorer/pyproject.toml" ] && COMPONENTS="$COMPONENTS $MIDDLE graph-explorer" || COMPONENTS="$COMPONENTS $MIDDLE"
+TAIL=""
+[ -f "graph-explorer/pyproject.toml" ] && TAIL="$TAIL graph-explorer"
+[ -f "graph-explorer-django/pyproject.toml" ] && TAIL="$TAIL graph-explorer-django"
+COMPONENTS="$COMPONENTS $MIDDLE $TAIL"
 COMPONENTS=$(echo $COMPONENTS | xargs)
 
 # Get package name from pyproject.toml (fallback: tangled-<dirname>)
