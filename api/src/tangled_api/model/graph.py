@@ -358,6 +358,38 @@ class Graph:
 
         return self.create_subgraph(matching_ids)
 
+    def search(self, query: str) -> 'Graph':
+        """
+        Search graph by text query. Returns subgraph of nodes whose attribute
+        names or values contain the query (case-insensitive).
+
+        Args:
+            query: Search text
+
+        Returns:
+            New Graph with matching nodes and edges between them
+
+        Raises:
+            ValueError: If query is empty
+        """
+        query = query.strip()
+        if not query:
+            raise ValueError("Search query cannot be empty")
+
+        query_lower = query.lower()
+        matching_ids = []
+
+        for node_id, node in self._nodes.items():
+            for attr_name, attr in node.attributes.items():
+                if query_lower in attr_name.lower():
+                    matching_ids.append(node_id)
+                    break
+                if query_lower in str(attr.value).lower():
+                    matching_ids.append(node_id)
+                    break
+
+        return self.create_subgraph(matching_ids)
+
     def _parse_filter_value(self, value_str: str, expected_type: AttributeValue) -> Any:
         """Parse value string to expected type. Raises ValueError on failure."""
         if expected_type == AttributeValue.INTEGER:

@@ -76,13 +76,13 @@ class Workspace:
         
         Args:
             query: Search text
+            
+        Raises:
+            ValueError: If no graph loaded
         """
-        # TODO: Implement search logic
-        # - Check all attributes
-        # - Generate subgraph of matching nodes
-        # - Update _current_graph
-        # - Record in _operation_history
-        pass
+        if self._current_graph is None:
+            raise ValueError("No graph loaded")
+        self._current_graph = self._current_graph.search(query)
     
     def reset(self) -> None:
         """Reset to the original graph, clearing all operations."""

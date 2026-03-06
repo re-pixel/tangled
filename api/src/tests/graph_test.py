@@ -491,5 +491,93 @@ class TestGraphFilter:
             graph.filter_by_query("nonexistent > 5")
 
 
+class TestGraphSearch:
+    """Test search method."""
+
+    def test_search_by_value_substring(self):
+        graph = Graph()
+        n1 = Node("n1")
+        n1.set_attribute("name", "Alice")
+        n1.set_attribute("age", 25)
+        n2 = Node("n2")
+        n2.set_attribute("name", "Bob")
+        n2.set_attribute("age", 30)
+        n3 = Node("n3")
+        n3.set_attribute("name", "Alice")
+        n3.set_attribute("age", 35)
+        graph.add_node(n1)
+        graph.add_node(n2)
+        graph.add_node(n3)
+        graph.add_edge(Edge("e1", "n1", "n2"))
+        graph.add_edge(Edge("e2", "n2", "n3"))
+
+        result = graph.search("Alice")
+        assert len(result) == 2
+        assert "n1" in result.get_node_ids()
+        assert "n3" in result.get_node_ids()
+        assert "n2" not in result.get_node_ids()
+        # n1-n2 and n2-n3 edges; n2 excluded, so no edges between n1 and n3
+        assert len(result.edges) == 0
+
+    def test_search_by_attribute_name_substring(self):
+        graph = Graph()
+        n1 = Node("n1")
+        n1.set_attribute("full_name", "John")
+        n2 = Node("n2")
+        n2.set_attribute("age", 30)
+        graph.add_node(n1)
+        graph.add_node(n2)
+
+        result = graph.search("name")
+        assert len(result) == 1
+        assert "n1" in result.get_node_ids()
+
+    def test_search_empty_query_raises(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("name", "Alice")
+        graph.add_node(n)
+
+        with pytest.raises(ValueError, match="Search query cannot be empty"):
+            graph.search("")
+        with pytest.raises(ValueError, match="Search query cannot be empty"):
+            graph.search("   ")
+
+    def test_search_no_match_returns_empty_subgraph(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("name", "Alice")
+        n.set_attribute("age", 25)
+        graph.add_node(n)
+
+        result = graph.search("xyz")
+        assert len(result) == 0
+        assert result.get_node_ids() == []
+
+    def test_search_edges_between_matching_nodes_preserved(self):
+        graph = Graph()
+        n1 = Node("n1")
+        n1.set_attribute("name", "Alice")
+        n2 = Node("n2")
+        n2.set_attribute("name", "Alice")
+        graph.add_node(n1)
+        graph.add_node(n2)
+        graph.add_edge(Edge("e1", "n1", "n2"))
+
+        result = graph.search("Alice")
+        assert len(result) == 2
+        assert len(result.edges) == 1
+        assert "e1" in result.get_edge_ids()
+
+    def test_search_case_insensitive(self):
+        graph = Graph()
+        n = Node("n1")
+        n.set_attribute("name", "Alice")
+        graph.add_node(n)
+
+        result = graph.search("alice")
+        assert len(result) == 1
+
+
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
