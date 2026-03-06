@@ -226,9 +226,9 @@ class CLI:
         verb = tokens[0].lower()
         rest = tokens[1:]
 
-        if self._cleared and verb not in ("help", "show", "clear"):
+        if self._cleared and verb not in ("help", "show", "clear", "reset"):
             return CLIResult.err(
-                f"Graph is cleared. Only 'help', 'show', and 'clear' are available. "
+                f"Graph is cleared. Only 'help', 'show', 'clear' and 'reset' are available. "
                 f"Load data to perform graph operations."
             )
 

@@ -95,7 +95,7 @@ class TestJsonDataSourceTypes:
         plugin = JsonDataSource()
         data_path = EXAMPLES_DIR / "types_test.json"
         data_path.write_text(
-            '{"id": "p1", "birthdate": "1990-05-15", "name": "Test"}'
+            '{"directed": true, "nodes": [{"id": "p1", "birthdate": "1990-05-15", "name": "Test"}]}'
         )
         try:
             graph = plugin.load(
@@ -116,7 +116,7 @@ class TestJsonDataSourceTypes:
         plugin = JsonDataSource()
         data_path = EXAMPLES_DIR / "types_test.json"
         data_path.write_text(
-            '{"id": "p1", "tags": ["a", "b", "c"], "scores": [1, 2, 3]}'
+            '{"directed": true, "nodes": [{"id": "p1", "tags": ["a", "b", "c"], "scores": [1, 2, 3]}]}'
         )
         try:
             graph = plugin.load(
@@ -135,7 +135,7 @@ class TestJsonDataSourceTypes:
         """Null values are not stored as attributes."""
         plugin = JsonDataSource()
         data_path = EXAMPLES_DIR / "types_test.json"
-        data_path.write_text('{"id": "p1", "name": "Test", "empty": null}')
+        data_path.write_text('{"directed": true, "nodes": [{"id": "p1", "name": "Test", "empty": null}]}')
         try:
             graph = plugin.load(
                 file_path="types_test.json",
