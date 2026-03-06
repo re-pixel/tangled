@@ -491,6 +491,70 @@ class TestGraphFilter:
             graph.filter_by_query("nonexistent > 5")
 
 
+class TestCompoundFilter:
+    """Test compound filter expressions with &&, ||, !, ()."""
+
+    @pytest.fixture()
+    def graph(self):
+        """4 nodes: n0(age=20,salary=80), n1(age=25,salary=120), n2(age=30,salary=60), n3(age=35,salary=150)"""
+        g = Graph()
+        for nid, age, salary in [("n0", 20, 80), ("n1", 25, 120), ("n2", 30, 60), ("n3", 35, 150)]:
+            n = Node(nid)
+            n.set_attribute("age", age)
+            n.set_attribute("salary", salary)
+            g.add_node(n)
+        g.add_edge(Edge("e01", "n0", "n1"))
+        g.add_edge(Edge("e12", "n1", "n2"))
+        g.add_edge(Edge("e23", "n2", "n3"))
+        return g
+
+    def test_filter_compound_and(self, graph):
+        result = graph.filter_by_query("age > 25 && salary >= 100")
+        assert set(result.get_node_ids()) == {"n3"}
+
+    def test_filter_compound_or(self, graph):
+        result = graph.filter_by_query("age > 30 || salary < 70")
+        # age>30: {n3}; salary<70: {n2}; union: {n2, n3}
+        assert set(result.get_node_ids()) == {"n2", "n3"}
+
+    def test_filter_compound_not(self, graph):
+        result = graph.filter_by_query("!(age > 25)")
+        assert set(result.get_node_ids()) == {"n0", "n1"}
+
+    def test_filter_compound_precedence(self, graph):
+        # && binds tighter than ||: age > 25 || (salary > 100 && age < 30)
+        result = graph.filter_by_query("age > 25 || salary > 100 && age < 30")
+        assert set(result.get_node_ids()) == {"n1", "n2", "n3"}
+
+    def test_filter_compound_parens_override(self, graph):
+        result = graph.filter_by_query("(age > 25 || salary > 100) && age < 35")
+        assert set(result.get_node_ids()) == {"n1", "n2"}
+
+    def test_filter_compound_nested_not(self, graph):
+        result = graph.filter_by_query("age > 20 && !(salary >= 100)")
+        assert set(result.get_node_ids()) == {"n2"}
+
+    def test_filter_compound_double_and(self, graph):
+        result = graph.filter_by_query("age >= 25 && age <= 30 && salary > 50")
+        assert set(result.get_node_ids()) == {"n1", "n2"}
+
+    def test_filter_single_predicate_unchanged(self, graph):
+        result = graph.filter_by_query("age > 25")
+        assert set(result.get_node_ids()) == {"n2", "n3"}
+
+    def test_filter_compound_unbalanced_parens_raises(self, graph):
+        with pytest.raises(ValueError):
+            graph.filter_by_query("(age > 25")
+
+    def test_filter_compound_empty_predicate_raises(self, graph):
+        with pytest.raises(ValueError):
+            graph.filter_by_query("age > 25 &&")
+
+    def test_filter_compound_no_spaces(self, graph):
+        result = graph.filter_by_query("age>30&&salary>=150")
+        assert set(result.get_node_ids()) == {"n3"}
+
+
 class TestGraphSearch:
     """Test search method."""
 
