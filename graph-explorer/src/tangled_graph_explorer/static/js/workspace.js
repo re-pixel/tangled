@@ -20,6 +20,66 @@ class WorkspaceController {
     this._setupViewSynchronization();
     this._loadDataSources();
     this._isCleared = false;
+
+    this._autoRestore();
+  }
+
+  async _autoRestore() {
+    try {
+      const graphData = await api.get(
+        `/api/workspace/${this.workspaceId}/graph`,
+      );
+      if (graphData.nodes && graphData.nodes.length > 0) {
+        await this._refreshVisualization();
+      }
+    } catch (error) {
+      console.error("Failed to restore workspace state:", error);
+    }
+  }
+
+  _saveUIState() {
+    const pluginId = document.getElementById("data-source-select").value;
+    const visualizer = document.getElementById("visualizer-select").value;
+    const params = {};
+    document.querySelectorAll("#plugin-params input").forEach((input) => {
+      if (input.value) params[input.name] = input.value;
+    });
+
+    localStorage.setItem(
+      `ws_${this.workspaceId}`,
+      JSON.stringify({
+        pluginId,
+        visualizer,
+        params,
+      }),
+    );
+  }
+
+  _restoreUIState() {
+    const saved = localStorage.getItem(`ws_${this.workspaceId}`);
+    if (!saved) return;
+
+    const { pluginId, visualizer, params } = JSON.parse(saved);
+
+    const dataSourceSelect = document.getElementById("data-source-select");
+    if (pluginId && dataSourceSelect) {
+      dataSourceSelect.value = pluginId;
+      this._updatePluginParams(pluginId);
+
+      if (params) {
+        Object.entries(params).forEach(([name, value]) => {
+          const input = document.querySelector(
+            `#plugin-params input[name="${name}"]`,
+          );
+          if (input) input.value = value;
+        });
+      }
+    }
+
+    const visualizerSelect = document.getElementById("visualizer-select");
+    if (visualizer && visualizerSelect) {
+      visualizerSelect.value = visualizer;
+    }
   }
 
   /**
@@ -153,6 +213,7 @@ class WorkspaceController {
         option.dataset.params = JSON.stringify(source.parameters);
         select.appendChild(option);
       });
+      this._restoreUIState();
     } catch (error) {
       console.error("Failed to load data sources:", error);
     }
@@ -222,6 +283,7 @@ class WorkspaceController {
         showNotification(result.error, "error");
       } else {
         showNotification(`Loaded ${result.node_count} nodes`, "success");
+        this._saveUIState();
         await this._refreshVisualization();
       }
     } catch (error) {
