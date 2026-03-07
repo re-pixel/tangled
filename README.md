@@ -9,29 +9,23 @@ tangled/
 ├── api/                      # Core API library (tangled-api)
 │   └── src/tangled_api/      # Graph model, plugin interfaces
 ├── platform/                 # Platform library (tangled-platform)
-│   └── src/tangled_platform/ # Plugin discovery, workspaces, CLI
+│   └── src/tangled_platform/ # Plugin discovery, workspaces
+├── web/                      # Shared web layer (tangled-web)
+│   └── src/tangled_web/      # Services, CLI, serializers
 ├── json-datasource/          # JSON data source plugin
-│   └── src/tangled_json_datasource/
 ├── yaml-datasource/          # YAML data source plugin
-│   └── src/tangled_yaml_datasource/
 ├── xml-datasource/           # XML data source plugin
-│   └── src/tangled_xml_datasource/
-├── kuzu-datasource/          # Kuzu graph database data source plugin
-│   └── src/tangled_kuzu_datasource/
+├── kuzu-datasource/          # Kuzu graph database plugin
 ├── simple-visualizer/        # Simple circle-based visualizer
-│   └── src/tangled_simple_visualizer/
 ├── block-visualizer/         # Block/rectangle visualizer with attributes
-│   └── src/tangled_block_visualizer/
 ├── graph-explorer/           # Flask web application
 │   └── src/tangled_graph_explorer/
+├── graph-explorer-django/    # Django web application
+│   └── src/tangled_django/
 ├── scripts/                  # Install and reinstall scripts
-│   ├── install.sh            # Installation (Linux/macOS)
-│   ├── install.ps1           # Installation (Windows)
-│   ├── reinstall.sh          # Reinstall all components (Linux/macOS)
-│   └── reinstall.ps1         # Reinstall all components (Windows)
-├── Makefile                  # Convenience targets for install, run, test, lint (Linux/macOS)
+├── Makefile                  # Convenience targets (Linux/macOS)
 ├── PLUGIN_DEVELOPMENT.md     # Guide for adding plugins
-└── README.md                 # This file
+└── README.md
 ```
 
 ## Features
@@ -42,23 +36,30 @@ tangled/
 - **Search & Filter**: Query-based graph filtering
 - **CLI**: In-browser terminal for graph manipulation
 - **Workspaces**: Multiple independent graph sessions
+- **Two Web Frameworks**: Flask and Django applications included
 
-## Team
+## Architecture
 
-- Member 1: [Name] - [Role/Components]
-- Member 2: [Name] - [Role/Components]
-- Member 3: [Name] - [Role/Components]
-- Member 4: [Name] - [Role/Components]
+Tangled follows a **Microkernel (Plugin) Architecture**. The core API defines the graph data model and plugin contracts. The platform layer handles orchestration and plugin discovery. Plugins extend functionality without modifying the core.
+
+### Class Diagram
+
+![Class Diagram](docs/class-diagram.png)
+
+<details>
+<summary>PlantUML source</summary>
+
+See [`docs/class-diagram.puml`](docs/class-diagram.puml) to regenerate the image.
+</details>
 
 ## Requirements
 
 - Python 3.10+
+- Linux / macOS / Windows
 
-## Installation
+## Quick Start
 
 ### Linux / macOS
-
-In terminal (from repository root):
 
 ```bash
 git clone https://github.com/re-pixel/tangled.git
@@ -70,9 +71,7 @@ make run
 
 Open http://localhost:5000 in your browser.
 
-### Windows
-
-In PowerShell (from repository root):
+### Windows (PowerShell)
 
 ```powershell
 git clone https://github.com/re-pixel/tangled.git
@@ -87,15 +86,104 @@ If script execution is disabled, run once: `Set-ExecutionPolicy -ExecutionPolicy
 
 Open http://localhost:5000 in your browser.
 
+## Development
+
+### Makefile Targets (Linux / macOS)
+
+On Unix systems, all common tasks are available through `make`. Run `make help` to see the full list.
+
+| Target | Description |
+|--------|-------------|
+| `make install` | Create venv and install all packages |
+| `make run` | Start the Flask app (default: http://localhost:5000) |
+| `make run-django` | Start the Django app (default: http://localhost:5000) |
+| `make test` | Run all tests with pytest |
+| `make lint` | Run mypy on api and platform |
+| `make reinstall` | Reinstall all packages |
+| `make clean` | Remove venv and build artifacts |
+
+**Examples:**
+
+```bash
+make install          # First-time setup
+make run              # Start Flask app on port 5000
+make run PORT=8080    # Start Flask app on port 8080
+make run-django       # Start Django app on port 5000
+make test             # Run all tests
+make lint             # Type-check api and platform
+```
+
+### Windows (PowerShell)
+
+On Windows, use the PowerShell scripts directly and activate the venv manually.
+
+| Action | Command |
+|--------|---------|
+| Install | `.\scripts\install.ps1` |
+| Activate venv | `.\venv\Scripts\Activate.ps1` |
+| Run Flask app | `tangled` |
+| Run Django app | `python graph-explorer-django\manage.py runserver` |
+| Reinstall | `.\scripts\reinstall.ps1` |
+| Run tests | `pytest` |
+
+### Reinstalling After Changes
+
+When you modify a package, reinstall it:
+
+**Linux / macOS:**
+
+```bash
+make reinstall
+```
+
+**Windows (PowerShell):**
+
+```powershell
+.\scripts\reinstall.ps1
+```
+
+Or reinstall a single package:
+
+```bash
+pip install -e ./platform   # replace with whichever package you changed
+```
+
+### Adding a New Plugin
+
+See [PLUGIN_DEVELOPMENT.md](PLUGIN_DEVELOPMENT.md) for the full guide.
+
+1. Create a new directory (e.g., `csv-datasource/`)
+2. Follow the structure of existing plugins
+3. Implement `DataSourcePlugin` or `VisualizerPlugin`
+4. Register via entry point in `pyproject.toml`
+5. Install with `pip install -e ./csv-datasource`
+
+### Running Tests
+
+**Linux / macOS:**
+
+```bash
+make test
+```
+
+**Windows (with venv activated):**
+
+```powershell
+pip install -e ".\api[dev]"
+pip install -e ".\platform[dev]"
+pytest
+```
+
 ### Manual Installation
 
-If you prefer not to use the install script (any platform):
+If you prefer not to use the scripts or Makefile (any platform):
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
 pip install -e ./api
 pip install -e ./platform
+pip install -e ./web
 pip install -e ./json-datasource
 pip install -e ./yaml-datasource
 pip install -e ./xml-datasource
@@ -103,73 +191,8 @@ pip install -e ./kuzu-datasource
 pip install -e ./simple-visualizer
 pip install -e ./block-visualizer
 pip install -e ./graph-explorer
+pip install -e ./graph-explorer-django
 tangled
-```
-
-## Development
-
-### Makefile (Linux / macOS)
-
-The Makefile provides convenient targets for common tasks. Run `make help` to list all options.
-
-| Target | Description |
-|--------|--------------|
-| `make install` | Create venv and install all packages (runs scripts/install.sh) |
-| `make run` | Start the Flask app (default: http://localhost:5000) |
-| `make test` | Run pytest |
-| `make lint` | Run mypy on api and platform |
-| `make reinstall` | Reinstall all packages (then starts server) |
-| `make clean` | Remove venv and build artifacts |
-
-**Examples:**
-
-```bash
-make install          # First-time setup
-make run              # Start app on port 5000
-make run PORT=8080    # Start app on port 8080
-make test             # Run tests
-make lint             # Type-check code
-```
-
-### Reinstalling After Changes
-
-When you modify a component, reinstall it:
-
-```bash
-pip install -e ./platform  # or whichever component you changed
-```
-
-Or use the reinstall script (run from project root):
-
-**Linux / macOS:** `make reinstall`
-
-**Windows (PowerShell):** `.\scripts\reinstall.ps1`
-
-### Adding a New Plugin
-
-1. Create a new directory (e.g., `csv-datasource/`)
-2. Follow the structure of existing plugins
-3. Implement the appropriate interface (`DataSourcePlugin` or `VisualizerPlugin`)
-4. Register via entry point in `pyproject.toml`
-5. Install with `pip install -e ./csv-datasource`
-
-### Running Tests
-
-**Using Make (Linux / macOS):**
-
-```bash
-make test
-```
-
-**Manual:**
-
-```bash
-# Install dev dependencies
-pip install -e "./api[dev]"
-pip install -e "./platform[dev]"
-
-# Run tests
-pytest
 ```
 
 ## Usage
@@ -196,6 +219,15 @@ pytest
 | `/api/workspace/<id>/filter` | POST | Filter nodes |
 | `/api/workspace/<id>/reset` | POST | Reset filters |
 | `/api/workspace/<id>/cli` | POST | Execute CLI command |
+| `/api/workspace/<id>/graph` | GET | Get graph data as JSON |
+
+## Team
+
+- Member 1: [Relja Brdar](https://github.com/re-pixel)
+- Member 2: [Bojana Paunović ](https://github.com/paunovicbojana)
+- Member 3: [Ivana Ignjatić ](https://github.com/iignjatic)
+- Member 4: [Marko SLadjoević](https://github.com/mrsladoje)
+- Member 5: [Vukan Radojević](https://github.com/Vukotije)
 
 ## License
 
