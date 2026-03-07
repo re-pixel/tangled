@@ -3,13 +3,35 @@
 import copy
 import re
 from datetime import date
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from tangled_api.model.attribute import AttributeValue
 from tangled_api.model.node import Node
 from tangled_api.model.edge import Edge
 
 _FILTER_QUERY_RE = re.compile(r'(\w+)\s*(==|!=|>=|<=|>|<)\s*(.+)')
+_TOKEN_RE = re.compile(r'(&&|\|\||\(|\)|!(?!=))')
+
+_TOKEN_MAP = {'&&': 'AND', '||': 'OR', '!': 'NOT', '(': 'LPAREN', ')': 'RPAREN'}
+
+
+def _tokenize_filter(query: str) -> List[Tuple[str, str]]:
+    """Tokenize a filter expression into (type, value) pairs.
+
+    Token types: AND, OR, NOT, LPAREN, RPAREN, PRED.
+    """
+    parts = _TOKEN_RE.split(query)
+    tokens: List[Tuple[str, str]] = []
+    for part in parts:
+        stripped = part.strip()
+        if not stripped:
+            continue
+        tok_type = _TOKEN_MAP.get(stripped)
+        if tok_type:
+            tokens.append((tok_type, stripped))
+        else:
+            tokens.append(('PRED', stripped))
+    return tokens
 
 
 class Graph:
@@ -306,18 +328,41 @@ class Graph:
 
     def filter_by_query(self, query: str) -> 'Graph':
         """
-        Filter graph by attribute query. Returns subgraph of nodes matching the filter.
+        Filter graph by attribute query. Supports compound boolean expressions.
 
-        Format: <attribute> <comparator> <value>
-        Comparators: ==, !=, >, >=, <, <=
+        Simple:   <attribute> <op> <value>       e.g. age > 25
+        Compound: <pred> && <pred>               e.g. age > 25 && salary >= 100
+                  <pred> || <pred>               e.g. age > 30 || name == Alice
+                  !<pred>  or  !(<expr>)         e.g. !(age > 50)
+                  (<expr>) for grouping
 
-        Raises ValueError if query format is invalid or value has wrong type for the attribute.
+        Comparison operators: ==, !=, >, >=, <, <=
+        Logical operators:    && (AND), || (OR), ! (NOT)
+        Precedence:           ! > && > ||
+
+        Raises ValueError if query format is invalid or value has wrong type.
         """
         query = query.strip()
         if not query:
             raise ValueError("Filter query cannot be empty")
 
-        match = _FILTER_QUERY_RE.match(query)
+        tokens = _tokenize_filter(query)
+        if not tokens:
+            raise ValueError("Filter query cannot be empty")
+
+        matching_ids, pos = self._parse_or(tokens, 0)
+        if pos != len(tokens):
+            raise ValueError("Unexpected tokens after filter expression")
+
+        return self.create_subgraph(list(matching_ids))
+
+    def _eval_predicate(self, pred_str: str) -> Set[str]:
+        """Evaluate a single comparison predicate, returning matching node IDs."""
+        pred_str = pred_str.strip()
+        if not pred_str:
+            raise ValueError("Empty predicate in filter expression")
+
+        match = _FILTER_QUERY_RE.match(pred_str)
         if not match:
             raise ValueError(
                 "Invalid filter format. Use: <attribute> <op> <value> "
@@ -328,7 +373,6 @@ class Graph:
         attr_name = attr_name.strip()
         value_str = value_str.strip()
 
-        # Find expected type from first node that has this attribute
         expected_type = None
         for node in self._nodes.values():
             attr = node.get_attribute(attr_name)
@@ -339,7 +383,6 @@ class Graph:
         if expected_type is None:
             raise ValueError(f"Attribute '{attr_name}' not found in graph")
 
-        # Convert value string to expected type
         try:
             converted = self._parse_filter_value(value_str, expected_type)
         except (ValueError, TypeError) as e:
@@ -347,14 +390,85 @@ class Graph:
                 f"Value {value_str!r} is not a valid {expected_type.value} for attribute '{attr_name}'"
             ) from e
 
-        # Collect matching node IDs
-        matching_ids = []
+        matching: Set[str] = set()
         for node_id, node in self._nodes.items():
             attr = node.get_attribute(attr_name)
             if attr is None:
                 continue
             if self._compare(attr.value, op, converted):
-                matching_ids.append(node_id)
+                matching.add(node_id)
+
+        return matching
+
+    def _parse_or(self, tokens: List[Tuple[str, str]], pos: int) -> Tuple[Set[str], int]:
+        """or_expr = and_expr ('||' and_expr)*"""
+        result, pos = self._parse_and(tokens, pos)
+        while pos < len(tokens) and tokens[pos][0] == 'OR':
+            pos += 1
+            right, pos = self._parse_and(tokens, pos)
+            result = result | right
+        return result, pos
+
+    def _parse_and(self, tokens: List[Tuple[str, str]], pos: int) -> Tuple[Set[str], int]:
+        """and_expr = not_expr ('&&' not_expr)*"""
+        result, pos = self._parse_not(tokens, pos)
+        while pos < len(tokens) and tokens[pos][0] == 'AND':
+            pos += 1
+            right, pos = self._parse_not(tokens, pos)
+            result = result & right
+        return result, pos
+
+    def _parse_not(self, tokens: List[Tuple[str, str]], pos: int) -> Tuple[Set[str], int]:
+        """not_expr = '!' not_expr | '(' or_expr ')' | predicate"""
+        if pos >= len(tokens):
+            raise ValueError("Unexpected end of filter expression")
+
+        tok_type, tok_val = tokens[pos]
+
+        if tok_type == 'NOT':
+            result, pos = self._parse_not(tokens, pos + 1)
+            return set(self._nodes.keys()) - result, pos
+
+        if tok_type == 'LPAREN':
+            result, pos = self._parse_or(tokens, pos + 1)
+            if pos >= len(tokens) or tokens[pos][0] != 'RPAREN':
+                raise ValueError("Unmatched parenthesis in filter expression")
+            return result, pos + 1
+
+        if tok_type == 'PRED':
+            return self._eval_predicate(tok_val), pos + 1
+
+        raise ValueError(f"Unexpected token in filter expression: {tok_val!r}")
+
+    def search(self, query: str) -> 'Graph':
+        """
+        Search graph by text query. Returns subgraph of nodes whose attribute
+        names or values contain the query (case-insensitive).
+
+        Args:
+            query: Search text
+
+        Returns:
+            New Graph with matching nodes and edges between them
+
+        Raises:
+            ValueError: If query is empty
+        """
+        query = query.strip()
+        if not query:
+            raise ValueError("Search query cannot be empty")
+
+        query_lower = query.lower()
+        matching_ids = []
+
+        for node_id, node in self._nodes.items():
+            for attr_name, attr in node.attributes.items():
+                if query_lower in attr_name.lower():
+                    matching_ids.append(node_id)
+                    break
+                if query_lower in str(attr.value).lower():
+                    matching_ids.append(node_id)
+                    break
 
         return self.create_subgraph(matching_ids)
 

@@ -410,7 +410,7 @@ class WorkspaceController {
       await api.post(`/api/workspace/${this.workspaceId}/reset`);
       document.getElementById("search-input").value = "";
       document.getElementById("filter-input").value = "";
-      await this._refreshData();
+      await this._refreshVisualization();
       showNotification("Reset to original graph", "info");
     } catch (error) {
       showNotification("Reset failed", "error");

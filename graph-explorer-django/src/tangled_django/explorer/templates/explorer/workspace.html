@@ -51,42 +51,37 @@
             </select>
         </section>
 
-        <!-- Search -->
+        <!-- Search & Filter -->
         <section class="glass animate-fade-in-up stagger-3">
-            <h3>Search</h3>
+            <h3>Search & Filter</h3>
             <form id="search-form" class="space-y-2">
-                <input type="text" id="search-input" placeholder="Search nodes..." class="glass-input">
-                <button type="submit" class="btn-glass w-full text-sm">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                        <circle cx="11" cy="11" r="8"/>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                    Search
-                </button>
-            </form>
-        </section>
-
-        <!-- Filter -->
-        <section class="glass animate-fade-in-up stagger-4">
-            <h3>Filter</h3>
-            <form id="filter-form" class="space-y-2">
-                <input type="text" id="filter-input" placeholder="e.g., age > 25" class="glass-input">
                 <div class="flex gap-2">
-                    <button type="submit" class="btn-glass flex-1 text-sm">
+                    <input type="text" id="search-input" placeholder="Search nodes..." class="glass-input flex-1">
+                    <button type="submit" class="btn-glass text-sm">
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                         </svg>
-                        Filter
-                    </button>
-                    <button type="button" id="reset-btn" class="btn-ghost flex-1 text-sm">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                            <polyline points="1 4 1 10 7 10"/>
-                            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
-                        </svg>
-                        Reset
                     </button>
                 </div>
             </form>
+            <form id="filter-form" class="space-y-2" style="margin-top: 0.5rem;">
+                <div class="flex gap-2">
+                    <input type="text" id="filter-input" placeholder="e.g., age > 25 && salary >= 100" class="glass-input flex-1">
+                    <button type="submit" class="btn-glass text-sm">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <button type="button" id="reset-btn" class="btn-ghost w-full text-sm" style="margin-top: 0.5rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="1 4 1 10 7 10"/>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+                Reset
+            </button>
         </section>
     </aside>
 
