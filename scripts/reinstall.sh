@@ -66,5 +66,6 @@ done
 echo ""
 echo "✓ All components reinstalled!"
 echo ""
-echo "Starting server..."
-tangled
+echo "To start the Flask app:  make run"
+echo "To start the Django app: make run-django"
+echo ""

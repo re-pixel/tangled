@@ -1,6 +1,6 @@
 # Tangled Graph Explorer - Reinstall Script (Windows)
 # Use this to reinstall all components after making changes.
-# Run from repo root: .\scripts\reinstall.ps1  or  make reinstall
+# Run from repo root: .\scripts\reinstall.ps1
 
 $ErrorActionPreference = "Stop"
 
@@ -13,7 +13,7 @@ Write-Host "Reinstalling all Tangled components..." -ForegroundColor Cyan
 Write-Host ""
 
 if (-not (Test-Path "venv")) {
-    Write-Host "Error: Virtual environment not found. Run scripts/install.ps1 or make install first." -ForegroundColor Red
+    Write-Host "Error: Virtual environment not found. Run .\scripts\install.ps1 first." -ForegroundColor Red
     exit 1
 }
 
@@ -65,5 +65,11 @@ foreach ($path in $componentPaths) {
 Write-Host ""
 Write-Host "All components reinstalled!" -ForegroundColor Green
 Write-Host ""
-Write-Host "Starting server..."
-& .\venv\Scripts\tangled.exe
+Write-Host "To start the Flask app:" -ForegroundColor Cyan
+Write-Host "  .\venv\Scripts\Activate.ps1"
+Write-Host "  tangled"
+Write-Host ""
+Write-Host "To start the Django app:" -ForegroundColor Cyan
+Write-Host "  .\venv\Scripts\Activate.ps1"
+Write-Host "  python graph-explorer-django\manage.py runserver"
+Write-Host ""
