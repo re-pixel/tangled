@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tangled-graph-explorer"
+version = "0.1.0"
+description = "Flask web application for Tangled graph visualization"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Flask",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "flask>=3.0",
+    "tangled-web",
+    "tangled-json-datasource",
+    "tangled-yaml-datasource",
+    "tangled-xml-datasource",
+    "tangled-kuzu-datasource",
+    "tangled-simple-visualizer",
+    "tangled-block-visualizer",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "flask-debugtoolbar>=0.14",
+]
+
+[project.scripts]
+tangled = "tangled_graph_explorer.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+tangled_graph_explorer = [
+    "templates/*.html",
+    "static/css/*.css",
+    "static/js/*.js",
+]

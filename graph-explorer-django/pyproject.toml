@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tangled-graph-explorer-django"
+version = "0.1.0"
+description = "Django web application for Tangled graph visualization"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Framework :: Django",
+    "Programming Language :: Python :: 3",
+]
+dependencies = [
+    "django>=4.2",
+    "tangled-web",
+    "tangled-json-datasource",
+    "tangled-yaml-datasource",
+    "tangled-xml-datasource",
+    "tangled-kuzu-datasource",
+    "tangled-simple-visualizer",
+    "tangled-block-visualizer",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-django>=4.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"tangled_django.explorer" = [
+    "templates/explorer/*.html",
+    "static/css/*.css",
+    "static/js/*.js",
+]

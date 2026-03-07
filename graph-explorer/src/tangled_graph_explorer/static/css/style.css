@@ -1,0 +1,320 @@
+/*
+ * Tangled Graph Explorer — Bubbly Glassmorphic Theme
+ * Pool blue (#40C9FF) + Bubblegum pink (#FF6B9D)
+ * NO purple, NO indigo, NO gray washing
+ */
+
+/* ── Page entrance only (no floating/looping animations) ── */
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-scale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ── Glass Utilities ── */
+.glass {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px) saturate(1.8);
+    -webkit-backdrop-filter: blur(12px) saturate(1.8);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 8px 32px rgba(31, 38, 135, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    position: relative;
+    z-index: 10;
+}
+
+.glass-light {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px) saturate(1.6);
+    -webkit-backdrop-filter: blur(10px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow:
+        0 4px 20px rgba(31, 38, 135, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+    background: rgba(15, 30, 60, 0.45);
+    backdrop-filter: blur(12px) saturate(1.5) brightness(0.9);
+    -webkit-backdrop-filter: blur(12px) saturate(1.5) brightness(0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 10;
+}
+
+.glass-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-hover:hover {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow:
+        0 12px 40px rgba(31, 38, 135, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        0 0 20px rgba(64, 201, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+/* ── Entrance Animations ── */
+.animate-fade-in-up {
+    animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in-scale {
+    animation: fade-in-scale 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(64, 201, 255, 0.3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(64, 201, 255, 0.5); }
+
+/* ── Form Elements ── */
+.glass-input {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: #1B2A5C;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    outline: none;
+}
+
+.glass-input::placeholder {
+    color: rgba(27, 42, 92, 0.35);
+    font-weight: 500;
+}
+
+.glass-input:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 3px rgba(64, 201, 255, 0.12);
+}
+
+.glass-select {
+    width: 100%;
+    padding: 0.6rem 0.9rem;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: #1B2A5C;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    outline: none;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2340C9FF' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+}
+
+.glass-select:focus {
+    border-color: rgba(255, 255, 255, 0.4);
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 0 3px rgba(64, 201, 255, 0.12);
+}
+
+.glass-select option {
+    background: #E8F8FF;
+    color: #1B2A5C;
+}
+
+/* ── Buttons ── */
+.btn-glass {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.2rem;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    color: #1B2A5C;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-glass:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(31, 38, 135, 0.15);
+}
+
+.btn-glass:active { transform: translateY(0); }
+
+.btn-glow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.6rem;
+    background: linear-gradient(135deg, #FF6B9D, #FF8AB5);
+    border: 1.5px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    color: white;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-shadow: 0 1px 2px rgba(200, 50, 100, 0.2);
+}
+
+.btn-glow:hover {
+    background: linear-gradient(135deg, #FF82AE, #FF9CC2);
+    box-shadow:
+        0 8px 28px rgba(255, 107, 157, 0.35),
+        0 0 30px rgba(255, 107, 157, 0.12);
+    transform: translateY(-2px);
+}
+
+.btn-glow:active { transform: translateY(0); }
+
+.btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: rgba(27, 42, 92, 0.55);
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.35);
+    color: #1B2A5C;
+}
+
+/* ── Toast Notifications ── */
+.toast-container {
+    position: fixed;
+    top: 5.5rem;
+    right: 1.5rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    pointer-events: none;
+}
+
+.toast {
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-family: 'Quicksand', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    pointer-events: auto;
+    animation: fade-in-up 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+    backdrop-filter: blur(16px) saturate(1.5);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5);
+}
+
+.toast--info { background: rgba(64, 201, 255, 0.7); border: 1.5px solid rgba(64, 201, 255, 0.5); color: white; }
+.toast--success { background: rgba(72, 199, 142, 0.7); border: 1.5px solid rgba(72, 199, 142, 0.5); color: white; }
+.toast--error { background: rgba(255, 107, 157, 0.7); border: 1.5px solid rgba(255, 107, 157, 0.5); color: white; }
+.toast--exit { animation: fade-in-up 0.3s cubic-bezier(0.4, 0, 1, 1) reverse both; }
+
+/* ── D3 Graph Styles ── */
+.graph-container .node circle {
+    fill: #40C9FF;
+    stroke: rgba(255, 255, 255, 0.9);
+    stroke-width: 2.5px;
+    cursor: pointer;
+    filter: drop-shadow(0 2px 6px rgba(64, 201, 255, 0.4));
+}
+
+.graph-container .node circle:hover {
+    fill: #FF6B9D;
+    filter: drop-shadow(0 2px 10px rgba(255, 107, 157, 0.5));
+}
+
+.graph-container .node circle.selected {
+    stroke: #FF6B9D;
+    stroke-width: 3px;
+    filter: drop-shadow(0 0 12px rgba(255, 107, 157, 0.5));
+}
+
+.graph-container .node text {
+    font-size: 11px;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    fill: #1B2A5C;
+    pointer-events: none;
+}
+
+.graph-container .edge line,
+.graph-container .edges line {
+    stroke: rgba(64, 201, 255, 0.35);
+    stroke-width: 1.5px;
+}
+
+.graph-container .edge line.directed { marker-end: url(#arrowhead); }
+
+.block-visualizer .node rect {
+    fill: rgba(255, 255, 255, 0.55);
+    stroke: #40C9FF;
+    stroke-width: 1.5px;
+    cursor: pointer;
+    rx: 8; ry: 8;
+}
+
+.block-visualizer .node rect:hover { stroke: #FF6B9D; stroke-width: 2px; }
+.block-visualizer .node .header { fill: rgba(64, 201, 255, 0.7); }
+.block-visualizer .node .header-text { fill: white; font-weight: 700; font-family: 'Quicksand', sans-serif; }
+.block-visualizer .node .attr-text { font-size: 11px; fill: #1B2A5C; font-family: 'Quicksand', sans-serif; }
+
+/* ── Placeholder ── */
+.placeholder {
+    color: rgba(27, 42, 92, 0.3);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+    font-family: 'Quicksand', sans-serif;
+}
+
+/* ── Section Label ── */
+.section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(27, 42, 92, 0.4);
+    margin-bottom: 0.6rem;
+    font-family: 'Quicksand', sans-serif;
+}
+

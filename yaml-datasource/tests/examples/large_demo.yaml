@@ -1,0 +1,4096 @@
+directed: false
+id: root
+name: Diana
+department: Engineering
+age: 39
+salary: 52040.27
+hire_date: "2014-12-04"
+reports:
+  - id: root_0
+    name: Rose
+    department: Sales
+    age: 59
+    salary: 67972.96
+    hire_date: "2010-02-07"
+    reports:
+      - id: root_0_0
+        name: Quinn
+        department: Design
+        age: 23
+        salary: 80512.06
+        hire_date: "2023-04-15"
+        reports:
+          - id: root_0_0_0
+            name: Ivy
+            department: Engineering
+            age: 32
+            salary: 92832.55
+            hire_date: "2020-05-05"
+            reports:
+              - id: root_0_0_0_0
+                name: Kate
+                department: Sales
+                age: 27
+                salary: 64193.46
+                hire_date: "2021-06-20"
+                reports: []
+              - id: root_0_0_0_1
+                name: Ivy
+                department: Engineering
+                age: 51
+                salary: 78260.53
+                hire_date: "2022-02-18"
+                reports: []
+          - id: root_0_0_1
+            name: Jack
+            department: Design
+            age: 45
+            salary: 81961.69
+            hire_date: "2012-01-22"
+            reports:
+              - id: root_0_0_1_0
+                name: Jack
+                department: Sales
+                age: 36
+                salary: 107983.53
+                hire_date: "2022-05-15"
+                reports: []
+              - id: root_0_0_1_1
+                name: Leo
+                department: Marketing
+                age: 45
+                salary: 61974.36
+                hire_date: "2018-12-22"
+                reports: []
+          - id: root_0_0_2
+            name: Charlie
+            department: Design
+            age: 62
+            salary: 45402.48
+            hire_date: "2017-03-15"
+            reports:
+              - id: root_0_0_2_0
+                name: Ivy
+                department: Ops
+                age: 36
+                salary: 91615.28
+                hire_date: "2011-04-27"
+                reports: []
+              - id: root_0_0_2_1
+                name: Bob
+                department: Support
+                age: 47
+                salary: 54096.68
+                hire_date: "2016-10-23"
+                reports: []
+              - id: root_0_0_2_2
+                name: Kate
+                department: HR
+                age: 63
+                salary: 74930.81
+                hire_date: "2024-03-09"
+                reports: []
+          - id: root_0_0_3
+            name: Eve
+            department: HR
+            age: 57
+            salary: 78507.96
+            hire_date: "2023-10-13"
+            reports:
+              - id: root_0_0_3_0
+                name: Henry
+                department: Marketing
+                age: 54
+                salary: 74416.43
+                hire_date: "2011-02-05"
+                reports: []
+              - id: root_0_0_3_1
+                name: Frank
+                department: R&D
+                age: 60
+                salary: 35717.49
+                hire_date: "2022-10-15"
+                reports: []
+              - id: root_0_0_3_2
+                name: Quinn
+                department: Finance
+                age: 57
+                salary: 107470.17
+                hire_date: "2010-11-24"
+                reports: []
+          - id: root_0_0_4
+            name: Diana
+            department: Ops
+            age: 39
+            salary: 99173.89
+            hire_date: "2020-02-10"
+            reports:
+              - id: root_0_0_4_0
+                name: Frank
+                department: Legal
+                age: 22
+                salary: 115843.43
+                hire_date: "2018-09-25"
+                reports: []
+              - id: root_0_0_4_1
+                name: Frank
+                department: Ops
+                age: 28
+                salary: 108346.67
+                hire_date: "2019-11-17"
+                reports: []
+              - id: root_0_0_4_2
+                name: Tina
+                department: HR
+                age: 31
+                salary: 63652.25
+                hire_date: "2015-09-25"
+                reports: []
+      - id: root_0_1
+        name: Quinn
+        department: Engineering
+        age: 60
+        salary: 59174.05
+        hire_date: "2010-02-12"
+        reports:
+          - id: root_0_1_0
+            name: Henry
+            department: Engineering
+            age: 37
+            salary: 109020.86
+            hire_date: "2012-02-24"
+            reports:
+              - id: root_0_1_0_0
+                name: Charlie
+                department: Ops
+                age: 30
+                salary: 41555.23
+                hire_date: "2025-09-06"
+                reports: []
+              - id: root_0_1_0_1
+                name: Ivy
+                department: Ops
+                age: 60
+                salary: 68082.41
+                hire_date: "2016-09-25"
+                reports: []
+              - id: root_0_1_0_2
+                name: Grace
+                department: Finance
+                age: 47
+                salary: 119563.44
+                hire_date: "2021-08-17"
+                reports: []
+          - id: root_0_1_1
+            name: Olivia
+            department: Sales
+            age: 37
+            salary: 50222.76
+            hire_date: "2020-01-19"
+            reports:
+              - id: root_0_1_1_0
+                name: Henry
+                department: Design
+                age: 36
+                salary: 30647.18
+                hire_date: "2011-04-03"
+                reports: []
+              - id: root_0_1_1_1
+                name: Bob
+                department: Support
+                age: 26
+                salary: 76274.05
+                hire_date: "2018-11-16"
+                reports: []
+              - id: root_0_1_1_2
+                name: Grace
+                department: Ops
+                age: 30
+                salary: 95101.73
+                hire_date: "2025-04-26"
+                reports: []
+              - id: root_0_1_1_3
+                name: Paul
+                department: R&D
+                age: 34
+                salary: 38489.32
+                hire_date: "2023-06-14"
+                reports: []
+          - id: root_0_1_2
+            name: Noah
+            department: Legal
+            age: 25
+            salary: 90602.81
+            hire_date: "2013-01-13"
+            reports:
+              - id: root_0_1_2_0
+                name: Kate
+                department: Sales
+                age: 37
+                salary: 47243.11
+                hire_date: "2024-03-14"
+                reports: []
+              - id: root_0_1_2_1
+                name: Frank
+                department: Finance
+                age: 51
+                salary: 52482.58
+                hire_date: "2012-08-26"
+                reports: []
+              - id: root_0_1_2_2
+                name: Rose
+                department: Sales
+                age: 25
+                salary: 88693.04
+                hire_date: "2010-02-25"
+                reports: []
+              - id: root_0_1_2_3
+                name: Henry
+                department: Marketing
+                age: 48
+                salary: 73707.7
+                hire_date: "2016-07-02"
+                reports: []
+          - id: root_0_1_3
+            name: Frank
+            department: R&D
+            age: 22
+            salary: 118677.8
+            hire_date: "2018-08-10"
+            reports:
+              - id: root_0_1_3_0
+                name: Rose
+                department: Legal
+                age: 31
+                salary: 47090.81
+                hire_date: "2016-01-19"
+                reports: []
+              - id: root_0_1_3_1
+                name: Rose
+                department: Engineering
+                age: 42
+                salary: 35144.87
+                hire_date: "2025-09-28"
+                reports: []
+              - id: root_0_1_3_2
+                name: Quinn
+                department: Marketing
+                age: 25
+                salary: 116470.1
+                hire_date: "2012-03-03"
+                reports: []
+      - id: root_0_2
+        name: Tina
+        department: Sales
+        age: 65
+        salary: 107563.73
+        hire_date: "2022-02-19"
+        reports:
+          - id: root_0_2_0
+            name: Sam
+            department: Design
+            age: 24
+            salary: 85744.34
+            hire_date: "2023-11-19"
+            reports:
+              - id: root_0_2_0_0
+                name: Quinn
+                department: Support
+                age: 38
+                salary: 48383.33
+                hire_date: "2020-04-09"
+                reports: []
+              - id: root_0_2_0_1
+                name: Mia
+                department: Marketing
+                age: 64
+                salary: 88095.07
+                hire_date: "2024-06-25"
+                reports: []
+              - id: root_0_2_0_2
+                name: Charlie
+                department: Engineering
+                age: 51
+                salary: 85904.33
+                hire_date: "2013-02-18"
+                reports: []
+              - id: root_0_2_0_3
+                name: Grace
+                department: Ops
+                age: 38
+                salary: 41921.09
+                hire_date: "2021-02-08"
+                reports: []
+          - id: root_0_2_1
+            name: Leo
+            department: Finance
+            age: 32
+            salary: 69436.61
+            hire_date: "2019-10-26"
+            reports:
+              - id: root_0_2_1_0
+                name: Quinn
+                department: Engineering
+                age: 64
+                salary: 103539.37
+                hire_date: "2019-11-04"
+                reports: []
+              - id: root_0_2_1_1
+                name: Eve
+                department: Finance
+                age: 29
+                salary: 110074.14
+                hire_date: "2014-05-10"
+                reports: []
+              - id: root_0_2_1_2
+                name: Tina
+                department: HR
+                age: 43
+                salary: 48323.76
+                hire_date: "2018-09-16"
+                reports: []
+              - id: root_0_2_1_3
+                name: Ivy
+                department: Engineering
+                age: 27
+                salary: 87085.6
+                hire_date: "2018-01-01"
+                reports: []
+          - id: root_0_2_2
+            name: Kate
+            department: Marketing
+            age: 62
+            salary: 118181.82
+            hire_date: "2015-12-15"
+            reports:
+              - id: root_0_2_2_0
+                name: Noah
+                department: Ops
+                age: 22
+                salary: 40068.65
+                hire_date: "2014-09-02"
+                reports: []
+              - id: root_0_2_2_1
+                name: Leo
+                department: Design
+                age: 57
+                salary: 43328.44
+                hire_date: "2014-01-10"
+                reports: []
+              - id: root_0_2_2_2
+                name: Leo
+                department: Engineering
+                age: 44
+                salary: 48906.89
+                hire_date: "2017-11-04"
+                reports: []
+              - id: root_0_2_2_3
+                name: Leo
+                department: Ops
+                age: 48
+                salary: 117645.33
+                hire_date: "2014-04-28"
+                reports: []
+      - id: root_0_3
+        name: Frank
+        department: Marketing
+        age: 48
+        salary: 32230.77
+        hire_date: "2020-07-26"
+        reports:
+          - id: root_0_3_0
+            name: Henry
+            department: Finance
+            age: 32
+            salary: 100863.71
+            hire_date: "2013-07-28"
+            reports:
+              - id: root_0_3_0_0
+                name: Paul
+                department: HR
+                age: 34
+                salary: 103492.79
+                hire_date: "2024-06-10"
+                reports: []
+              - id: root_0_3_0_1
+                name: Henry
+                department: HR
+                age: 23
+                salary: 89402.99
+                hire_date: "2022-06-09"
+                reports: []
+          - id: root_0_3_1
+            name: Charlie
+            department: Finance
+            age: 44
+            salary: 87733.36
+            hire_date: "2022-11-27"
+            reports:
+              - id: root_0_3_1_0
+                name: Kate
+                department: Engineering
+                age: 29
+                salary: 108933.46
+                hire_date: "2018-03-19"
+                reports: []
+              - id: root_0_3_1_1
+                name: Ivy
+                department: Engineering
+                age: 28
+                salary: 83691.41
+                hire_date: "2021-12-26"
+                reports: []
+              - id: root_0_3_1_2
+                name: Kate
+                department: R&D
+                age: 60
+                salary: 118581.23
+                hire_date: "2013-07-19"
+                reports: []
+              - id: root_0_3_1_3
+                name: Grace
+                department: Finance
+                age: 24
+                salary: 93790.68
+                hire_date: "2010-09-26"
+                reports: []
+          - id: root_0_3_2
+            name: Rose
+            department: HR
+            age: 45
+            salary: 68816.77
+            hire_date: "2020-10-11"
+            reports:
+              - id: root_0_3_2_0
+                name: Diana
+                department: Finance
+                age: 54
+                salary: 57835.62
+                hire_date: "2023-06-13"
+                reports: []
+              - id: root_0_3_2_1
+                name: Jack
+                department: Ops
+                age: 30
+                salary: 47265.61
+                hire_date: "2022-11-24"
+                reports: []
+              - id: root_0_3_2_2
+                name: Frank
+                department: Design
+                age: 58
+                salary: 57085.49
+                hire_date: "2010-05-10"
+                reports: []
+              - id: root_0_3_2_3
+                name: Grace
+                department: R&D
+                age: 59
+                salary: 84599.54
+                hire_date: "2020-08-15"
+                reports: []
+          - id: root_0_3_3
+            name: Olivia
+            department: HR
+            age: 54
+            salary: 72586.76
+            hire_date: "2015-11-03"
+            reports:
+              - id: root_0_3_3_0
+                name: Quinn
+                department: Design
+                age: 43
+                salary: 38404.85
+                hire_date: "2017-11-10"
+                reports: []
+              - id: root_0_3_3_1
+                name: Henry
+                department: HR
+                age: 31
+                salary: 32198.28
+                hire_date: "2017-08-20"
+                reports: []
+              - id: root_0_3_3_2
+                name: Charlie
+                department: Legal
+                age: 48
+                salary: 109752.32
+                hire_date: "2016-12-23"
+                reports: []
+          - id: root_0_3_4
+            name: Mia
+            department: Legal
+            age: 47
+            salary: 51958.6
+            hire_date: "2010-02-25"
+            reports:
+              - id: root_0_3_4_0
+                name: Henry
+                department: Marketing
+                age: 55
+                salary: 71809.49
+                hire_date: "2017-02-15"
+                reports: []
+              - id: root_0_3_4_1
+                name: Eve
+                department: Legal
+                age: 64
+                salary: 77801.87
+                hire_date: "2020-08-20"
+                reports: []
+              - id: root_0_3_4_2
+                name: Quinn
+                department: R&D
+                age: 57
+                salary: 70132.23
+                hire_date: "2015-12-28"
+                reports: []
+  - id: root_1
+    name: Paul
+    department: Legal
+    age: 38
+    salary: 97659.91
+    hire_date: "2018-09-16"
+    reports:
+      - id: root_1_0
+        name: Henry
+        department: Finance
+        age: 50
+        salary: 36973.5
+        hire_date: "2019-04-09"
+        reports:
+          - id: root_1_0_0
+            name: Kate
+            department: Ops
+            age: 27
+            salary: 42453.67
+            hire_date: "2017-07-23"
+            reports:
+              - id: root_1_0_0_0
+                name: Grace
+                department: Sales
+                age: 48
+                salary: 66683.94
+                hire_date: "2024-07-02"
+                reports: []
+              - id: root_1_0_0_1
+                name: Grace
+                department: R&D
+                age: 46
+                salary: 111435.46
+                hire_date: "2010-10-13"
+                reports: []
+          - id: root_1_0_1
+            name: Paul
+            department: Engineering
+            age: 44
+            salary: 56875.14
+            hire_date: "2022-07-18"
+            reports:
+              - id: root_1_0_1_0
+                name: Rose
+                department: Design
+                age: 36
+                salary: 73940.65
+                hire_date: "2018-07-16"
+                reports: []
+              - id: root_1_0_1_1
+                name: Alice
+                department: R&D
+                age: 43
+                salary: 90198.63
+                hire_date: "2022-12-06"
+                reports: []
+              - id: root_1_0_1_2
+                name: Olivia
+                department: Marketing
+                age: 61
+                salary: 78071.13
+                hire_date: "2022-10-19"
+                reports: []
+              - id: root_1_0_1_3
+                name: Alice
+                department: Sales
+                age: 63
+                salary: 68575.15
+                hire_date: "2024-03-02"
+                reports: []
+          - id: root_1_0_2
+            name: Ivy
+            department: R&D
+            age: 42
+            salary: 49049.43
+            hire_date: "2020-06-25"
+            reports:
+              - id: root_1_0_2_0
+                name: Ivy
+                department: R&D
+                age: 38
+                salary: 105141.98
+                hire_date: "2025-01-24"
+                reports: []
+              - id: root_1_0_2_1
+                name: Rose
+                department: Engineering
+                age: 44
+                salary: 50179.99
+                hire_date: "2012-11-02"
+                reports: []
+              - id: root_1_0_2_2
+                name: Alice
+                department: HR
+                age: 34
+                salary: 105530.6
+                hire_date: "2014-04-05"
+                reports: []
+          - id: root_1_0_3
+            name: Paul
+            department: Sales
+            age: 58
+            salary: 115298.13
+            hire_date: "2024-12-09"
+            reports:
+              - id: root_1_0_3_0
+                name: Frank
+                department: Design
+                age: 60
+                salary: 116736.13
+                hire_date: "2013-03-10"
+                reports: []
+              - id: root_1_0_3_1
+                name: Diana
+                department: Design
+                age: 23
+                salary: 113599.85
+                hire_date: "2022-07-23"
+                reports: []
+              - id: root_1_0_3_2
+                name: Grace
+                department: Sales
+                age: 59
+                salary: 92155.3
+                hire_date: "2017-02-23"
+                reports: []
+      - id: root_1_1
+        name: Jack
+        department: Design
+        age: 29
+        salary: 101660.45
+        hire_date: "2011-06-18"
+        reports:
+          - id: root_1_1_0
+            name: Leo
+            department: Sales
+            age: 54
+            salary: 88278.89
+            hire_date: "2010-07-27"
+            reports:
+              - id: root_1_1_0_0
+                name: Diana
+                department: R&D
+                age: 45
+                salary: 87202.66
+                hire_date: "2024-12-05"
+                reports: []
+              - id: root_1_1_0_1
+                name: Noah
+                department: Marketing
+                age: 55
+                salary: 116892.64
+                hire_date: "2018-10-26"
+                reports: []
+              - id: root_1_1_0_2
+                name: Rose
+                department: Legal
+                age: 51
+                salary: 69201.7
+                hire_date: "2018-06-28"
+                reports: []
+          - id: root_1_1_1
+            name: Henry
+            department: Sales
+            age: 39
+            salary: 109346.81
+            hire_date: "2017-08-19"
+            reports:
+              - id: root_1_1_1_0
+                name: Mia
+                department: Support
+                age: 23
+                salary: 74487.59
+                hire_date: "2020-03-16"
+                reports: []
+              - id: root_1_1_1_1
+                name: Grace
+                department: Support
+                age: 38
+                salary: 60630.5
+                hire_date: "2018-09-01"
+                reports: []
+              - id: root_1_1_1_2
+                name: Quinn
+                department: HR
+                age: 27
+                salary: 51722.04
+                hire_date: "2023-08-18"
+                reports: []
+              - id: root_1_1_1_3
+                name: Henry
+                department: Legal
+                age: 63
+                salary: 94065.82
+                hire_date: "2024-01-03"
+                reports: []
+          - id: root_1_1_2
+            name: Jack
+            department: HR
+            age: 47
+            salary: 92260.84
+            hire_date: "2019-11-19"
+            reports:
+              - id: root_1_1_2_0
+                name: Paul
+                department: Ops
+                age: 55
+                salary: 60938.17
+                hire_date: "2020-06-23"
+                reports: []
+              - id: root_1_1_2_1
+                name: Olivia
+                department: Finance
+                age: 41
+                salary: 52626.33
+                hire_date: "2013-12-07"
+                reports: []
+              - id: root_1_1_2_2
+                name: Kate
+                department: Sales
+                age: 56
+                salary: 115578.98
+                hire_date: "2015-04-07"
+                reports: []
+          - id: root_1_1_3
+            name: Paul
+            department: Finance
+            age: 59
+            salary: 117894.63
+            hire_date: "2019-02-27"
+            reports:
+              - id: root_1_1_3_0
+                name: Jack
+                department: HR
+                age: 45
+                salary: 46149.74
+                hire_date: "2010-12-18"
+                reports: []
+              - id: root_1_1_3_1
+                name: Eve
+                department: Finance
+                age: 24
+                salary: 117686.54
+                hire_date: "2019-12-05"
+                reports: []
+      - id: root_1_2
+        name: Paul
+        department: Sales
+        age: 22
+        salary: 81665.78
+        hire_date: "2025-08-15"
+        reports:
+          - id: root_1_2_0
+            name: Frank
+            department: Engineering
+            age: 38
+            salary: 114695.72
+            hire_date: "2025-02-27"
+            reports:
+              - id: root_1_2_0_0
+                name: Mia
+                department: Legal
+                age: 26
+                salary: 81931.9
+                hire_date: "2011-03-05"
+                reports: []
+              - id: root_1_2_0_1
+                name: Sam
+                department: Finance
+                age: 27
+                salary: 119452.63
+                hire_date: "2013-09-25"
+                reports: []
+          - id: root_1_2_1
+            name: Noah
+            department: Design
+            age: 60
+            salary: 101166.67
+            hire_date: "2017-09-13"
+            reports:
+              - id: root_1_2_1_0
+                name: Olivia
+                department: Finance
+                age: 59
+                salary: 119102.81
+                hire_date: "2019-10-20"
+                reports: []
+              - id: root_1_2_1_1
+                name: Bob
+                department: Design
+                age: 28
+                salary: 115283.12
+                hire_date: "2016-11-07"
+                reports: []
+              - id: root_1_2_1_2
+                name: Ivy
+                department: Sales
+                age: 32
+                salary: 51587.87
+                hire_date: "2012-03-01"
+                reports: []
+          - id: root_1_2_2
+            name: Noah
+            department: Legal
+            age: 60
+            salary: 72292.12
+            hire_date: "2011-04-10"
+            reports:
+              - id: root_1_2_2_0
+                name: Jack
+                department: Legal
+                age: 26
+                salary: 91864.64
+                hire_date: "2018-11-19"
+                reports: []
+              - id: root_1_2_2_1
+                name: Grace
+                department: R&D
+                age: 29
+                salary: 79010.61
+                hire_date: "2014-05-27"
+                reports: []
+              - id: root_1_2_2_2
+                name: Eve
+                department: Sales
+                age: 25
+                salary: 44933.05
+                hire_date: "2019-10-24"
+                reports: []
+              - id: root_1_2_2_3
+                name: Sam
+                department: Finance
+                age: 50
+                salary: 41191.83
+                hire_date: "2019-12-13"
+                reports: []
+          - id: root_1_2_3
+            name: Ivy
+            department: Ops
+            age: 56
+            salary: 74441.57
+            hire_date: "2012-10-02"
+            reports:
+              - id: root_1_2_3_0
+                name: Kate
+                department: Design
+                age: 38
+                salary: 32327.84
+                hire_date: "2017-11-27"
+                reports: []
+              - id: root_1_2_3_1
+                name: Sam
+                department: Design
+                age: 23
+                salary: 119961.52
+                hire_date: "2018-10-02"
+                reports: []
+              - id: root_1_2_3_2
+                name: Frank
+                department: Legal
+                age: 55
+                salary: 88635.85
+                hire_date: "2018-03-19"
+                reports: []
+      - id: root_1_3
+        name: Noah
+        department: Legal
+        age: 27
+        salary: 72300.94
+        hire_date: "2023-06-11"
+        reports:
+          - id: root_1_3_0
+            name: Diana
+            department: Marketing
+            age: 43
+            salary: 67048.06
+            hire_date: "2025-05-22"
+            reports:
+              - id: root_1_3_0_0
+                name: Rose
+                department: Engineering
+                age: 51
+                salary: 37925.38
+                hire_date: "2018-06-04"
+                reports: []
+              - id: root_1_3_0_1
+                name: Mia
+                department: Ops
+                age: 22
+                salary: 89189.43
+                hire_date: "2024-07-02"
+                reports: []
+              - id: root_1_3_0_2
+                name: Grace
+                department: Ops
+                age: 45
+                salary: 86037.05
+                hire_date: "2025-11-15"
+                reports: []
+          - id: root_1_3_1
+            name: Bob
+            department: HR
+            age: 39
+            salary: 79429.77
+            hire_date: "2019-08-23"
+            reports:
+              - id: root_1_3_1_0
+                name: Diana
+                department: Engineering
+                age: 62
+                salary: 84798.45
+                hire_date: "2017-12-06"
+                reports: []
+              - id: root_1_3_1_1
+                name: Jack
+                department: Ops
+                age: 22
+                salary: 79702.63
+                hire_date: "2012-04-27"
+                reports: []
+              - id: root_1_3_1_2
+                name: Diana
+                department: Legal
+                age: 29
+                salary: 88293.87
+                hire_date: "2014-08-23"
+                reports: []
+          - id: root_1_3_2
+            name: Jack
+            department: Ops
+            age: 39
+            salary: 67394.13
+            hire_date: "2025-08-08"
+            reports:
+              - id: root_1_3_2_0
+                name: Rose
+                department: Marketing
+                age: 46
+                salary: 47154.93
+                hire_date: "2014-02-09"
+                reports: []
+              - id: root_1_3_2_1
+                name: Noah
+                department: Support
+                age: 54
+                salary: 54045.54
+                hire_date: "2010-05-24"
+                reports: []
+              - id: root_1_3_2_2
+                name: Jack
+                department: Design
+                age: 59
+                salary: 119901.21
+                hire_date: "2025-03-15"
+                reports: []
+          - id: root_1_3_3
+            name: Rose
+            department: Legal
+            age: 44
+            salary: 59919.6
+            hire_date: "2022-08-11"
+            reports:
+              - id: root_1_3_3_0
+                name: Henry
+                department: Design
+                age: 46
+                salary: 51020.62
+                hire_date: "2023-01-11"
+                reports: []
+              - id: root_1_3_3_1
+                name: Paul
+                department: R&D
+                age: 46
+                salary: 118957.26
+                hire_date: "2014-08-02"
+                reports: []
+          - id: root_1_3_4
+            name: Eve
+            department: Ops
+            age: 59
+            salary: 59879.52
+            hire_date: "2013-08-04"
+            reports:
+              - id: root_1_3_4_0
+                name: Olivia
+                department: Engineering
+                age: 31
+                salary: 66898.08
+                hire_date: "2014-02-16"
+                reports: []
+              - id: root_1_3_4_1
+                name: Ivy
+                department: Support
+                age: 61
+                salary: 92343.41
+                hire_date: "2012-06-28"
+                reports: []
+              - id: root_1_3_4_2
+                name: Rose
+                department: R&D
+                age: 42
+                salary: 86411.93
+                hire_date: "2025-09-02"
+                reports: []
+              - id: root_1_3_4_3
+                name: Tina
+                department: Sales
+                age: 37
+                salary: 86804.49
+                hire_date: "2019-04-24"
+                reports: []
+      - id: root_1_4
+        name: Charlie
+        department: R&D
+        age: 28
+        salary: 98433.27
+        hire_date: "2013-08-06"
+        reports:
+          - id: root_1_4_0
+            name: Jack
+            department: Engineering
+            age: 24
+            salary: 59193.72
+            hire_date: "2011-05-12"
+            reports:
+              - id: root_1_4_0_0
+                name: Noah
+                department: Marketing
+                age: 37
+                salary: 77804.97
+                hire_date: "2015-03-06"
+                reports: []
+              - id: root_1_4_0_1
+                name: Charlie
+                department: Design
+                age: 46
+                salary: 85773.93
+                hire_date: "2017-08-19"
+                reports: []
+              - id: root_1_4_0_2
+                name: Eve
+                department: HR
+                age: 51
+                salary: 87411.42
+                hire_date: "2024-05-22"
+                reports: []
+          - id: root_1_4_1
+            name: Alice
+            department: Legal
+            age: 40
+            salary: 90984.98
+            hire_date: "2015-02-15"
+            reports:
+              - id: root_1_4_1_0
+                name: Sam
+                department: Finance
+                age: 62
+                salary: 116582.62
+                hire_date: "2018-08-28"
+                reports: []
+              - id: root_1_4_1_1
+                name: Jack
+                department: HR
+                age: 46
+                salary: 106800.19
+                hire_date: "2013-04-13"
+                reports: []
+              - id: root_1_4_1_2
+                name: Sam
+                department: Support
+                age: 58
+                salary: 56628.52
+                hire_date: "2019-01-27"
+                reports: []
+          - id: root_1_4_2
+            name: Mia
+            department: Finance
+            age: 22
+            salary: 80933.61
+            hire_date: "2011-10-24"
+            reports:
+              - id: root_1_4_2_0
+                name: Jack
+                department: HR
+                age: 60
+                salary: 102173.88
+                hire_date: "2017-11-07"
+                reports: []
+              - id: root_1_4_2_1
+                name: Tina
+                department: Finance
+                age: 65
+                salary: 98001.96
+                hire_date: "2014-11-04"
+                reports: []
+              - id: root_1_4_2_2
+                name: Bob
+                department: Finance
+                age: 50
+                salary: 33002.81
+                hire_date: "2021-12-05"
+                reports: []
+          - id: root_1_4_3
+            name: Charlie
+            department: Finance
+            age: 42
+            salary: 97273.28
+            hire_date: "2015-04-05"
+            reports:
+              - id: root_1_4_3_0
+                name: Leo
+                department: Ops
+                age: 54
+                salary: 112213.83
+                hire_date: "2015-05-27"
+                reports: []
+              - id: root_1_4_3_1
+                name: Paul
+                department: Finance
+                age: 43
+                salary: 102380.93
+                hire_date: "2024-02-05"
+                reports: []
+              - id: root_1_4_3_2
+                name: Henry
+                department: R&D
+                age: 57
+                salary: 62919.75
+                hire_date: "2022-01-09"
+                reports: []
+              - id: root_1_4_3_3
+                name: Rose
+                department: Sales
+                age: 51
+                salary: 63172.71
+                hire_date: "2018-10-13"
+                reports: []
+          - id: root_1_4_4
+            name: Leo
+            department: Sales
+            age: 65
+            salary: 51043.97
+            hire_date: "2010-10-18"
+            reports:
+              - id: root_1_4_4_0
+                name: Tina
+                department: HR
+                age: 63
+                salary: 35689.53
+                hire_date: "2024-12-10"
+                reports: []
+              - id: root_1_4_4_1
+                name: Noah
+                department: Sales
+                age: 30
+                salary: 34081.21
+                hire_date: "2011-05-16"
+                reports: []
+              - id: root_1_4_4_2
+                name: Diana
+                department: Sales
+                age: 37
+                salary: 109853.34
+                hire_date: "2014-07-15"
+                reports: []
+      - id: root_1_5
+        name: Leo
+        department: Ops
+        age: 48
+        salary: 82860.63
+        hire_date: "2014-07-21"
+        reports:
+          - id: root_1_5_0
+            name: Paul
+            department: Design
+            age: 48
+            salary: 114514.78
+            hire_date: "2018-01-23"
+            reports:
+              - id: root_1_5_0_0
+                name: Grace
+                department: Legal
+                age: 50
+                salary: 115549.97
+                hire_date: "2021-02-22"
+                reports: []
+              - id: root_1_5_0_1
+                name: Leo
+                department: Ops
+                age: 63
+                salary: 62280.65
+                hire_date: "2022-05-07"
+                reports: []
+              - id: root_1_5_0_2
+                name: Diana
+                department: Legal
+                age: 27
+                salary: 89649.19
+                hire_date: "2010-01-26"
+                reports: []
+          - id: root_1_5_1
+            name: Kate
+            department: HR
+            age: 30
+            salary: 100828.03
+            hire_date: "2016-02-27"
+            reports:
+              - id: root_1_5_1_0
+                name: Grace
+                department: Design
+                age: 35
+                salary: 103174.77
+                hire_date: "2017-06-25"
+                reports: []
+              - id: root_1_5_1_1
+                name: Eve
+                department: Design
+                age: 22
+                salary: 54954.74
+                hire_date: "2014-03-18"
+                reports: []
+              - id: root_1_5_1_2
+                name: Ivy
+                department: Marketing
+                age: 29
+                salary: 89495.19
+                hire_date: "2010-03-01"
+                reports: []
+              - id: root_1_5_1_3
+                name: Leo
+                department: HR
+                age: 59
+                salary: 59139.43
+                hire_date: "2015-05-02"
+                reports: []
+          - id: root_1_5_2
+            name: Eve
+            department: R&D
+            age: 55
+            salary: 40228.44
+            hire_date: "2012-08-15"
+            reports:
+              - id: root_1_5_2_0
+                name: Quinn
+                department: Design
+                age: 28
+                salary: 70680.49
+                hire_date: "2017-10-02"
+                reports: []
+              - id: root_1_5_2_1
+                name: Quinn
+                department: Finance
+                age: 51
+                salary: 87900.66
+                hire_date: "2010-01-16"
+                reports: []
+              - id: root_1_5_2_2
+                name: Mia
+                department: R&D
+                age: 65
+                salary: 39716.56
+                hire_date: "2024-02-03"
+                reports: []
+  - id: root_2
+    name: Kate
+    department: Design
+    age: 31
+    salary: 35911.4
+    hire_date: "2018-10-21"
+    reports:
+      - id: root_2_0
+        name: Rose
+        department: Support
+        age: 46
+        salary: 119516.5
+        hire_date: "2019-08-17"
+        reports:
+          - id: root_2_0_0
+            name: Noah
+            department: Sales
+            age: 29
+            salary: 106751.35
+            hire_date: "2016-07-15"
+            reports:
+              - id: root_2_0_0_0
+                name: Noah
+                department: Support
+                age: 51
+                salary: 65885.72
+                hire_date: "2013-06-14"
+                reports: []
+              - id: root_2_0_0_1
+                name: Kate
+                department: Finance
+                age: 45
+                salary: 115823.33
+                hire_date: "2025-02-03"
+                reports: []
+          - id: root_2_0_1
+            name: Charlie
+            department: Sales
+            age: 49
+            salary: 38690.8
+            hire_date: "2021-03-18"
+            reports:
+              - id: root_2_0_1_0
+                name: Sam
+                department: Ops
+                age: 57
+                salary: 59668.14
+                hire_date: "2013-07-12"
+                reports: []
+              - id: root_2_0_1_1
+                name: Noah
+                department: Engineering
+                age: 40
+                salary: 84036.91
+                hire_date: "2021-02-19"
+                reports: []
+          - id: root_2_0_2
+            name: Quinn
+            department: HR
+            age: 31
+            salary: 89106.27
+            hire_date: "2017-02-12"
+            reports:
+              - id: root_2_0_2_0
+                name: Leo
+                department: Sales
+                age: 39
+                salary: 81669.0
+                hire_date: "2023-09-25"
+                reports: []
+              - id: root_2_0_2_1
+                name: Tina
+                department: Design
+                age: 65
+                salary: 87842.92
+                hire_date: "2010-10-22"
+                reports: []
+              - id: root_2_0_2_2
+                name: Ivy
+                department: Engineering
+                age: 33
+                salary: 54594.33
+                hire_date: "2019-06-12"
+                reports: []
+              - id: root_2_0_2_3
+                name: Alice
+                department: Marketing
+                age: 31
+                salary: 80968.9
+                hire_date: "2022-02-05"
+                reports: []
+          - id: root_2_0_3
+            name: Alice
+            department: Sales
+            age: 55
+            salary: 49361.96
+            hire_date: "2023-08-11"
+            reports:
+              - id: root_2_0_3_0
+                name: Leo
+                department: Finance
+                age: 42
+                salary: 99915.21
+                hire_date: "2012-01-05"
+                reports: []
+              - id: root_2_0_3_1
+                name: Frank
+                department: Design
+                age: 25
+                salary: 90657.18
+                hire_date: "2018-08-22"
+                reports: []
+          - id: root_2_0_4
+            name: Noah
+            department: Legal
+            age: 60
+            salary: 69783.98
+            hire_date: "2018-04-25"
+            reports:
+              - id: root_2_0_4_0
+                name: Diana
+                department: Support
+                age: 49
+                salary: 39980.08
+                hire_date: "2025-09-22"
+                reports: []
+              - id: root_2_0_4_1
+                name: Jack
+                department: Engineering
+                age: 36
+                salary: 65573.71
+                hire_date: "2011-01-07"
+                reports: []
+              - id: root_2_0_4_2
+                name: Jack
+                department: HR
+                age: 30
+                salary: 98774.48
+                hire_date: "2019-06-04"
+                reports: []
+              - id: root_2_0_4_3
+                name: Alice
+                department: Legal
+                age: 49
+                salary: 45812.53
+                hire_date: "2022-09-23"
+                reports: []
+      - id: root_2_1
+        name: Henry
+        department: Ops
+        age: 57
+        salary: 105001.88
+        hire_date: "2021-02-13"
+        reports:
+          - id: root_2_1_0
+            name: Bob
+            department: R&D
+            age: 23
+            salary: 71377.88
+            hire_date: "2012-06-19"
+            reports:
+              - id: root_2_1_0_0
+                name: Sam
+                department: R&D
+                age: 62
+                salary: 67592.46
+                hire_date: "2013-07-01"
+                reports: []
+              - id: root_2_1_0_1
+                name: Kate
+                department: Marketing
+                age: 61
+                salary: 71408.72
+                hire_date: "2021-02-14"
+                reports: []
+              - id: root_2_1_0_2
+                name: Diana
+                department: HR
+                age: 49
+                salary: 82998.42
+                hire_date: "2012-07-28"
+                reports: []
+          - id: root_2_1_1
+            name: Jack
+            department: Support
+            age: 36
+            salary: 59976.18
+            hire_date: "2015-02-17"
+            reports:
+              - id: root_2_1_1_0
+                name: Diana
+                department: Ops
+                age: 54
+                salary: 47451.33
+                hire_date: "2021-06-24"
+                reports: []
+              - id: root_2_1_1_1
+                name: Eve
+                department: HR
+                age: 28
+                salary: 43179.98
+                hire_date: "2016-03-20"
+                reports: []
+              - id: root_2_1_1_2
+                name: Eve
+                department: Sales
+                age: 33
+                salary: 115616.29
+                hire_date: "2025-08-25"
+                reports: []
+              - id: root_2_1_1_3
+                name: Sam
+                department: Design
+                age: 50
+                salary: 91302.01
+                hire_date: "2020-11-11"
+                reports: []
+          - id: root_2_1_2
+            name: Eve
+            department: Legal
+            age: 26
+            salary: 72202.9
+            hire_date: "2019-05-19"
+            reports:
+              - id: root_2_1_2_0
+                name: Leo
+                department: Ops
+                age: 26
+                salary: 57936.71
+                hire_date: "2024-01-02"
+                reports: []
+              - id: root_2_1_2_1
+                name: Leo
+                department: Finance
+                age: 26
+                salary: 88019.98
+                hire_date: "2012-10-20"
+                reports: []
+          - id: root_2_1_3
+            name: Quinn
+            department: R&D
+            age: 51
+            salary: 82229.65
+            hire_date: "2011-08-26"
+            reports:
+              - id: root_2_1_3_0
+                name: Grace
+                department: Support
+                age: 60
+                salary: 72806.61
+                hire_date: "2014-01-15"
+                reports: []
+              - id: root_2_1_3_1
+                name: Diana
+                department: Support
+                age: 27
+                salary: 75409.41
+                hire_date: "2015-01-08"
+                reports: []
+              - id: root_2_1_3_2
+                name: Olivia
+                department: Legal
+                age: 55
+                salary: 77047.32
+                hire_date: "2015-06-12"
+                reports: []
+              - id: root_2_1_3_3
+                name: Jack
+                department: R&D
+                age: 48
+                salary: 99701.83
+                hire_date: "2011-11-21"
+                reports: []
+          - id: root_2_1_4
+            name: Kate
+            department: Sales
+            age: 43
+            salary: 38505.54
+            hire_date: "2022-05-09"
+            reports:
+              - id: root_2_1_4_0
+                name: Tina
+                department: Marketing
+                age: 43
+                salary: 37335.18
+                hire_date: "2014-06-10"
+                reports: []
+              - id: root_2_1_4_1
+                name: Mia
+                department: Marketing
+                age: 60
+                salary: 93795.06
+                hire_date: "2012-05-18"
+                reports: []
+              - id: root_2_1_4_2
+                name: Mia
+                department: Support
+                age: 30
+                salary: 90310.48
+                hire_date: "2012-11-22"
+                reports: []
+              - id: root_2_1_4_3
+                name: Noah
+                department: Ops
+                age: 45
+                salary: 31640.75
+                hire_date: "2019-03-07"
+                reports: []
+      - id: root_2_2
+        name: Kate
+        department: Legal
+        age: 34
+        salary: 50388.87
+        hire_date: "2014-03-03"
+        reports:
+          - id: root_2_2_0
+            name: Diana
+            department: Ops
+            age: 56
+            salary: 105160.78
+            hire_date: "2011-11-11"
+            reports:
+              - id: root_2_2_0_0
+                name: Eve
+                department: Design
+                age: 46
+                salary: 43882.75
+                hire_date: "2015-12-25"
+                reports: []
+              - id: root_2_2_0_1
+                name: Tina
+                department: Marketing
+                age: 50
+                salary: 33932.32
+                hire_date: "2021-11-24"
+                reports: []
+              - id: root_2_2_0_2
+                name: Henry
+                department: Legal
+                age: 61
+                salary: 55643.51
+                hire_date: "2024-04-18"
+                reports: []
+              - id: root_2_2_0_3
+                name: Henry
+                department: Finance
+                age: 52
+                salary: 111357.69
+                hire_date: "2016-06-22"
+                reports: []
+          - id: root_2_2_1
+            name: Sam
+            department: Legal
+            age: 51
+            salary: 99249.47
+            hire_date: "2022-09-17"
+            reports:
+              - id: root_2_2_1_0
+                name: Frank
+                department: HR
+                age: 60
+                salary: 42455.87
+                hire_date: "2018-01-21"
+                reports: []
+              - id: root_2_2_1_1
+                name: Paul
+                department: Support
+                age: 57
+                salary: 114086.42
+                hire_date: "2013-05-03"
+                reports: []
+              - id: root_2_2_1_2
+                name: Frank
+                department: Finance
+                age: 50
+                salary: 111477.56
+                hire_date: "2014-07-03"
+                reports: []
+          - id: root_2_2_2
+            name: Henry
+            department: Legal
+            age: 44
+            salary: 113742.47
+            hire_date: "2023-01-13"
+            reports:
+              - id: root_2_2_2_0
+                name: Leo
+                department: HR
+                age: 46
+                salary: 119507.28
+                hire_date: "2021-04-01"
+                reports: []
+              - id: root_2_2_2_1
+                name: Kate
+                department: Sales
+                age: 63
+                salary: 60176.13
+                hire_date: "2014-03-02"
+                reports: []
+              - id: root_2_2_2_2
+                name: Jack
+                department: Legal
+                age: 30
+                salary: 98295.7
+                hire_date: "2025-08-20"
+                reports: []
+              - id: root_2_2_2_3
+                name: Alice
+                department: Sales
+                age: 23
+                salary: 53033.15
+                hire_date: "2014-09-24"
+                reports: []
+          - id: root_2_2_3
+            name: Tina
+            department: Ops
+            age: 49
+            salary: 40006.82
+            hire_date: "2019-04-10"
+            reports:
+              - id: root_2_2_3_0
+                name: Bob
+                department: HR
+                age: 48
+                salary: 87505.66
+                hire_date: "2024-02-04"
+                reports: []
+              - id: root_2_2_3_1
+                name: Paul
+                department: Design
+                age: 56
+                salary: 31479.18
+                hire_date: "2017-12-05"
+                reports: []
+      - id: root_2_3
+        name: Jack
+        department: R&D
+        age: 22
+        salary: 85332.86
+        hire_date: "2017-10-14"
+        reports:
+          - id: root_2_3_0
+            name: Charlie
+            department: Ops
+            age: 45
+            salary: 36091.14
+            hire_date: "2010-07-28"
+            reports:
+              - id: root_2_3_0_0
+                name: Bob
+                department: R&D
+                age: 45
+                salary: 52828.52
+                hire_date: "2010-06-26"
+                reports: []
+              - id: root_2_3_0_1
+                name: Charlie
+                department: Support
+                age: 37
+                salary: 95964.69
+                hire_date: "2013-10-24"
+                reports: []
+              - id: root_2_3_0_2
+                name: Kate
+                department: Marketing
+                age: 24
+                salary: 61706.91
+                hire_date: "2020-11-06"
+                reports: []
+          - id: root_2_3_1
+            name: Olivia
+            department: Legal
+            age: 62
+            salary: 46405.02
+            hire_date: "2014-02-23"
+            reports:
+              - id: root_2_3_1_0
+                name: Bob
+                department: Finance
+                age: 34
+                salary: 33942.56
+                hire_date: "2016-01-11"
+                reports: []
+              - id: root_2_3_1_1
+                name: Jack
+                department: Ops
+                age: 47
+                salary: 119021.04
+                hire_date: "2025-05-02"
+                reports: []
+              - id: root_2_3_1_2
+                name: Grace
+                department: Finance
+                age: 44
+                salary: 107592.47
+                hire_date: "2011-11-11"
+                reports: []
+          - id: root_2_3_2
+            name: Ivy
+            department: Sales
+            age: 45
+            salary: 69325.62
+            hire_date: "2022-12-15"
+            reports:
+              - id: root_2_3_2_0
+                name: Kate
+                department: Marketing
+                age: 53
+                salary: 92286.16
+                hire_date: "2021-09-09"
+                reports: []
+              - id: root_2_3_2_1
+                name: Charlie
+                department: R&D
+                age: 27
+                salary: 68754.64
+                hire_date: "2015-09-10"
+                reports: []
+              - id: root_2_3_2_2
+                name: Kate
+                department: Sales
+                age: 27
+                salary: 59512.79
+                hire_date: "2019-05-15"
+                reports: []
+      - id: root_2_4
+        name: Tina
+        department: R&D
+        age: 32
+        salary: 92078.83
+        hire_date: "2021-08-02"
+        reports:
+          - id: root_2_4_0
+            name: Leo
+            department: Design
+            age: 49
+            salary: 54709.98
+            hire_date: "2011-02-22"
+            reports:
+              - id: root_2_4_0_0
+                name: Mia
+                department: Support
+                age: 54
+                salary: 102098.64
+                hire_date: "2015-01-05"
+                reports: []
+              - id: root_2_4_0_1
+                name: Tina
+                department: Legal
+                age: 24
+                salary: 41360.7
+                hire_date: "2017-11-12"
+                reports: []
+              - id: root_2_4_0_2
+                name: Leo
+                department: R&D
+                age: 58
+                salary: 32914.68
+                hire_date: "2014-11-15"
+                reports: []
+              - id: root_2_4_0_3
+                name: Leo
+                department: Support
+                age: 50
+                salary: 98677.6
+                hire_date: "2014-09-12"
+                reports: []
+          - id: root_2_4_1
+            name: Mia
+            department: Support
+            age: 63
+            salary: 55082.08
+            hire_date: "2013-01-24"
+            reports:
+              - id: root_2_4_1_0
+                name: Paul
+                department: Ops
+                age: 46
+                salary: 112218.83
+                hire_date: "2013-05-25"
+                reports: []
+              - id: root_2_4_1_1
+                name: Ivy
+                department: Legal
+                age: 35
+                salary: 119672.86
+                hire_date: "2019-12-16"
+                reports: []
+          - id: root_2_4_2
+            name: Grace
+            department: Sales
+            age: 30
+            salary: 106754.37
+            hire_date: "2024-03-23"
+            reports:
+              - id: root_2_4_2_0
+                name: Charlie
+                department: Support
+                age: 64
+                salary: 61268.28
+                hire_date: "2012-09-18"
+                reports: []
+              - id: root_2_4_2_1
+                name: Jack
+                department: Finance
+                age: 32
+                salary: 94062.82
+                hire_date: "2015-06-17"
+                reports: []
+              - id: root_2_4_2_2
+                name: Henry
+                department: Sales
+                age: 34
+                salary: 101285.91
+                hire_date: "2017-08-01"
+                reports: []
+          - id: root_2_4_3
+            name: Leo
+            department: Ops
+            age: 58
+            salary: 63202.0
+            hire_date: "2014-10-03"
+            reports:
+              - id: root_2_4_3_0
+                name: Jack
+                department: R&D
+                age: 52
+                salary: 77312.61
+                hire_date: "2023-10-03"
+                reports: []
+              - id: root_2_4_3_1
+                name: Eve
+                department: Support
+                age: 63
+                salary: 36674.85
+                hire_date: "2024-11-17"
+                reports: []
+          - id: root_2_4_4
+            name: Leo
+            department: Marketing
+            age: 57
+            salary: 87581.45
+            hire_date: "2015-03-14"
+            reports:
+              - id: root_2_4_4_0
+                name: Bob
+                department: Sales
+                age: 55
+                salary: 43771.39
+                hire_date: "2015-03-11"
+                reports: []
+              - id: root_2_4_4_1
+                name: Henry
+                department: Support
+                age: 55
+                salary: 110543.33
+                hire_date: "2012-05-07"
+                reports: []
+              - id: root_2_4_4_2
+                name: Rose
+                department: Finance
+                age: 30
+                salary: 86252.01
+                hire_date: "2012-09-21"
+                reports: []
+              - id: root_2_4_4_3
+                name: Frank
+                department: Design
+                age: 59
+                salary: 43877.48
+                hire_date: "2020-10-02"
+                reports: []
+      - id: root_2_5
+        name: Alice
+        department: Sales
+        age: 24
+        salary: 115369.22
+        hire_date: "2018-11-07"
+        reports:
+          - id: root_2_5_0
+            name: Noah
+            department: Design
+            age: 62
+            salary: 32725.73
+            hire_date: "2019-11-10"
+            reports:
+              - id: root_2_5_0_0
+                name: Henry
+                department: R&D
+                age: 41
+                salary: 70818.97
+                hire_date: "2011-03-15"
+                reports: []
+              - id: root_2_5_0_1
+                name: Noah
+                department: Legal
+                age: 51
+                salary: 48362.07
+                hire_date: "2014-06-28"
+                reports: []
+              - id: root_2_5_0_2
+                name: Kate
+                department: Support
+                age: 47
+                salary: 41768.95
+                hire_date: "2021-09-18"
+                reports: []
+          - id: root_2_5_1
+            name: Diana
+            department: Support
+            age: 37
+            salary: 71982.53
+            hire_date: "2018-08-08"
+            reports:
+              - id: root_2_5_1_0
+                name: Diana
+                department: Engineering
+                age: 40
+                salary: 115084.64
+                hire_date: "2023-04-28"
+                reports: []
+              - id: root_2_5_1_1
+                name: Frank
+                department: Support
+                age: 58
+                salary: 94901.56
+                hire_date: "2016-03-16"
+                reports: []
+          - id: root_2_5_2
+            name: Quinn
+            department: Legal
+            age: 53
+            salary: 109116.81
+            hire_date: "2025-01-03"
+            reports:
+              - id: root_2_5_2_0
+                name: Quinn
+                department: Legal
+                age: 37
+                salary: 49363.0
+                hire_date: "2021-01-02"
+                reports: []
+              - id: root_2_5_2_1
+                name: Jack
+                department: Legal
+                age: 60
+                salary: 109410.55
+                hire_date: "2025-05-18"
+                reports: []
+              - id: root_2_5_2_2
+                name: Alice
+                department: Sales
+                age: 49
+                salary: 42054.14
+                hire_date: "2018-12-12"
+                reports: []
+          - id: root_2_5_3
+            name: Mia
+            department: Support
+            age: 24
+            salary: 66052.35
+            hire_date: "2016-06-18"
+            reports:
+              - id: root_2_5_3_0
+                name: Charlie
+                department: R&D
+                age: 54
+                salary: 70531.89
+                hire_date: "2018-10-22"
+                reports: []
+              - id: root_2_5_3_1
+                name: Tina
+                department: Sales
+                age: 30
+                salary: 117757.45
+                hire_date: "2022-06-26"
+                reports: []
+              - id: root_2_5_3_2
+                name: Kate
+                department: Ops
+                age: 45
+                salary: 97946.87
+                hire_date: "2016-10-17"
+                reports: []
+          - id: root_2_5_4
+            name: Mia
+            department: Ops
+            age: 24
+            salary: 34077.3
+            hire_date: "2014-12-11"
+            reports:
+              - id: root_2_5_4_0
+                name: Quinn
+                department: Legal
+                age: 31
+                salary: 84563.45
+                hire_date: "2014-06-20"
+                reports: []
+              - id: root_2_5_4_1
+                name: Kate
+                department: Marketing
+                age: 47
+                salary: 119155.42
+                hire_date: "2019-10-11"
+                reports: []
+              - id: root_2_5_4_2
+                name: Quinn
+                department: Ops
+                age: 56
+                salary: 74086.2
+                hire_date: "2019-08-27"
+                reports: []
+  - id: root_3
+    name: Alice
+    department: Support
+    age: 43
+    salary: 90642.58
+    hire_date: "2023-10-10"
+    reports:
+      - id: root_3_0
+        name: Alice
+        department: Design
+        age: 52
+        salary: 53897.74
+        hire_date: "2017-12-02"
+        reports:
+          - id: root_3_0_0
+            name: Paul
+            department: Marketing
+            age: 55
+            salary: 86612.27
+            hire_date: "2022-03-27"
+            reports:
+              - id: root_3_0_0_0
+                name: Henry
+                department: Engineering
+                age: 58
+                salary: 115338.47
+                hire_date: "2013-04-01"
+                reports: []
+              - id: root_3_0_0_1
+                name: Olivia
+                department: Support
+                age: 48
+                salary: 43628.81
+                hire_date: "2016-07-17"
+                reports: []
+              - id: root_3_0_0_2
+                name: Tina
+                department: Legal
+                age: 25
+                salary: 93519.77
+                hire_date: "2016-09-11"
+                reports: []
+              - id: root_3_0_0_3
+                name: Paul
+                department: Ops
+                age: 46
+                salary: 58237.73
+                hire_date: "2015-08-18"
+                reports: []
+          - id: root_3_0_1
+            name: Kate
+            department: Ops
+            age: 44
+            salary: 90828.17
+            hire_date: "2018-10-16"
+            reports:
+              - id: root_3_0_1_0
+                name: Henry
+                department: Finance
+                age: 57
+                salary: 56864.92
+                hire_date: "2019-05-23"
+                reports: []
+              - id: root_3_0_1_1
+                name: Grace
+                department: Legal
+                age: 42
+                salary: 73182.31
+                hire_date: "2018-05-04"
+                reports: []
+          - id: root_3_0_2
+            name: Sam
+            department: Ops
+            age: 46
+            salary: 110618.44
+            hire_date: "2022-06-25"
+            reports:
+              - id: root_3_0_2_0
+                name: Jack
+                department: Engineering
+                age: 40
+                salary: 115978.23
+                hire_date: "2012-06-15"
+                reports: []
+              - id: root_3_0_2_1
+                name: Ivy
+                department: Legal
+                age: 35
+                salary: 48186.12
+                hire_date: "2018-09-23"
+                reports: []
+          - id: root_3_0_3
+            name: Ivy
+            department: Marketing
+            age: 28
+            salary: 85410.93
+            hire_date: "2017-04-02"
+            reports:
+              - id: root_3_0_3_0
+                name: Quinn
+                department: HR
+                age: 62
+                salary: 50955.29
+                hire_date: "2013-07-11"
+                reports: []
+              - id: root_3_0_3_1
+                name: Paul
+                department: Sales
+                age: 65
+                salary: 99368.95
+                hire_date: "2010-09-06"
+                reports: []
+              - id: root_3_0_3_2
+                name: Noah
+                department: Legal
+                age: 52
+                salary: 88548.48
+                hire_date: "2019-06-10"
+                reports: []
+              - id: root_3_0_3_3
+                name: Bob
+                department: Sales
+                age: 63
+                salary: 81672.0
+                hire_date: "2011-03-14"
+                reports: []
+          - id: root_3_0_4
+            name: Frank
+            department: Engineering
+            age: 47
+            salary: 100916.46
+            hire_date: "2015-12-28"
+            reports:
+              - id: root_3_0_4_0
+                name: Bob
+                department: Engineering
+                age: 41
+                salary: 81116.57
+                hire_date: "2013-06-10"
+                reports: []
+              - id: root_3_0_4_1
+                name: Olivia
+                department: Ops
+                age: 55
+                salary: 74452.12
+                hire_date: "2014-09-15"
+                reports: []
+              - id: root_3_0_4_2
+                name: Ivy
+                department: HR
+                age: 29
+                salary: 59761.57
+                hire_date: "2024-11-09"
+                reports: []
+      - id: root_3_1
+        name: Frank
+        department: Engineering
+        age: 43
+        salary: 101169.09
+        hire_date: "2016-03-20"
+        reports:
+          - id: root_3_1_0
+            name: Mia
+            department: R&D
+            age: 54
+            salary: 59513.4
+            hire_date: "2022-11-04"
+            reports:
+              - id: root_3_1_0_0
+                name: Eve
+                department: Legal
+                age: 42
+                salary: 114224.28
+                hire_date: "2010-05-13"
+                reports: []
+              - id: root_3_1_0_1
+                name: Henry
+                department: Legal
+                age: 39
+                salary: 115863.13
+                hire_date: "2019-10-24"
+                reports: []
+          - id: root_3_1_1
+            name: Sam
+            department: Engineering
+            age: 38
+            salary: 88831.5
+            hire_date: "2017-01-22"
+            reports:
+              - id: root_3_1_1_0
+                name: Olivia
+                department: Finance
+                age: 32
+                salary: 66487.5
+                hire_date: "2019-12-04"
+                reports: []
+              - id: root_3_1_1_1
+                name: Jack
+                department: Support
+                age: 61
+                salary: 49876.43
+                hire_date: "2014-08-05"
+                reports: []
+          - id: root_3_1_2
+            name: Olivia
+            department: Design
+            age: 45
+            salary: 67426.11
+            hire_date: "2025-09-26"
+            reports:
+              - id: root_3_1_2_0
+                name: Grace
+                department: HR
+                age: 65
+                salary: 97926.56
+                hire_date: "2012-09-15"
+                reports: []
+              - id: root_3_1_2_1
+                name: Quinn
+                department: Support
+                age: 26
+                salary: 112552.02
+                hire_date: "2013-01-27"
+                reports: []
+              - id: root_3_1_2_2
+                name: Rose
+                department: Ops
+                age: 34
+                salary: 81543.15
+                hire_date: "2014-03-11"
+                reports: []
+              - id: root_3_1_2_3
+                name: Quinn
+                department: Legal
+                age: 29
+                salary: 91226.57
+                hire_date: "2025-02-17"
+                reports: []
+          - id: root_3_1_3
+            name: Olivia
+            department: Engineering
+            age: 51
+            salary: 41874.99
+            hire_date: "2023-08-19"
+            reports:
+              - id: root_3_1_3_0
+                name: Rose
+                department: Legal
+                age: 65
+                salary: 102622.38
+                hire_date: "2010-07-09"
+                reports: []
+              - id: root_3_1_3_1
+                name: Alice
+                department: HR
+                age: 59
+                salary: 36572.66
+                hire_date: "2023-06-23"
+                reports: []
+          - id: root_3_1_4
+            name: Charlie
+            department: Ops
+            age: 25
+            salary: 114112.45
+            hire_date: "2012-08-02"
+            reports:
+              - id: root_3_1_4_0
+                name: Noah
+                department: Marketing
+                age: 30
+                salary: 98924.49
+                hire_date: "2023-06-13"
+                reports: []
+              - id: root_3_1_4_1
+                name: Olivia
+                department: R&D
+                age: 46
+                salary: 37222.5
+                hire_date: "2014-11-28"
+                reports: []
+              - id: root_3_1_4_2
+                name: Leo
+                department: Sales
+                age: 33
+                salary: 119356.21
+                hire_date: "2022-09-05"
+                reports: []
+      - id: root_3_2
+        name: Henry
+        department: Engineering
+        age: 23
+        salary: 118064.16
+        hire_date: "2024-11-24"
+        reports:
+          - id: root_3_2_0
+            name: Noah
+            department: Ops
+            age: 46
+            salary: 104102.44
+            hire_date: "2017-08-12"
+            reports:
+              - id: root_3_2_0_0
+                name: Ivy
+                department: HR
+                age: 29
+                salary: 32899.56
+                hire_date: "2023-10-25"
+                reports: []
+              - id: root_3_2_0_1
+                name: Alice
+                department: HR
+                age: 35
+                salary: 36056.18
+                hire_date: "2011-08-20"
+                reports: []
+          - id: root_3_2_1
+            name: Bob
+            department: HR
+            age: 24
+            salary: 66203.88
+            hire_date: "2017-09-07"
+            reports:
+              - id: root_3_2_1_0
+                name: Eve
+                department: Ops
+                age: 40
+                salary: 51074.54
+                hire_date: "2020-10-20"
+                reports: []
+              - id: root_3_2_1_1
+                name: Kate
+                department: HR
+                age: 41
+                salary: 108863.25
+                hire_date: "2017-07-10"
+                reports: []
+          - id: root_3_2_2
+            name: Ivy
+            department: Engineering
+            age: 57
+            salary: 115366.82
+            hire_date: "2015-11-22"
+            reports:
+              - id: root_3_2_2_0
+                name: Rose
+                department: Legal
+                age: 25
+                salary: 117506.12
+                hire_date: "2022-09-11"
+                reports: []
+              - id: root_3_2_2_1
+                name: Noah
+                department: R&D
+                age: 31
+                salary: 56989.96
+                hire_date: "2015-09-16"
+                reports: []
+              - id: root_3_2_2_2
+                name: Henry
+                department: HR
+                age: 41
+                salary: 107178.71
+                hire_date: "2014-08-02"
+                reports: []
+          - id: root_3_2_3
+            name: Rose
+            department: R&D
+            age: 48
+            salary: 80155.81
+            hire_date: "2014-07-08"
+            reports:
+              - id: root_3_2_3_0
+                name: Grace
+                department: Support
+                age: 63
+                salary: 37116.34
+                hire_date: "2024-06-03"
+                reports: []
+              - id: root_3_2_3_1
+                name: Rose
+                department: HR
+                age: 25
+                salary: 54161.54
+                hire_date: "2011-02-07"
+                reports: []
+              - id: root_3_2_3_2
+                name: Sam
+                department: Ops
+                age: 35
+                salary: 73145.48
+                hire_date: "2020-05-01"
+                reports: []
+          - id: root_3_2_4
+            name: Grace
+            department: HR
+            age: 29
+            salary: 97219.13
+            hire_date: "2025-04-23"
+            reports:
+              - id: root_3_2_4_0
+                name: Grace
+                department: R&D
+                age: 37
+                salary: 79687.14
+                hire_date: "2019-07-15"
+                reports: []
+              - id: root_3_2_4_1
+                name: Rose
+                department: Support
+                age: 41
+                salary: 53540.55
+                hire_date: "2025-08-04"
+                reports: []
+              - id: root_3_2_4_2
+                name: Paul
+                department: Support
+                age: 35
+                salary: 63363.44
+                hire_date: "2023-01-19"
+                reports: []
+              - id: root_3_2_4_3
+                name: Henry
+                department: Marketing
+                age: 23
+                salary: 53469.67
+                hire_date: "2023-05-05"
+                reports: []
+      - id: root_3_3
+        name: Grace
+        department: Support
+        age: 36
+        salary: 64185.58
+        hire_date: "2017-08-18"
+        reports:
+          - id: root_3_3_0
+            name: Kate
+            department: Finance
+            age: 53
+            salary: 116985.74
+            hire_date: "2025-08-06"
+            reports:
+              - id: root_3_3_0_0
+                name: Leo
+                department: Marketing
+                age: 30
+                salary: 94828.22
+                hire_date: "2025-03-18"
+                reports: []
+              - id: root_3_3_0_1
+                name: Bob
+                department: Ops
+                age: 24
+                salary: 105516.16
+                hire_date: "2012-11-02"
+                reports: []
+              - id: root_3_3_0_2
+                name: Alice
+                department: R&D
+                age: 30
+                salary: 105829.02
+                hire_date: "2017-02-23"
+                reports: []
+              - id: root_3_3_0_3
+                name: Eve
+                department: Engineering
+                age: 35
+                salary: 75515.96
+                hire_date: "2021-01-20"
+                reports: []
+          - id: root_3_3_1
+            name: Tina
+            department: Legal
+            age: 64
+            salary: 73906.89
+            hire_date: "2010-09-18"
+            reports:
+              - id: root_3_3_1_0
+                name: Alice
+                department: Engineering
+                age: 55
+                salary: 94997.34
+                hire_date: "2019-01-17"
+                reports: []
+              - id: root_3_3_1_1
+                name: Noah
+                department: Marketing
+                age: 28
+                salary: 112624.4
+                hire_date: "2014-04-07"
+                reports: []
+              - id: root_3_3_1_2
+                name: Tina
+                department: Ops
+                age: 38
+                salary: 103369.3
+                hire_date: "2018-07-03"
+                reports: []
+          - id: root_3_3_2
+            name: Leo
+            department: R&D
+            age: 51
+            salary: 80850.2
+            hire_date: "2017-05-22"
+            reports:
+              - id: root_3_3_2_0
+                name: Bob
+                department: Sales
+                age: 47
+                salary: 64133.76
+                hire_date: "2025-01-21"
+                reports: []
+              - id: root_3_3_2_1
+                name: Alice
+                department: Marketing
+                age: 27
+                salary: 74987.26
+                hire_date: "2023-11-26"
+                reports: []
+          - id: root_3_3_3
+            name: Kate
+            department: Design
+            age: 28
+            salary: 110531.21
+            hire_date: "2011-04-07"
+            reports:
+              - id: root_3_3_3_0
+                name: Sam
+                department: Legal
+                age: 39
+                salary: 34190.58
+                hire_date: "2012-11-09"
+                reports: []
+              - id: root_3_3_3_1
+                name: Rose
+                department: Design
+                age: 64
+                salary: 32961.16
+                hire_date: "2020-01-07"
+                reports: []
+              - id: root_3_3_3_2
+                name: Sam
+                department: Marketing
+                age: 47
+                salary: 113598.74
+                hire_date: "2019-03-19"
+                reports: []
+              - id: root_3_3_3_3
+                name: Henry
+                department: Design
+                age: 46
+                salary: 90933.15
+                hire_date: "2020-07-25"
+                reports: []
+          - id: root_3_3_4
+            name: Eve
+            department: Sales
+            age: 54
+            salary: 97091.09
+            hire_date: "2021-01-04"
+            reports:
+              - id: root_3_3_4_0
+                name: Henry
+                department: Sales
+                age: 43
+                salary: 84465.19
+                hire_date: "2022-06-01"
+                reports: []
+              - id: root_3_3_4_1
+                name: Ivy
+                department: Legal
+                age: 53
+                salary: 50532.46
+                hire_date: "2022-07-06"
+                reports: []
+              - id: root_3_3_4_2
+                name: Sam
+                department: R&D
+                age: 27
+                salary: 99495.07
+                hire_date: "2019-04-23"
+                reports: []
+      - id: root_3_4
+        name: Charlie
+        department: Sales
+        age: 39
+        salary: 43879.89
+        hire_date: "2014-12-13"
+        reports:
+          - id: root_3_4_0
+            name: Leo
+            department: Sales
+            age: 27
+            salary: 30467.57
+            hire_date: "2019-08-12"
+            reports:
+              - id: root_3_4_0_0
+                name: Diana
+                department: Marketing
+                age: 27
+                salary: 46865.26
+                hire_date: "2024-09-18"
+                reports: []
+              - id: root_3_4_0_1
+                name: Quinn
+                department: R&D
+                age: 28
+                salary: 32363.57
+                hire_date: "2021-09-03"
+                reports: []
+              - id: root_3_4_0_2
+                name: Tina
+                department: Design
+                age: 42
+                salary: 107734.64
+                hire_date: "2010-05-14"
+                reports: []
+          - id: root_3_4_1
+            name: Mia
+            department: Sales
+            age: 57
+            salary: 111468.68
+            hire_date: "2017-10-17"
+            reports:
+              - id: root_3_4_1_0
+                name: Mia
+                department: Marketing
+                age: 30
+                salary: 54202.71
+                hire_date: "2018-08-05"
+                reports: []
+              - id: root_3_4_1_1
+                name: Charlie
+                department: Marketing
+                age: 49
+                salary: 54836.57
+                hire_date: "2019-08-26"
+                reports: []
+          - id: root_3_4_2
+            name: Charlie
+            department: Support
+            age: 38
+            salary: 114980.01
+            hire_date: "2025-10-20"
+            reports:
+              - id: root_3_4_2_0
+                name: Olivia
+                department: Sales
+                age: 30
+                salary: 57419.22
+                hire_date: "2022-06-27"
+                reports: []
+              - id: root_3_4_2_1
+                name: Tina
+                department: R&D
+                age: 43
+                salary: 69620.06
+                hire_date: "2023-11-20"
+                reports: []
+          - id: root_3_4_3
+            name: Eve
+            department: Finance
+            age: 42
+            salary: 84289.01
+            hire_date: "2016-08-11"
+            reports:
+              - id: root_3_4_3_0
+                name: Mia
+                department: Support
+                age: 40
+                salary: 96138.69
+                hire_date: "2025-10-26"
+                reports: []
+              - id: root_3_4_3_1
+                name: Henry
+                department: Support
+                age: 46
+                salary: 55227.01
+                hire_date: "2022-06-04"
+                reports: []
+      - id: root_3_5
+        name: Sam
+        department: HR
+        age: 59
+        salary: 119753.84
+        hire_date: "2015-11-25"
+        reports:
+          - id: root_3_5_0
+            name: Alice
+            department: Legal
+            age: 35
+            salary: 69460.95
+            hire_date: "2019-12-03"
+            reports:
+              - id: root_3_5_0_0
+                name: Paul
+                department: Marketing
+                age: 62
+                salary: 57254.94
+                hire_date: "2018-11-05"
+                reports: []
+              - id: root_3_5_0_1
+                name: Noah
+                department: R&D
+                age: 26
+                salary: 70416.0
+                hire_date: "2025-10-13"
+                reports: []
+              - id: root_3_5_0_2
+                name: Rose
+                department: Ops
+                age: 48
+                salary: 78928.07
+                hire_date: "2021-12-26"
+                reports: []
+          - id: root_3_5_1
+            name: Rose
+            department: Design
+            age: 62
+            salary: 112296.11
+            hire_date: "2013-04-22"
+            reports:
+              - id: root_3_5_1_0
+                name: Leo
+                department: Marketing
+                age: 63
+                salary: 85141.01
+                hire_date: "2022-06-26"
+                reports: []
+              - id: root_3_5_1_1
+                name: Noah
+                department: Sales
+                age: 22
+                salary: 38874.59
+                hire_date: "2017-09-24"
+                reports: []
+              - id: root_3_5_1_2
+                name: Quinn
+                department: Ops
+                age: 59
+                salary: 91889.8
+                hire_date: "2017-08-12"
+                reports: []
+              - id: root_3_5_1_3
+                name: Mia
+                department: Legal
+                age: 65
+                salary: 82973.1
+                hire_date: "2014-06-01"
+                reports: []
+          - id: root_3_5_2
+            name: Paul
+            department: Sales
+            age: 40
+            salary: 67437.79
+            hire_date: "2012-02-27"
+            reports:
+              - id: root_3_5_2_0
+                name: Eve
+                department: Support
+                age: 41
+                salary: 60876.0
+                hire_date: "2016-09-16"
+                reports: []
+              - id: root_3_5_2_1
+                name: Leo
+                department: Legal
+                age: 28
+                salary: 69434.93
+                hire_date: "2024-06-03"
+                reports: []
+              - id: root_3_5_2_2
+                name: Jack
+                department: Engineering
+                age: 29
+                salary: 32032.66
+                hire_date: "2020-11-04"
+                reports: []
+              - id: root_3_5_2_3
+                name: Frank
+                department: HR
+                age: 55
+                salary: 45700.79
+                hire_date: "2015-06-18"
+                reports: []
+          - id: root_3_5_3
+            name: Noah
+            department: Legal
+            age: 36
+            salary: 101798.02
+            hire_date: "2015-03-21"
+            reports:
+              - id: root_3_5_3_0
+                name: Noah
+                department: R&D
+                age: 23
+                salary: 96364.95
+                hire_date: "2016-08-19"
+                reports: []
+              - id: root_3_5_3_1
+                name: Noah
+                department: R&D
+                age: 22
+                salary: 93426.21
+                hire_date: "2016-05-25"
+                reports: []
+              - id: root_3_5_3_2
+                name: Charlie
+                department: Design
+                age: 28
+                salary: 101955.21
+                hire_date: "2015-06-11"
+                reports: []
+              - id: root_3_5_3_3
+                name: Grace
+                department: Legal
+                age: 29
+                salary: 53611.81
+                hire_date: "2025-09-21"
+                reports: []
+          - id: root_3_5_4
+            name: Kate
+            department: Design
+            age: 46
+            salary: 85017.76
+            hire_date: "2013-06-12"
+            reports:
+              - id: root_3_5_4_0
+                name: Tina
+                department: Marketing
+                age: 65
+                salary: 93538.95
+                hire_date: "2019-10-19"
+                reports: []
+              - id: root_3_5_4_1
+                name: Charlie
+                department: Marketing
+                age: 42
+                salary: 40607.55
+                hire_date: "2019-02-06"
+                reports: []
+              - id: root_3_5_4_2
+                name: Leo
+                department: Marketing
+                age: 54
+                salary: 64961.69
+                hire_date: "2014-10-13"
+                reports: []
+  - id: root_4
+    name: Noah
+    department: Marketing
+    age: 53
+    salary: 87195.15
+    hire_date: "2015-09-06"
+    reports:
+      - id: root_4_0
+        name: Jack
+        department: Marketing
+        age: 33
+        salary: 58312.2
+        hire_date: "2024-10-02"
+        reports:
+          - id: root_4_0_0
+            name: Alice
+            department: Legal
+            age: 30
+            salary: 47561.56
+            hire_date: "2022-09-17"
+            reports:
+              - id: root_4_0_0_0
+                name: Paul
+                department: R&D
+                age: 65
+                salary: 74255.33
+                hire_date: "2024-08-06"
+                reports: []
+              - id: root_4_0_0_1
+                name: Charlie
+                department: Design
+                age: 23
+                salary: 101629.28
+                hire_date: "2017-05-02"
+                reports: []
+              - id: root_4_0_0_2
+                name: Ivy
+                department: HR
+                age: 56
+                salary: 55980.33
+                hire_date: "2024-10-24"
+                reports: []
+              - id: root_4_0_0_3
+                name: Paul
+                department: Ops
+                age: 54
+                salary: 40188.99
+                hire_date: "2013-05-25"
+                reports: []
+          - id: root_4_0_1
+            name: Rose
+            department: Support
+            age: 56
+            salary: 104034.98
+            hire_date: "2011-12-15"
+            reports:
+              - id: root_4_0_1_0
+                name: Grace
+                department: R&D
+                age: 28
+                salary: 96238.98
+                hire_date: "2017-05-28"
+                reports: []
+              - id: root_4_0_1_1
+                name: Bob
+                department: Legal
+                age: 38
+                salary: 61371.93
+                hire_date: "2012-08-28"
+                reports: []
+              - id: root_4_0_1_2
+                name: Diana
+                department: HR
+                age: 35
+                salary: 102963.24
+                hire_date: "2021-12-20"
+                reports: []
+              - id: root_4_0_1_3
+                name: Noah
+                department: Marketing
+                age: 61
+                salary: 42531.15
+                hire_date: "2016-04-26"
+                reports: []
+          - id: root_4_0_2
+            name: Bob
+            department: Design
+            age: 44
+            salary: 77905.27
+            hire_date: "2015-06-23"
+            reports:
+              - id: root_4_0_2_0
+                name: Jack
+                department: Design
+                age: 39
+                salary: 115715.76
+                hire_date: "2013-03-25"
+                reports: []
+              - id: root_4_0_2_1
+                name: Noah
+                department: Engineering
+                age: 39
+                salary: 108034.28
+                hire_date: "2014-12-28"
+                reports: []
+              - id: root_4_0_2_2
+                name: Eve
+                department: HR
+                age: 31
+                salary: 94025.54
+                hire_date: "2017-11-13"
+                reports: []
+          - id: root_4_0_3
+            name: Paul
+            department: Marketing
+            age: 58
+            salary: 86916.18
+            hire_date: "2023-07-15"
+            reports:
+              - id: root_4_0_3_0
+                name: Charlie
+                department: R&D
+                age: 54
+                salary: 97482.21
+                hire_date: "2021-08-16"
+                reports: []
+              - id: root_4_0_3_1
+                name: Kate
+                department: Design
+                age: 22
+                salary: 108201.7
+                hire_date: "2012-12-15"
+                reports: []
+      - id: root_4_1
+        name: Leo
+        department: Sales
+        age: 56
+        salary: 65794.43
+        hire_date: "2023-04-16"
+        reports:
+          - id: root_4_1_0
+            name: Kate
+            department: Finance
+            age: 43
+            salary: 79257.95
+            hire_date: "2014-10-28"
+            reports:
+              - id: root_4_1_0_0
+                name: Kate
+                department: Engineering
+                age: 24
+                salary: 38961.73
+                hire_date: "2024-01-04"
+                reports: []
+              - id: root_4_1_0_1
+                name: Frank
+                department: Legal
+                age: 51
+                salary: 30060.83
+                hire_date: "2023-04-23"
+                reports: []
+              - id: root_4_1_0_2
+                name: Eve
+                department: Finance
+                age: 32
+                salary: 108698.1
+                hire_date: "2018-02-21"
+                reports: []
+          - id: root_4_1_1
+            name: Leo
+            department: Finance
+            age: 27
+            salary: 63465.94
+            hire_date: "2015-01-13"
+            reports:
+              - id: root_4_1_1_0
+                name: Jack
+                department: HR
+                age: 49
+                salary: 88993.67
+                hire_date: "2013-01-07"
+                reports: []
+              - id: root_4_1_1_1
+                name: Paul
+                department: Sales
+                age: 30
+                salary: 83431.15
+                hire_date: "2024-01-01"
+                reports: []
+              - id: root_4_1_1_2
+                name: Kate
+                department: Sales
+                age: 49
+                salary: 92462.79
+                hire_date: "2025-02-08"
+                reports: []
+              - id: root_4_1_1_3
+                name: Mia
+                department: Sales
+                age: 28
+                salary: 39288.14
+                hire_date: "2021-05-05"
+                reports: []
+          - id: root_4_1_2
+            name: Mia
+            department: Marketing
+            age: 63
+            salary: 119364.61
+            hire_date: "2014-02-17"
+            reports:
+              - id: root_4_1_2_0
+                name: Alice
+                department: Design
+                age: 63
+                salary: 44770.49
+                hire_date: "2021-12-07"
+                reports: []
+              - id: root_4_1_2_1
+                name: Eve
+                department: R&D
+                age: 61
+                salary: 91790.96
+                hire_date: "2016-02-04"
+                reports: []
+              - id: root_4_1_2_2
+                name: Eve
+                department: Sales
+                age: 59
+                salary: 95700.82
+                hire_date: "2021-07-11"
+                reports: []
+              - id: root_4_1_2_3
+                name: Eve
+                department: HR
+                age: 39
+                salary: 88015.85
+                hire_date: "2017-09-20"
+                reports: []
+          - id: root_4_1_3
+            name: Tina
+            department: Design
+            age: 40
+            salary: 100107.27
+            hire_date: "2010-11-10"
+            reports:
+              - id: root_4_1_3_0
+                name: Quinn
+                department: Design
+                age: 54
+                salary: 46978.19
+                hire_date: "2022-05-21"
+                reports: []
+              - id: root_4_1_3_1
+                name: Bob
+                department: HR
+                age: 53
+                salary: 64729.7
+                hire_date: "2017-08-21"
+                reports: []
+      - id: root_4_2
+        name: Tina
+        department: Sales
+        age: 55
+        salary: 109985.21
+        hire_date: "2010-06-11"
+        reports:
+          - id: root_4_2_0
+            name: Mia
+            department: Design
+            age: 48
+            salary: 62887.12
+            hire_date: "2015-08-25"
+            reports:
+              - id: root_4_2_0_0
+                name: Alice
+                department: Design
+                age: 26
+                salary: 31241.41
+                hire_date: "2016-01-02"
+                reports: []
+              - id: root_4_2_0_1
+                name: Mia
+                department: Ops
+                age: 40
+                salary: 86571.36
+                hire_date: "2023-07-23"
+                reports: []
+          - id: root_4_2_1
+            name: Mia
+            department: Sales
+            age: 62
+            salary: 78290.83
+            hire_date: "2014-05-03"
+            reports:
+              - id: root_4_2_1_0
+                name: Charlie
+                department: Ops
+                age: 35
+                salary: 117688.2
+                hire_date: "2014-09-11"
+                reports: []
+              - id: root_4_2_1_1
+                name: Mia
+                department: Design
+                age: 62
+                salary: 98690.17
+                hire_date: "2012-05-23"
+                reports: []
+              - id: root_4_2_1_2
+                name: Noah
+                department: HR
+                age: 25
+                salary: 52003.18
+                hire_date: "2023-02-15"
+                reports: []
+          - id: root_4_2_2
+            name: Tina
+            department: Design
+            age: 25
+            salary: 57836.11
+            hire_date: "2015-02-01"
+            reports:
+              - id: root_4_2_2_0
+                name: Eve
+                department: Engineering
+                age: 32
+                salary: 74677.16
+                hire_date: "2021-09-17"
+                reports: []
+              - id: root_4_2_2_1
+                name: Ivy
+                department: Marketing
+                age: 45
+                salary: 41423.75
+                hire_date: "2018-12-04"
+                reports: []
+              - id: root_4_2_2_2
+                name: Alice
+                department: Support
+                age: 49
+                salary: 54478.25
+                hire_date: "2012-05-23"
+                reports: []
+              - id: root_4_2_2_3
+                name: Sam
+                department: Sales
+                age: 53
+                salary: 70967.8
+                hire_date: "2021-01-16"
+                reports: []
+      - id: root_4_3
+        name: Sam
+        department: Marketing
+        age: 45
+        salary: 44157.9
+        hire_date: "2013-10-22"
+        reports:
+          - id: root_4_3_0
+            name: Diana
+            department: HR
+            age: 54
+            salary: 30231.17
+            hire_date: "2010-04-02"
+            reports:
+              - id: root_4_3_0_0
+                name: Leo
+                department: R&D
+                age: 31
+                salary: 46106.48
+                hire_date: "2011-09-26"
+                reports: []
+              - id: root_4_3_0_1
+                name: Noah
+                department: HR
+                age: 42
+                salary: 52343.69
+                hire_date: "2020-05-27"
+                reports: []
+              - id: root_4_3_0_2
+                name: Charlie
+                department: Design
+                age: 45
+                salary: 40746.08
+                hire_date: "2011-03-08"
+                reports: []
+          - id: root_4_3_1
+            name: Quinn
+            department: Engineering
+            age: 47
+            salary: 36203.38
+            hire_date: "2024-05-25"
+            reports:
+              - id: root_4_3_1_0
+                name: Kate
+                department: Sales
+                age: 57
+                salary: 71107.16
+                hire_date: "2021-04-10"
+                reports: []
+              - id: root_4_3_1_1
+                name: Sam
+                department: Finance
+                age: 61
+                salary: 51832.56
+                hire_date: "2021-10-16"
+                reports: []
+              - id: root_4_3_1_2
+                name: Grace
+                department: Ops
+                age: 37
+                salary: 43550.97
+                hire_date: "2023-01-08"
+                reports: []
+          - id: root_4_3_2
+            name: Rose
+            department: Support
+            age: 62
+            salary: 105561.66
+            hire_date: "2010-06-01"
+            reports:
+              - id: root_4_3_2_0
+                name: Mia
+                department: Finance
+                age: 28
+                salary: 48467.49
+                hire_date: "2017-07-16"
+                reports: []
+              - id: root_4_3_2_1
+                name: Bob
+                department: Marketing
+                age: 39
+                salary: 38372.4
+                hire_date: "2017-09-14"
+                reports: []
+              - id: root_4_3_2_2
+                name: Leo
+                department: Legal
+                age: 27
+                salary: 82269.36
+                hire_date: "2014-11-27"
+                reports: []
+              - id: root_4_3_2_3
+                name: Mia
+                department: Sales
+                age: 59
+                salary: 81103.87
+                hire_date: "2023-11-05"
+                reports: []
+          - id: root_4_3_3
+            name: Henry
+            department: Finance
+            age: 38
+            salary: 106582.23
+            hire_date: "2022-12-27"
+            reports:
+              - id: root_4_3_3_0
+                name: Kate
+                department: Support
+                age: 50
+                salary: 54476.03
+                hire_date: "2012-04-05"
+                reports: []
+              - id: root_4_3_3_1
+                name: Sam
+                department: Sales
+                age: 31
+                salary: 39509.2
+                hire_date: "2024-08-11"
+                reports: []
+              - id: root_4_3_3_2
+                name: Noah
+                department: Sales
+                age: 56
+                salary: 62245.87
+                hire_date: "2016-08-10"
+                reports: []
+              - id: root_4_3_3_3
+                name: Olivia
+                department: Finance
+                age: 29
+                salary: 38137.88
+                hire_date: "2019-12-23"
+                reports: []
+          - id: root_4_3_4
+            name: Tina
+            department: Engineering
+            age: 35
+            salary: 105233.23
+            hire_date: "2020-03-03"
+            reports:
+              - id: root_4_3_4_0
+                name: Henry
+                department: Support
+                age: 47
+                salary: 76211.37
+                hire_date: "2019-05-27"
+                reports: []
+              - id: root_4_3_4_1
+                name: Frank
+                department: Engineering
+                age: 47
+                salary: 106914.12
+                hire_date: "2017-02-15"
+                reports: []
+              - id: root_4_3_4_2
+                name: Diana
+                department: Marketing
+                age: 29
+                salary: 31076.12
+                hire_date: "2017-03-07"
+                reports: []
+              - id: root_4_3_4_3
+                name: Mia
+                department: Support
+                age: 65
+                salary: 86726.78
+                hire_date: "2012-10-19"
+                reports: []
+      - id: root_4_4
+        name: Ivy
+        department: Sales
+        age: 23
+        salary: 119744.53
+        hire_date: "2016-11-15"
+        reports:
+          - id: root_4_4_0
+            name: Charlie
+            department: Support
+            age: 29
+            salary: 33842.67
+            hire_date: "2024-01-06"
+            reports:
+              - id: root_4_4_0_0
+                name: Noah
+                department: R&D
+                age: 53
+                salary: 32653.41
+                hire_date: "2023-03-12"
+                reports: []
+              - id: root_4_4_0_1
+                name: Grace
+                department: Marketing
+                age: 39
+                salary: 55186.91
+                hire_date: "2014-01-20"
+                reports: []
+              - id: root_4_4_0_2
+                name: Tina
+                department: Design
+                age: 37
+                salary: 88255.06
+                hire_date: "2025-07-18"
+                reports: []
+              - id: root_4_4_0_3
+                name: Paul
+                department: Engineering
+                age: 27
+                salary: 55179.84
+                hire_date: "2014-07-07"
+                reports: []
+          - id: root_4_4_1
+            name: Quinn
+            department: HR
+            age: 62
+            salary: 119467.85
+            hire_date: "2010-07-26"
+            reports:
+              - id: root_4_4_1_0
+                name: Leo
+                department: Legal
+                age: 56
+                salary: 100329.16
+                hire_date: "2021-10-17"
+                reports: []
+              - id: root_4_4_1_1
+                name: Kate
+                department: R&D
+                age: 39
+                salary: 46183.43
+                hire_date: "2020-10-08"
+                reports: []
+              - id: root_4_4_1_2
+                name: Alice
+                department: Finance
+                age: 25
+                salary: 102778.85
+                hire_date: "2025-09-12"
+                reports: []
+              - id: root_4_4_1_3
+                name: Sam
+                department: HR
+                age: 32
+                salary: 39012.09
+                hire_date: "2017-05-18"
+                reports: []
+          - id: root_4_4_2
+            name: Bob
+            department: HR
+            age: 58
+            salary: 106185.46
+            hire_date: "2022-06-27"
+            reports:
+              - id: root_4_4_2_0
+                name: Frank
+                department: HR
+                age: 59
+                salary: 58620.39
+                hire_date: "2021-10-01"
+                reports: []
+              - id: root_4_4_2_1
+                name: Leo
+                department: Design
+                age: 58
+                salary: 42789.21
+                hire_date: "2016-08-18"
+                reports: []
+  - id: root_5
+    name: Jack
+    department: Marketing
+    age: 53
+    salary: 33416.74
+    hire_date: "2011-04-20"
+    reports:
+      - id: root_5_0
+        name: Alice
+        department: Ops
+        age: 52
+        salary: 30061.51
+        hire_date: "2016-03-11"
+        reports:
+          - id: root_5_0_0
+            name: Frank
+            department: Support
+            age: 25
+            salary: 31972.16
+            hire_date: "2014-02-28"
+            reports:
+              - id: root_5_0_0_0
+                name: Leo
+                department: Sales
+                age: 45
+                salary: 93408.42
+                hire_date: "2022-10-04"
+                reports: []
+              - id: root_5_0_0_1
+                name: Kate
+                department: Finance
+                age: 42
+                salary: 42280.65
+                hire_date: "2015-12-14"
+                reports: []
+              - id: root_5_0_0_2
+                name: Paul
+                department: Support
+                age: 33
+                salary: 93646.46
+                hire_date: "2021-04-22"
+                reports: []
+              - id: root_5_0_0_3
+                name: Sam
+                department: Marketing
+                age: 46
+                salary: 57614.09
+                hire_date: "2019-03-06"
+                reports: []
+          - id: root_5_0_1
+            name: Alice
+            department: Design
+            age: 47
+            salary: 106568.13
+            hire_date: "2011-03-20"
+            reports:
+              - id: root_5_0_1_0
+                name: Tina
+                department: HR
+                age: 62
+                salary: 80899.52
+                hire_date: "2025-03-11"
+                reports: []
+              - id: root_5_0_1_1
+                name: Charlie
+                department: HR
+                age: 44
+                salary: 118414.17
+                hire_date: "2015-11-03"
+                reports: []
+              - id: root_5_0_1_2
+                name: Kate
+                department: Legal
+                age: 22
+                salary: 53869.12
+                hire_date: "2017-12-03"
+                reports: []
+          - id: root_5_0_2
+            name: Leo
+            department: Finance
+            age: 28
+            salary: 94837.22
+            hire_date: "2011-07-15"
+            reports:
+              - id: root_5_0_2_0
+                name: Noah
+                department: Marketing
+                age: 48
+                salary: 74377.38
+                hire_date: "2022-06-18"
+                reports: []
+              - id: root_5_0_2_1
+                name: Mia
+                department: Sales
+                age: 52
+                salary: 100985.7
+                hire_date: "2017-03-15"
+                reports: []
+              - id: root_5_0_2_2
+                name: Charlie
+                department: Engineering
+                age: 40
+                salary: 31807.02
+                hire_date: "2018-02-03"
+                reports: []
+              - id: root_5_0_2_3
+                name: Kate
+                department: Marketing
+                age: 46
+                salary: 44481.4
+                hire_date: "2012-09-03"
+                reports: []
+          - id: root_5_0_3
+            name: Kate
+            department: Design
+            age: 61
+            salary: 110390.36
+            hire_date: "2010-07-21"
+            reports:
+              - id: root_5_0_3_0
+                name: Tina
+                department: R&D
+                age: 32
+                salary: 34820.02
+                hire_date: "2020-04-07"
+                reports: []
+              - id: root_5_0_3_1
+                name: Noah
+                department: Ops
+                age: 56
+                salary: 53873.83
+                hire_date: "2019-05-08"
+                reports: []
+          - id: root_5_0_4
+            name: Diana
+            department: Engineering
+            age: 47
+            salary: 81459.28
+            hire_date: "2025-03-02"
+            reports:
+              - id: root_5_0_4_0
+                name: Alice
+                department: R&D
+                age: 27
+                salary: 56509.45
+                hire_date: "2025-04-04"
+                reports: []
+              - id: root_5_0_4_1
+                name: Alice
+                department: HR
+                age: 32
+                salary: 87437.16
+                hire_date: "2012-08-28"
+                reports: []
+              - id: root_5_0_4_2
+                name: Diana
+                department: Finance
+                age: 47
+                salary: 72385.0
+                hire_date: "2018-02-21"
+                reports: []
+      - id: root_5_1
+        name: Rose
+        department: R&D
+        age: 33
+        salary: 63391.85
+        hire_date: "2022-06-06"
+        reports:
+          - id: root_5_1_0
+            name: Bob
+            department: Finance
+            age: 50
+            salary: 71855.22
+            hire_date: "2017-05-19"
+            reports:
+              - id: root_5_1_0_0
+                name: Eve
+                department: Sales
+                age: 27
+                salary: 90132.71
+                hire_date: "2023-10-08"
+                reports: []
+              - id: root_5_1_0_1
+                name: Rose
+                department: Engineering
+                age: 46
+                salary: 103656.47
+                hire_date: "2023-09-22"
+                reports: []
+          - id: root_5_1_1
+            name: Paul
+            department: Design
+            age: 37
+            salary: 72863.61
+            hire_date: "2012-07-28"
+            reports:
+              - id: root_5_1_1_0
+                name: Bob
+                department: Ops
+                age: 58
+                salary: 111040.96
+                hire_date: "2014-02-25"
+                reports: []
+              - id: root_5_1_1_1
+                name: Olivia
+                department: Marketing
+                age: 32
+                salary: 117494.84
+                hire_date: "2016-03-02"
+                reports: []
+              - id: root_5_1_1_2
+                name: Noah
+                department: Sales
+                age: 65
+                salary: 69185.39
+                hire_date: "2014-10-09"
+                reports: []
+              - id: root_5_1_1_3
+                name: Kate
+                department: Sales
+                age: 27
+                salary: 64928.92
+                hire_date: "2022-09-11"
+                reports: []
+          - id: root_5_1_2
+            name: Ivy
+            department: Ops
+            age: 51
+            salary: 112544.57
+            hire_date: "2010-12-20"
+            reports:
+              - id: root_5_1_2_0
+                name: Quinn
+                department: R&D
+                age: 29
+                salary: 67299.82
+                hire_date: "2014-10-19"
+                reports: []
+              - id: root_5_1_2_1
+                name: Sam
+                department: Sales
+                age: 28
+                salary: 80641.54
+                hire_date: "2013-05-28"
+                reports: []
+              - id: root_5_1_2_2
+                name: Rose
+                department: Support
+                age: 48
+                salary: 53772.3
+                hire_date: "2025-10-20"
+                reports: []
+              - id: root_5_1_2_3
+                name: Paul
+                department: Engineering
+                age: 33
+                salary: 54787.27
+                hire_date: "2014-10-20"
+                reports: []
+          - id: root_5_1_3
+            name: Mia
+            department: Engineering
+            age: 47
+            salary: 110061.68
+            hire_date: "2020-12-08"
+            reports:
+              - id: root_5_1_3_0
+                name: Paul
+                department: Finance
+                age: 45
+                salary: 31820.96
+                hire_date: "2019-05-09"
+                reports: []
+              - id: root_5_1_3_1
+                name: Paul
+                department: Sales
+                age: 36
+                salary: 42094.7
+                hire_date: "2024-06-09"
+                reports: []
+      - id: root_5_2
+        name: Noah
+        department: Design
+        age: 63
+        salary: 38035.82
+        hire_date: "2024-04-27"
+        reports:
+          - id: root_5_2_0
+            name: Paul
+            department: Ops
+            age: 45
+            salary: 103891.57
+            hire_date: "2015-02-10"
+            reports:
+              - id: root_5_2_0_0
+                name: Quinn
+                department: R&D
+                age: 30
+                salary: 100246.48
+                hire_date: "2010-03-07"
+                reports: []
+              - id: root_5_2_0_1
+                name: Grace
+                department: Engineering
+                age: 37
+                salary: 32976.39
+                hire_date: "2011-06-23"
+                reports: []
+              - id: root_5_2_0_2
+                name: Grace
+                department: Finance
+                age: 45
+                salary: 104115.57
+                hire_date: "2022-11-04"
+                reports: []
+              - id: root_5_2_0_3
+                name: Alice
+                department: HR
+                age: 45
+                salary: 73990.81
+                hire_date: "2024-03-28"
+                reports: []
+          - id: root_5_2_1
+            name: Paul
+            department: Design
+            age: 57
+            salary: 61478.39
+            hire_date: "2015-05-24"
+            reports:
+              - id: root_5_2_1_0
+                name: Charlie
+                department: Finance
+                age: 23
+                salary: 64790.91
+                hire_date: "2015-10-25"
+                reports: []
+              - id: root_5_2_1_1
+                name: Grace
+                department: HR
+                age: 63
+                salary: 50260.08
+                hire_date: "2016-05-21"
+                reports: []
+              - id: root_5_2_1_2
+                name: Noah
+                department: Ops
+                age: 23
+                salary: 107816.69
+                hire_date: "2010-08-05"
+                reports: []
+              - id: root_5_2_1_3
+                name: Frank
+                department: Design
+                age: 22
+                salary: 50139.3
+                hire_date: "2019-12-23"
+                reports: []
+          - id: root_5_2_2
+            name: Ivy
+            department: R&D
+            age: 46
+            salary: 106642.76
+            hire_date: "2024-05-07"
+            reports:
+              - id: root_5_2_2_0
+                name: Jack
+                department: Ops
+                age: 61
+                salary: 65743.73
+                hire_date: "2013-01-17"
+                reports: []
+              - id: root_5_2_2_1
+                name: Leo
+                department: Ops
+                age: 63
+                salary: 83439.53
+                hire_date: "2019-05-22"
+                reports: []
+              - id: root_5_2_2_2
+                name: Diana
+                department: Legal
+                age: 26
+                salary: 60265.53
+                hire_date: "2018-11-11"
+                reports: []
+          - id: root_5_2_3
+            name: Ivy
+            department: Finance
+            age: 63
+            salary: 93998.44
+            hire_date: "2019-04-05"
+            reports:
+              - id: root_5_2_3_0
+                name: Henry
+                department: Engineering
+                age: 60
+                salary: 66368.86
+                hire_date: "2020-11-05"
+                reports: []
+              - id: root_5_2_3_1
+                name: Alice
+                department: Legal
+                age: 40
+                salary: 53348.36
+                hire_date: "2023-07-13"
+                reports: []
+              - id: root_5_2_3_2
+                name: Bob
+                department: Design
+                age: 58
+                salary: 103441.32
+                hire_date: "2020-12-23"
+                reports: []
+              - id: root_5_2_3_3
+                name: Henry
+                department: Ops
+                age: 62
+                salary: 100640.73
+                hire_date: "2021-09-10"
+                reports: []
+      - id: root_5_3
+        name: Frank
+        department: Ops
+        age: 33
+        salary: 56440.56
+        hire_date: "2025-03-24"
+        reports:
+          - id: root_5_3_0
+            name: Rose
+            department: Marketing
+            age: 65
+            salary: 110963.2
+            hire_date: "2012-04-12"
+            reports:
+              - id: root_5_3_0_0
+                name: Jack
+                department: R&D
+                age: 43
+                salary: 63451.42
+                hire_date: "2019-08-28"
+                reports: []
+              - id: root_5_3_0_1
+                name: Diana
+                department: Legal
+                age: 25
+                salary: 107975.4
+                hire_date: "2012-08-07"
+                reports: []
+          - id: root_5_3_1
+            name: Quinn
+            department: Sales
+            age: 65
+            salary: 64350.23
+            hire_date: "2019-07-02"
+            reports:
+              - id: root_5_3_1_0
+                name: Eve
+                department: HR
+                age: 43
+                salary: 66827.27
+                hire_date: "2024-03-11"
+                reports: []
+              - id: root_5_3_1_1
+                name: Frank
+                department: Sales
+                age: 53
+                salary: 59936.65
+                hire_date: "2015-06-21"
+                reports: []
+          - id: root_5_3_2
+            name: Bob
+            department: Engineering
+            age: 50
+            salary: 54617.51
+            hire_date: "2015-10-25"
+            reports:
+              - id: root_5_3_2_0
+                name: Paul
+                department: Sales
+                age: 30
+                salary: 85303.18
+                hire_date: "2023-07-14"
+                reports: []
+              - id: root_5_3_2_1
+                name: Paul
+                department: R&D
+                age: 22
+                salary: 33395.28
+                hire_date: "2016-12-12"
+                reports: []
+          - id: root_5_3_3
+            name: Alice
+            department: Support
+            age: 55
+            salary: 47151.9
+            hire_date: "2010-11-24"
+            reports:
+              - id: root_5_3_3_0
+                name: Henry
+                department: Support
+                age: 41
+                salary: 41603.77
+                hire_date: "2022-09-19"
+                reports: []
+              - id: root_5_3_3_1
+                name: Jack
+                department: Marketing
+                age: 26
+                salary: 104145.94
+                hire_date: "2019-05-15"
+                reports: []

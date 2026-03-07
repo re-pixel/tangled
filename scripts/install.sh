@@ -1,0 +1,118 @@
+#!/bin/bash
+
+# Tangled Graph Explorer - Installation Script
+# This script sets up the complete development environment.
+
+set -e  # Exit on error
+
+if [ ! -d "api" ]; then
+    echo "Error: Run this script from the repository root (e.g. ./scripts/install.sh or make install)."
+    exit 1
+fi
+
+echo "========================================="
+echo "Tangled Graph Explorer - Installation"
+echo "========================================="
+
+# Check Python version
+PYTHON_VERSION=$(python3 --version 2>&1 | cut -d' ' -f2 | cut -d'.' -f1-2)
+REQUIRED_VERSION="3.10"
+
+if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$PYTHON_VERSION" | sort -V | head -n1)" != "$REQUIRED_VERSION" ]; then
+    echo "Error: Python $REQUIRED_VERSION or higher is required (found $PYTHON_VERSION)"
+    exit 1
+fi
+
+echo "✓ Python $PYTHON_VERSION detected"
+
+# Check if venv module is available
+if ! python3 -c "import venv, ensurepip" 2>/dev/null; then
+    echo "Error: Python venv/ensurepip modules are not available."
+    if command -v apt-get >/dev/null 2>&1 || [ -f /etc/debian_version ]; then
+        echo "On Debian/Ubuntu run: sudo apt install python3.${PYTHON_VERSION#*.}-venv"
+    elif [ -f /etc/redhat-release ] && command -v dnf >/dev/null 2>&1; then
+        echo "On Fedora/RHEL run: sudo dnf install python3-virtualenv"
+    elif [ -f /etc/arch-release ]; then
+        echo "On Arch Linux run: sudo pacman -S python-venv"
+    elif command -v zypper >/dev/null 2>&1; then
+        echo "On openSUSE run: sudo zypper install python3-venv"
+    elif [ "$(uname -s)" = "Darwin" ]; then
+        echo "On macOS run: brew install python"
+    else
+        echo "Install the venv package for your Python version using your system package manager."
+    fi
+    exit 1
+fi
+
+# Create virtual environment if it doesn't exist
+if [ ! -d "venv" ]; then
+    echo ""
+    echo "Creating virtual environment..."
+    python3 -m venv venv
+    echo "✓ Virtual environment created"
+fi
+
+# Activate virtual environment
+echo ""
+echo "Activating virtual environment..."
+source venv/bin/activate
+echo "✓ Virtual environment activated"
+
+# Upgrade pip
+echo ""
+echo "Upgrading pip..."
+pip install --upgrade pip --quiet
+echo "✓ pip upgraded"
+
+# Discover components: direct subdirs with pyproject.toml, order api → platform → others (sorted) → graph-explorer
+COMPONENTS="api platform"
+MIDDLE=$(for d in */; do
+  d="${d%/}"
+  [ "$d" = "api" ] || [ "$d" = "platform" ] || [ "$d" = "graph-explorer" ] || [ "$d" = "graph-explorer-django" ] || [ "$d" = "venv" ] && continue
+  [ -f "$d/pyproject.toml" ] && echo "$d"
+done | sort)
+TAIL=""
+[ -f "graph-explorer/pyproject.toml" ] && TAIL="$TAIL graph-explorer"
+[ -f "graph-explorer-django/pyproject.toml" ] && TAIL="$TAIL graph-explorer-django"
+COMPONENTS="$COMPONENTS $MIDDLE $TAIL"
+COMPONENTS=$(echo $COMPONENTS | xargs)
+
+# Get package name from pyproject.toml (fallback: tangled-<dirname>)
+get_pkg_name() {
+  local f="$1/pyproject.toml" pkg
+  pkg=$(sed -n 's/^name[[:space:]]*=[[:space:]]*"\([^"]*\)".*/\1/p' "$f" 2>/dev/null)
+  [ -z "$pkg" ] && pkg=$(sed -n "s/^name[[:space:]]*=[[:space:]]*'\([^']*\)'.*/\1/p" "$f" 2>/dev/null)
+  [ -z "$pkg" ] && pkg="tangled-$1"
+  echo "$pkg"
+}
+
+# Install components in dependency order
+echo ""
+echo "Installing components..."
+n=0
+total=$(echo $COMPONENTS | wc -w)
+for dir in $COMPONENTS; do
+  n=$((n + 1))
+  pkg=$(get_pkg_name "$dir")
+  echo "  [$n/$total] Installing $pkg..."
+  pip install -e "./$dir" --quiet
+  echo "  ✓ $pkg installed"
+done
+
+echo ""
+echo "========================================="
+echo "Installation complete!"
+echo "========================================="
+echo ""
+echo "To start the Flask app:"
+echo ""
+echo "  make run"
+echo ""
+echo "To start the Django app:"
+echo ""
+echo "  make run-django"
+echo ""
+echo "Then open http://localhost:5000 in your browser."
+echo ""
+echo "Other useful targets: make test, make lint, make help"
+echo ""

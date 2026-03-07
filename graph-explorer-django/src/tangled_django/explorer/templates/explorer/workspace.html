@@ -1,0 +1,190 @@
+{% extends "explorer/base.html" %}
+{% load static %}
+
+{% block title %}Workspace | Tangled{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/workspace.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="workspace-page animate-fade-in-scale" data-workspace-id="{{ workspace.id }}">
+
+    <!-- ── Mobile Sidebar Toggle ── -->
+    <button class="sidebar-toggle glass" id="sidebar-toggle" aria-label="Toggle controls">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+    </button>
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <!-- ── Control Panel (Left Sidebar) ── -->
+    <aside class="control-panel" id="control-panel">
+        <!-- Load Data -->
+        <section class="glass animate-fade-in-up stagger-1">
+            <h3>Load Data</h3>
+            <form id="load-data-form" class="space-y-2.5">
+                <select id="data-source-select" name="plugin" class="glass-select">
+                    <option value="">Select data source...</option>
+                </select>
+                <div id="plugin-params" class="space-y-2"></div>
+                <button type="submit" class="btn-glow w-full text-sm">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Load
+                </button>
+            </form>
+        </section>
+
+        <!-- Visualizer -->
+        <section class="glass animate-fade-in-up stagger-2">
+            <h3>Visualizer</h3>
+            <select id="visualizer-select" class="glass-select">
+                {% for name, plugin in visualizers.items %}
+                <option value="{{ name }}">{{ plugin.name }}</option>
+                {% endfor %}
+            </select>
+        </section>
+
+        <!-- Search & Filter -->
+        <section class="glass animate-fade-in-up stagger-3">
+            <h3>Search & Filter</h3>
+            <form id="search-form" class="space-y-2">
+                <div class="flex gap-2">
+                    <input type="text" id="search-input" placeholder="Search nodes..." class="glass-input flex-1">
+                    <button type="submit" class="btn-glass text-sm">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <circle cx="11" cy="11" r="8"/>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <form id="filter-form" class="space-y-2" style="margin-top: 0.5rem;">
+                <div class="flex gap-2">
+                    <input type="text" id="filter-input" placeholder="e.g., age > 25 && salary >= 100" class="glass-input flex-1">
+                    <button type="submit" class="btn-glass text-sm">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <button type="button" id="reset-btn" class="btn-ghost w-full text-sm" style="margin-top: 0.5rem;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <polyline points="1 4 1 10 7 10"/>
+                    <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                </svg>
+                Reset
+            </button>
+        </section>
+    </aside>
+
+    <!-- ── Tree View ── -->
+    <section class="tree-view glass animate-fade-in-up stagger-2">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <path d="M3 3v18h18"/>
+                    <path d="M7 16l4-8 4 4 6-10"/>
+                </svg>
+                Tree View
+            </span>
+        </h3>
+        <div id="tree-container">
+            <p class="placeholder">Load data to see tree view</p>
+        </div>
+    </section>
+
+    <!-- ── Main View ── -->
+    <section class="main-view glass animate-fade-in-up stagger-1">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <circle cx="12" cy="12" r="3"/>
+                    <circle cx="5" cy="6" r="2"/>
+                    <circle cx="19" cy="6" r="2"/>
+                    <line x1="7" y1="7" x2="10" y2="10"/>
+                    <line x1="17" y1="7" x2="14" y2="10"/>
+                </svg>
+                Main View
+            </span>
+        </h3>
+        <div id="main-graph-container">
+            <p class="placeholder">Load data to visualize graph</p>
+        </div>
+    </section>
+
+    <!-- ── Bird View ── -->
+    <section class="bird-view glass animate-fade-in-up stagger-3">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <rect x="2" y="2" width="20" height="20" rx="2"/>
+                    <rect x="7" y="7" width="10" height="10" rx="1"/>
+                </svg>
+                Bird View
+            </span>
+        </h3>
+        <div id="bird-container">
+            <div id="viewport-rect"></div>
+        </div>
+    </section>
+
+    <!-- ── CLI Terminal ── -->
+    <section class="cli-section glass-dark animate-fade-in-up stagger-4">
+        <h3>
+            <span class="inline-flex items-center gap-1.5">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="opacity-50">
+                    <polyline points="4 17 10 11 4 5"/>
+                    <line x1="12" y1="19" x2="20" y2="19"/>
+                </svg>
+                CLI
+            </span>
+        </h3>
+        <div id="cli-container">
+            <div id="cli-output"></div>
+            <form id="cli-form">
+                <span class="prompt">&gt;</span>
+                <input type="text" id="cli-input" placeholder="Enter command...">
+            </form>
+        </div>
+    </section>
+
+</div>
+
+<!-- Mobile sidebar script -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const toggle = document.getElementById('sidebar-toggle');
+    const close = document.getElementById('sidebar-close');
+    const overlay = document.getElementById('sidebar-overlay');
+    const panel = document.getElementById('control-panel');
+
+    function openSidebar() {
+        panel?.classList.add('open');
+        overlay?.classList.add('open');
+    }
+    function closeSidebar() {
+        panel?.classList.remove('open');
+        overlay?.classList.remove('open');
+    }
+
+    toggle?.addEventListener('click', openSidebar);
+    close?.addEventListener('click', closeSidebar);
+    overlay?.addEventListener('click', closeSidebar);
+});
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/graph.js' %}"></script>
+<script src="{% static 'js/treeview.js' %}"></script>
+<script src="{% static 'js/birdview.js' %}"></script>
+<script src="{% static 'js/workspace.js' %}"></script>
+{% endblock %}
