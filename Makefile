@@ -12,7 +12,7 @@ help:
 	@echo "  make run-django - Start the Django app (http://localhost:$(PORT))"
 	@echo "  make test      - Run pytest"
 	@echo "  make lint      - Run mypy on api and platform"
-	@echo "  make reinstall - Reinstall all packages (starts server)"
+	@echo "  make reinstall - Reinstall all packages"
 	@echo "  make clean     - Remove venv and build artifacts"
 	@echo ""
 	@echo "Variables:"
