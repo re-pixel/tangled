@@ -21,11 +21,12 @@ $pip = ".\venv\Scripts\pip.exe"
 
 # Discover components (same order as install.ps1): api → platform → others (sorted) → graph-explorer
 $middle = Get-ChildItem -Directory | Where-Object {
-    $_.Name -notin @("api", "platform", "graph-explorer", "venv") -and
+    $_.Name -notin @("api", "platform", "graph-explorer", "graph-explorer-django", "venv") -and
     (Test-Path (Join-Path $_.FullName "pyproject.toml"))
 } | Select-Object -ExpandProperty Name | Sort-Object
 $componentDirs = @("api", "platform") + [array]$middle
 if (Test-Path ".\graph-explorer\pyproject.toml") { $componentDirs += "graph-explorer" }
+if (Test-Path ".\graph-explorer-django\pyproject.toml") { $componentDirs += "graph-explorer-django" }
 $componentPaths = $componentDirs | ForEach-Object { ".\$_" }
 
 # Get package name from pyproject.toml (fallback: tangled-<dirname>)

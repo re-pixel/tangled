@@ -44,7 +44,6 @@ class SimpleVisualizer(VisualizerPlugin):
                 "id": node_id,
                 "label": label
             })
-            print(node)
 
         edges = []
         for edge_id, edge in graph.edges.items():
