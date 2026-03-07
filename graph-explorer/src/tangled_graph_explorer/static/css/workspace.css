@@ -317,7 +317,6 @@
   position: absolute;
   border: 1.5px solid #40c9ff;
   background-color: rgba(64, 201, 255, 0.06);
-  pointer-events: none;
   border-radius: 2px;
 }
 
