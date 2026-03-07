@@ -1,6 +1,6 @@
 # Tangled Graph Explorer - Installation Script (Windows)
 # This script sets up the complete development environment.
-# Run from repo root: .\scripts\install.ps1  or  make install
+# Run from repo root: .\scripts\install.ps1
 
 $ErrorActionPreference = "Stop"
 
@@ -113,13 +113,15 @@ Write-Host "========================================="
 Write-Host "Installation complete!"
 Write-Host "========================================="
 Write-Host ""
-Write-Host "To start the application:" -ForegroundColor Cyan
+Write-Host "To start the Flask app:" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "  .\venv\Scripts\Activate.ps1"
 Write-Host "  tangled"
 Write-Host ""
-Write-Host "Or run without activating:"
-Write-Host "  .\venv\Scripts\tangled.exe"
+Write-Host "To start the Django app:" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "  .\venv\Scripts\Activate.ps1"
+Write-Host "  python graph-explorer-django\manage.py runserver"
 Write-Host ""
 Write-Host "Then open http://localhost:5000 in your browser." -ForegroundColor Cyan
 Write-Host ""

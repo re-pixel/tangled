@@ -173,23 +173,25 @@ class MyVisualizer(VisualizerPlugin):
 
 ## 5. Installing & Verifying
 
-Once your code is written, you must install the plugin in "editable" mode so the Platform can discover the entry points.
+Once your code is written, install the plugin in editable mode so the Platform can discover the entry points.
 
-1.  **Activate your environment**:
+**Linux / macOS:**
 
-    ```bash
-    source venv/bin/activate   # Windows: .\venv\Scripts\Activate.ps1
-    ```
+```bash
+source venv/bin/activate
+pip install -e ./my-new-plugin
+make run
+```
 
-2.  **Install your plugin**:
+**Windows (PowerShell):**
 
-    ```bash
-    cd my-new-plugin
-    pip install -e .
-    ```
+```powershell
+.\venv\Scripts\Activate.ps1
+pip install -e .\my-new-plugin
+tangled
+```
 
-3.  **Verify**:
-    Restart the Tangled application. Your new plugin should automatically appear in the API list (`/api/plugins/datasources` or `/api/plugins/visualizers`) and in the generic UI dropdowns.
+Your new plugin should automatically appear in the API list (`/api/plugins/datasources` or `/api/plugins/visualizers`) and in the UI dropdowns.
 
 ## 6. Visualizer Plugin Conventions
 
