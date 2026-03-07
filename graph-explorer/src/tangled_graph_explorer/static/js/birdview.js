@@ -21,7 +21,13 @@ class BirdView {
     this.mainViewHeight = 0;
 
     this.onNodeSelect = null;
+    this.onViewportDrag = null;
     this.selectedNodeId = null;
+
+    // Cached from updateViewport for drag-to-pan conversion
+    this._lastTransform = d3.zoomIdentity;
+    this._mainWidth = 0;
+    this._mainHeight = 0;
   }
 
   /**
@@ -50,7 +56,47 @@ class BirdView {
       .attr("fill", "rgba(74, 144, 217, 0.1)")
       .attr("stroke", "#4a90d9")
       .attr("stroke-width", 1.5)
-      .attr("pointer-events", "none");
+      .attr("cursor", "move")
+      .attr("pointer-events", "all")
+      .call(
+        d3
+          .drag()
+          .on("start", () => {})
+          .on("drag", (event) => this._onViewportDrag(event))
+          .on("end", () => {}),
+      );
+  }
+
+  /**
+   * Handle viewport rect drag: convert Bird View position to Main View transform
+   * @param {object} event - D3 drag event
+   */
+  _onViewportDrag(event) {
+    if (!this.onViewportDrag || !this.viewportRect) return;
+
+    const width = this.container.clientWidth;
+    const height = this.container.clientHeight;
+    const rectX = parseFloat(this.viewportRect.attr("x")) || 0;
+    const rectY = parseFloat(this.viewportRect.attr("y")) || 0;
+    const rectWidth = parseFloat(this.viewportRect.attr("width")) || 50;
+    const rectHeight = parseFloat(this.viewportRect.attr("height")) || 50;
+
+    let newRectX = rectX + event.dx;
+    let newRectY = rectY + event.dy;
+
+    newRectX = Math.max(0, Math.min(width - rectWidth, newRectX));
+    newRectY = Math.max(0, Math.min(height - rectHeight, newRectY));
+
+    this.viewportRect.attr("x", newRectX).attr("y", newRectY);
+
+    const visibleX = (newRectX - this.offsetX) / this.scale;
+    const visibleY = (newRectY - this.offsetY) / this.scale;
+    const k = this._lastTransform.k;
+    const newX = -visibleX * k;
+    const newY = -visibleY * k;
+
+    const newTransform = d3.zoomIdentity.translate(newX, newY).scale(k);
+    this.onViewportDrag(newTransform);
   }
 
   /**
@@ -149,6 +195,10 @@ class BirdView {
    */
   updateViewport(transform, mainWidth, mainHeight) {
     if (!this.viewportRect) return;
+
+    this._lastTransform = transform;
+    this._mainWidth = mainWidth;
+    this._mainHeight = mainHeight;
 
     // Inverse of main view transform to get visible area
     const visibleWidth = mainWidth / transform.k;

@@ -193,6 +193,16 @@ class WorkspaceController {
         container.clientHeight,
       );
     };
+
+    // Bird View drag-to-pan: apply transform to Main View
+    this.birdView.onViewportDrag = (transform) => {
+      if (this.graphRenderer.svg && this.graphRenderer.zoom) {
+        this.graphRenderer.svg.call(
+          this.graphRenderer.zoom.transform,
+          transform,
+        );
+      }
+    };
     this.graphRenderer.onSimulationTick = (data) => {
       this.birdView.render(data);
     };
@@ -322,13 +332,8 @@ class WorkspaceController {
 
         if (graphData.nodes.length > 0) {
           if (existingSvg) {
-            console.log("calling attach...");
             this.graphRenderer.attach(existingSvg.id, graphData);
-          } else {
-            console.log("NO SVG FOUND");
           }
-        } else {
-          console.log("NO NODES");
         }
 
         this.birdView.render(this.graphData);
