@@ -1,0 +1,206 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam defaultFontSize 13
+skinparam packageFontSize 15
+skinparam packageFontStyle bold
+skinparam classFontSize 14
+skinparam linetype polyline
+skinparam nodesep 15
+skinparam ranksep 25
+scale 2
+
+' ══════════════════════════════════════════════════════
+'  ROW 1 — Explorer apps
+' ══════════════════════════════════════════════════════
+package "tangled_graph_explorer  (Flask)" as FLASK #E0F7FA {
+    class "create_app()" as create_app <<function>> {
+        creates Platform
+        registers blueprints
+    }
+    class "api routes" as flask_api <<Blueprint>> {
+        /api/.../load, render,
+        filter, search, cli
+    }
+    class "page routes" as flask_routes <<Blueprint>> {
+        / , /workspace/new,
+        /workspace/<id>
+    }
+}
+
+package "tangled_django  (Django)" as DJANGO #F1F8E9 {
+    class ExplorerConfig <<AppConfig>> {
+        +ready() : creates Platform
+    }
+    class "api_views" as django_api <<module>> {
+        load_data(), render_graph(),
+        filter_graph(), execute_cli()
+    }
+}
+
+' ══════════════════════════════════════════════════════
+'  ROW 2 — Web + Platform
+' ══════════════════════════════════════════════════════
+package "tangled_web" as WEB #FFF3E0 {
+    class WebCLI {
+        +execute(command) : CLIResult
+    }
+    class CLIResult <<dataclass>> {
+        +output : str
+        +error : str
+        +changed : bool
+    }
+    class WorkspaceNotFound <<Exception>>
+}
+
+package "tangled_platform" as PLAT #E3F2FD {
+    class Platform {
+        -_registry : PluginRegistry
+        -_workspaces : Dict
+        --
+        +create_workspace() : Workspace
+        +get_workspace(id) : Workspace
+        +delete_workspace(id) : bool
+    }
+    class PluginRegistry {
+        -_data_sources : Dict
+        -_visualizers : Dict
+        --
+        +get_data_source(name)
+        +get_visualizer(name)
+    }
+    class Workspace {
+        +id : str
+        -_original_graph : Graph
+        -_current_graph : Graph
+        --
+        +load_data(plugin, **params)
+        +filter(query) / search(query)
+        +reset() / render(plugin)
+    }
+    Platform "1" *-right- "1" PluginRegistry
+    Platform "1" *-down- "*" Workspace
+}
+
+' ══════════════════════════════════════════════════════
+'  ROW 3 — tangled_api: model left, ABCs right
+' ══════════════════════════════════════════════════════
+package "tangled_api" as API #E8F5E9 {
+
+    together {
+        class Graph {
+            -_directed : bool
+            -_nodes : Dict[str, Node]
+            -_edges : Dict[str, Edge]
+            --
+            +add_node() / remove_node()
+            +add_edge() / remove_edge()
+            +create_subgraph(node_ids) : Graph
+            +filter_by_query(query) : Graph
+            +search(query) : Graph
+            +clone() : Graph
+            +to_dict() / from_dict()
+        }
+
+        class Node <<dataclass>> {
+            +id : str
+            +attributes : Dict[str, Attribute]
+        }
+
+        class Edge <<dataclass>> {
+            +id : str
+            +source_id : str
+            +target_id : str
+            +attributes : Dict[str, Attribute]
+        }
+
+        class Attribute <<dataclass>> {
+            +key : str
+            +value : Any
+            +type : AttributeValue
+        }
+
+        enum AttributeValue {
+            STRING
+            INTEGER
+            FLOAT
+            DATE
+        }
+    }
+
+    together {
+        abstract class DataSourcePlugin <<ABC>> {
+            +{abstract} name : str
+            +{abstract} description : str
+            +{abstract} parameters : List
+            +{abstract} load(**params) : Graph
+        }
+
+        class PluginParameter <<dataclass>> {
+            +name : str
+            +param_type : Type
+            +required : bool
+        }
+
+        abstract class VisualizerPlugin <<ABC>> {
+            +{abstract} name : str
+            +{abstract} description : str
+            +{abstract} render(graph) : str
+        }
+    }
+
+    Graph *-- "*" Node
+    Graph *-- "*" Edge
+    Node *-- "*" Attribute
+    Edge *-- "*" Attribute
+    Attribute --> AttributeValue
+    DataSourcePlugin --> PluginParameter
+}
+
+' ══════════════════════════════════════════════════════
+'  ROW 4 — Plugin implementations
+' ══════════════════════════════════════════════════════
+package "Data Source Plugins" as DSP #F3E5F5 {
+    class JsonDataSource
+    class YamlDataSource
+    class XmlDataSource
+    class KuzuDataSource
+}
+
+package "Visualizer Plugins" as VSP #FCE4EC {
+    class SimpleVisualizer
+    class BlockVisualizer
+}
+
+' ══════════════════════════════════════════════════════
+'  RELATIONSHIPS
+' ══════════════════════════════════════════════════════
+DataSourcePlugin <|-- JsonDataSource
+DataSourcePlugin <|-- YamlDataSource
+DataSourcePlugin <|-- XmlDataSource
+DataSourcePlugin <|-- KuzuDataSource
+VisualizerPlugin <|-- SimpleVisualizer
+VisualizerPlugin <|-- BlockVisualizer
+
+Workspace o-- Graph
+WebCLI o-- Workspace
+WebCLI ..> CLIResult
+
+create_app ..> Platform : creates
+ExplorerConfig ..> Platform : creates
+flask_api ..> WEB : delegates
+django_api ..> WEB : delegates
+PluginRegistry ..> DataSourcePlugin : discovers
+PluginRegistry ..> VisualizerPlugin : discovers
+
+' ══════════════════════════════════════════════════════
+'  LAYOUT — force rows
+' ══════════════════════════════════════════════════════
+FLASK -[hidden]right- DJANGO
+WEB -[hidden]right- PLAT
+API -[hidden]down- DSP
+API -[hidden]down- VSP
+DSP -[hidden]right- VSP
+
+@enduml
