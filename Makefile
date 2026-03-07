@@ -28,8 +28,8 @@ run-django:
 	$(VENV) python graph-explorer-django/manage.py runserver 0.0.0.0:$(PORT)
 
 test:
-	$(VENV) pip install -q $$(find . -maxdepth 1 -mindepth 1 -type d ! -name venv ! -name .git ! -name docs ! -name scripts ! -name .mypy_cache ! -name .pytest_cache ! -name .cursor -exec test -f {}/pyproject.toml \; -printf ' -e "./%f[dev]"') && \
-	$(VENV) pytest $$(find . -maxdepth 3 -type d -name tests ! -path './venv/*' ! -path './.git/*' | sort) -v
+	$(VENV) pip install -q $$(find . -maxdepth 1 -mindepth 1 -type d ! -name venv ! -name .git ! -name docs ! -name scripts ! -name .mypy_cache ! -name .pytest_cache ! -name .cursor -exec test -f {}/pyproject.toml \; -printf ' -e ./%f[dev]') && \
+	$(VENV) pytest $$(find . -maxdepth 3 -type d -name tests ! -path './venv/*' ! -path './.git/*' | sort) -v --import-mode=importlib
 
 lint:
 	$(VENV) pip install -q -e "./api[dev]" -e "./platform[dev]" && \
