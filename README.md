@@ -1,6 +1,6 @@
 # Tangled - Graph Visualization Platform
 
-A modular, plugin-based graph visualization platform supporting multiple data sources and visualization styles.
+A modular, plugin-based graph visualization platform built in Python that supports multiple data sources (JSON, YAML, XML, Kuzu) and visualization styles, powered by a microkernel architecture.
 
 ## Project Structure
 
